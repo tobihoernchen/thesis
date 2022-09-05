@@ -4,3 +4,4 @@
 /logs
 desktop.ini
 /envs/Archiv
+*.pyc

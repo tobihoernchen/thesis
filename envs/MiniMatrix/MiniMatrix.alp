@@ -153,7 +153,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657465070128</Id>
 					<Name><![CDATA[nodeCount]]></Name>
-					<X>-120</X><Y>470</Y>
+					<X>-120</X><Y>490</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -165,7 +165,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657471379249</Id>
 					<Name><![CDATA[maxX]]></Name>
-					<X>-240</X><Y>490</Y>
+					<X>-240</X><Y>510</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -177,7 +177,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657471381238</Id>
 					<Name><![CDATA[maxY]]></Name>
-					<X>-120</X><Y>490</Y>
+					<X>-120</X><Y>510</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -204,7 +204,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1659625806429</Id>
 					<Name><![CDATA[firstRLcall]]></Name>
-					<X>-240</X><Y>550</Y>
+					<X>-240</X><Y>590</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -229,7 +229,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[6]]></Code>
+							<Code><![CDATA[2]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -253,7 +253,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[10]]></Code>
+							<Code><![CDATA[6]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656344279462</Id>
@@ -267,7 +267,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310401337</Id>
 					<Name><![CDATA[RL_reward_acceptedInStation]]></Name>
-					<X>-460</X><Y>200</Y>
+					<X>-460</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -291,7 +291,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310468453</Id>
 					<Name><![CDATA[RL_reward_removedForBlock]]></Name>
-					<X>-460</X><Y>220</Y>
+					<X>-460</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -301,7 +301,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[-5.0]]></Code>
+							<Code><![CDATA[-0.5]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1657310468451</Id>
@@ -397,7 +397,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
+							<Code><![CDATA[1]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1657313113299</Id>
@@ -615,7 +615,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["minimatrix"]]></Code>
+							<Code><![CDATA["minimatrix_rllib"]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1657467534127</Id>
@@ -735,7 +735,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
+							<Code><![CDATA[-1]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1658134858950</Id>
@@ -783,7 +783,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[false]]></Code>
+							<Code><![CDATA[true]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1659624839753</Id>
@@ -818,6 +818,30 @@ for(int i = 0; i<fleetSize; i++)
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1662199669836</Id>
+					<Name><![CDATA[RL_reward_blocking]]></Name>
+					<X>-460</X><Y>220</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[-0.5]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1662199669834</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
@@ -846,32 +870,47 @@ for(int i = 0; i<fleetSize; i++)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656346938043</Id>
 					<Name><![CDATA[take_action_debug]]></Name>
-					<X>-240</X><Y>410</Y>
+					<X>-240</X><Y>430</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[traceln(server.getObservation());
-traceln(server.getReward());
-traceln(server.caller);
+					<Body><![CDATA[//traceln(controller.getObservation());
+//traceln(controller.getReward());
+//traceln(controller.caller);
+controller.getObservation();
+controller.getReward();
+
+String[] statTitles = controller.statTitles.toArray(new String[0]);
+double[] statValues = new double[controller.statValues.size()];
+for(int i = 0; i<statValues.length; i++)
+	statValues[i] = controller.statValues.get(i);
+
 int max = 5;
-if(server.caller == "Dispatching")
+if(controller.caller == "Dispatching")
 	max = nodeCount;
 Integer[] act = new Integer[fleetSize];
 for(int i = 0; i<fleetSize; i++)
 	act[i] = getDefaultRandomGenerator().nextInt(max);
 
-if(server.caller == "Dispatching")
-	server.action_targets(act);
+if(controller.caller == "Dispatching")
+	controller.action_targets(act);
+else if(controller.caller == "Routing")
+{	
+	traceln(act);
+	controller.action_agvs(act);
+}
 else
-	server.action_agvs(act);]]></Body>
+{
+	controller.action_agv(act[0], controller.caller_i);
+}]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656943173118</Id>
 					<Name><![CDATA[init_pypeline]]></Name>
-					<X>-240</X><Y>430</Y>
+					<X>-240</X><Y>450</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -914,12 +953,12 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656953880415</Id>
 					<Name><![CDATA[take_action_pypeline]]></Name>
-					<X>-240</X><Y>450</Y>
+					<X>-240</X><Y>470</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[double[][] obs = server.getObservation();
+					<Body><![CDATA[double[][] obs = controller.getObservation();
 String obsstr = toStr2(obs);
 String context = "None";
 if(firstRLcall)
@@ -931,42 +970,62 @@ String actstr = py.runResults(
 	"get_action(" 
 	+ obsstr 
 	+ ",'" 
-	+ server.caller 
+	+ controller.caller 
 	+ "'," 
 	+ nodeCount
 	+ "," 
 	+ context
 	+ ")").getFeedback(String.class);
-
-
+if(controller.caller=="Dispatching")
+	traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
-int receiver = 0;
-boolean searchReceiver = false;
+String intstr = "";
 for(int i = 0; i<actstr.length(); i++)
 {
 	Character chr = actstr.charAt(i);
-	if(Character.isDigit(chr) && !searchReceiver)
+	if(Character.isDigit(chr))
+		intstr += chr;
+	if(chr == ',')
 	{
-		int in = chr - '0';
+		int in = Integer.parseInt(intstr);
+		intstr = "";
 		act.add(in);
 	}
-	if(Character.isDigit(chr) && searchReceiver)
-		receiver =  chr - '0';
 	if(chr == ']')
-		searchReceiver = true;
+	{
+		int in = Integer.parseInt(intstr);
+		act.add(in);
+		break;
+	}
 }
 
-if(receiver != 1)
-	server.action_agvs(act.toArray(new Integer[0]));
-else if(receiver == 1)
-	server.action_targets(act.toArray(new Integer[0]));]]></Body>
+int receiver = 0;
+for(int i = actstr.length()-1; i>0; i--)
+{
+	Character chr = actstr.charAt(i);
+	if(Character.isDigit(chr))
+	{
+		receiver =  chr - '0';
+		if(actstr.charAt(i-1) =='-')
+			receiver = -receiver;
+		break;
+	} //fleetsize < 10!!!
+}
+
+if(receiver == -1)
+	controller.action_agvs(act.toArray(new Integer[0]));
+else if(receiver == -2)
+	controller.action_targets(act.toArray(new Integer[0]));
+else
+	controller.action_agv(act.get(0),receiver);
+]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657458590124</Id>
 					<Name><![CDATA[node2obs]]></Name>
-					<X>-240</X><Y>510</Y>
+					<X>-240</X><Y>530</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1019,7 +1078,7 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657471403592</Id>
 					<Name><![CDATA[init_network]]></Name>
-					<X>-240</X><Y>470</Y>
+					<X>-240</X><Y>490</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1044,7 +1103,7 @@ for(int i=0; i<nodeCount; i++)
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1659625665194</Id>
 					<Name><![CDATA[getNetworkContext]]></Name>
-					<X>-240</X><Y>530</Y>
+					<X>-240</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1086,7 +1145,7 @@ return context;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659716736727</Id>
 					<Name><![CDATA[toStr2]]></Name>
-					<X>-100</X><Y>430</Y>
+					<X>-100</X><Y>450</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1108,7 +1167,7 @@ return str;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659959662180</Id>
 					<Name><![CDATA[toStr1]]></Name>
-					<X>-100</X><Y>450</Y>
+					<X>-100</X><Y>470</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1217,7 +1276,7 @@ return str;]]></Body>
 				</EmbeddedObject>
 				<EmbeddedObject>
 					<Id>1656063853739</Id>
-					<Name><![CDATA[server]]></Name>
+					<Name><![CDATA[controller]]></Name>
 					<X>-140</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
@@ -1226,12 +1285,12 @@ return str;]]></Body>
 					<PresentationId>1656063853740</PresentationId>
 					<ActiveObjectClass>
 						<PackageName><![CDATA[minimatrix]]></PackageName>
-						<ClassName><![CDATA[Server]]></ClassName>
+						<ClassName><![CDATA[Controller]]></ClassName>
 					</ActiveObjectClass>
 					<GenericParameterSubstitute>
 						<GenericParameterSubstituteReference>
 							<PackageName><![CDATA[minimatrix]]></PackageName>
-							<ClassName><![CDATA[Server]]></ClassName>
+							<ClassName><![CDATA[Controller]]></ClassName>
 							<ItemName><![CDATA[1656063853588]]></ItemName>
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
@@ -4003,7 +4062,7 @@ return str;]]></Body>
 				</EmbeddedObjectPresentation>
 				<EmbeddedObjectPresentation>
 					<Id>1656063853740</Id>
-					<Name><![CDATA[server_presentation]]></Name>
+					<Name><![CDATA[controller_presentation]]></Name>
 					<X>40</X><Y>25</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
@@ -4485,11 +4544,8 @@ register();]]></StartupCode>
 lastNode = currentNode;
 if(contents().size() == 1)
 	contents().get(0).moveTo(nextNode);
-	
-sendDistanceReward();
 if(nextNode == targetNode)
 {
-	sendArrival();
 	awaitNext = false;
 }]]></Action>
 						<Timeout Class="CodeUnitValue">
@@ -4595,7 +4651,7 @@ if(contents().size() == 1)
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[Object[] msg = {"ab", this, null};
-send(msg, main.server);
+send(msg, main.controller);
 moveTo(nextNode);
 
 if(contents().size() == 1)
@@ -4777,7 +4833,7 @@ if(contents().size() == 1)
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1656056734573" Trigger="timeout">
 						<Action><![CDATA[Object[] msg = {"ab", this, scannerFree()};
-send(msg, main.server);]]></Action>
+send(msg, main.controller);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -4830,7 +4886,7 @@ send(msg, main.server);]]></Action>
 					<Id>1656070315464</Id>
 					<Name><![CDATA[RequestNewCommand]]></Name>
 					<X>455</X><Y>190</Y>
-					<Label><X>9</X><Y>-48</Y></Label>
+					<Label><X>10</X><Y>-45</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
@@ -4841,32 +4897,17 @@ send(msg, main.server);]]></Action>
 						<Point><X>10</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1655919201546" Target="1655919201546" Trigger="timeout">
-						<Action><![CDATA[INode[] possible = nodesInReach(currentNode);
-int n_possible = 0;
-int i_possible = 0;
-
-if(awaitNext)
+					<Properties Source="1655919201546" Target="1655919201546" Trigger="rate">
+						<Action><![CDATA[//Rewards - Sinnvoll wenn RoutingOnNode
+if(main.RL_routingOnNode)
 {
-	for(int i = 0; i<possible.length; i++)
-	{
-		if(possible[0] != null)
-		{
-			n_possible += 1;
-			i_possible = i;
-		}
-	}
-	if(n_possible == 1)
-	{
-		Object[] message = {"ac", i_possible};
-		send(message, this);
-	}
-	else
-	{
-		Object[] message = {"ac", this};
-		send(message,main.server);
-	}
-}]]></Action>
+	if(targetNode == nextNode)
+		sendArrival();
+	sendDistanceReward();
+}
+//Frage nach nächstem Ziel
+Object[] message = {"ac", this};
+send(message,main.controller);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -4962,7 +5003,9 @@ if(contents().size() == 1)
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1655919201546" Trigger="message">
-						<Action><![CDATA[INode[] possible = nodesInReach(currentNode);
+						<Action><![CDATA[//Fahre zum vorgegebenen Knoten wenn er erreichbar ist
+
+INode[] possible = nodesInReach(currentNode);
 if((int)msg[1] > 0)
 {
 	int index = (int)msg[1]-1;
@@ -5127,6 +5170,7 @@ for(int i = 0; i<n_nodes; i++)
 		if(nodeIsFree)
 		{
 			jumpTo(myPointNode);
+			lastNode = myPointNode;
 			currentNode = myPointNode;
 			nextNode = currentNode;
 			if(contents().size() == 1)
@@ -5219,24 +5263,18 @@ return possible;]]></Body>
 						<Name><![CDATA[caller]]></Name>
 						<Type><![CDATA[String]]></Type>
 					</Parameter>
-					<Body><![CDATA[if(currentNode==targetNode)
-{
-	Object[] message = {"ru", main.RL_reward_reachedTarget, this};
-	deliver(message, main.server);
-}
-
-
+					<Body><![CDATA[
 boolean include_part = main.runMode < 4 
 	|| caller == "Dispatching" 
 	|| main.RL_obsrout_includePartInfo;
-boolean include_target = main.runMode < 4 
-	|| caller != "Dispatching" 
+boolean include_target = (main.runMode > 4 
+	&& caller != "Dispatching") 
 	|| main.RL_obsdisp_includeAgvTarget;
 	
 
 double inSys = inState(inSystem) ? 1.0 : 0.0;
 double await = awaitNext ? 1.0 : 0.0;
-double[] lastNode_obs = main.node2obs(currentNode);
+double[] lastNode_obs = main.node2obs(lastNode);
 double[] nextNode_obs = main.node2obs(nextNode);
 int nObsNode = lastNode_obs.length;
 
@@ -5304,7 +5342,7 @@ return obs;
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[Object[] msg = {"ar", this, getObservation("Routing").length,  getObservation("Dispatching").length};
-send(msg, main.server);]]></Body>
+send(msg, main.controller);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
@@ -5344,10 +5382,11 @@ return atan2fast(dx, dy);]]></Body>
 	targetNode != null 
 	&& main.RL_reward_targetDistance != 0 
 	&& PointNode.class.isInstance(targetNode)
-	&& PointNode.class.isInstance(lastNode)
+	//&& PointNode.class.isInstance(lastNode)
 	&& PointNode.class.isInstance(nextNode)
 )
 {
+	/*
 	PointNode tnode = (PointNode) targetNode;
 	PointNode lnode = (PointNode) lastNode;
 	PointNode nnode = (PointNode) nextNode;
@@ -5355,9 +5394,17 @@ return atan2fast(dx, dy);]]></Body>
 	double distanceNext = nnode.getXYZ().distance(tnode.getXYZ());
 	double fact = distanceLast >= distanceNext ? 
 	(distanceLast == distanceNext ? 0 : 1) : -1; 
-
+	*/
+	
+	PointNode tnode = (PointNode) targetNode;
+	PointNode nnode = (PointNode) nextNode;
+	double dx = abs(tnode.getX() - nnode.getX()) / main.maxX;
+	double dy = abs(tnode.getY() - nnode.getY()) / main.maxY;
+	double fact = sqrt(sqr(dx) + sqr(dy));
+	
 	Object[] message = {"ru", fact * main.RL_reward_targetDistance, this};
-	send(message, main.server);
+	//deliver(message, main.controller);
+	main.controller.addReward(fact * main.RL_reward_targetDistance, this);
 }
 ]]></Body>
 				</Function>
@@ -5393,11 +5440,11 @@ if(targetNode!=nextNode)
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[Object[] message1 = {"tr", this};
-send(message1, main.server);
+					<Body><![CDATA[Object[] message1 = {"su", "targetReached", 1.0, "add"};
+deliver(message1, main.controller);
 Object[] message2 = {"ru", main.RL_reward_reachedTarget, this};
-send(message2, main.server);
-]]></Body>
+//deliver(message2, main.controller);
+main.controller.addReward(main.RL_reward_reachedTarget, this);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -5409,10 +5456,25 @@ send(message2, main.server);
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[Object[] message1 = {"bl", this};
-send(message1, main.server);
+					<Body><![CDATA[Object[] message1 = {"su", "block", 1.0, "add"};
+deliver(message1, main.controller);
 Object[] message2 = {"ru", main.RL_reward_removedForBlock, this};
-send(message2, main.server);
+//deliver(message2, main.controller);
+main.controller.addReward(main.RL_reward_removedForBlock, this);
+]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>VOID</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1661168639765</Id>
+					<Name><![CDATA[sendInvalid]]></Name>
+					<X>40</X><Y>510</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[Object[] message2 = {"ru", -main.RL_reward_targetDistance, this};
+deliver(message2, main.controller);
 ]]></Body>
 				</Function>
 			</Functions>
@@ -5569,7 +5631,7 @@ send(message2, main.server);
 		<!--   =========   Active Object Class   ========  -->
 		<ActiveObjectClass>
 			<Id>1656063853590</Id>
-			<Name><![CDATA[Server]]></Name>
+			<Name><![CDATA[Controller]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.google.common.collect.ArrayListMultimap;]]></Import>
 			<Generic>false</Generic>
@@ -5668,7 +5730,7 @@ send(message2, main.server);
 				<Variable Class="PlainVariable">
 					<Id>1656341832975</Id>
 					<Name><![CDATA[obs_size_routing]]></Name>
-					<X>300</X><Y>370</Y>
+					<X>300</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5683,7 +5745,7 @@ send(message2, main.server);
 				<Variable Class="PlainVariable">
 					<Id>1656342396395</Id>
 					<Name><![CDATA[reward]]></Name>
-					<X>380</X><Y>190</Y>
+					<X>535</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5698,7 +5760,7 @@ send(message2, main.server);
 				<Variable Class="PlainVariable">
 					<Id>1657465337778</Id>
 					<Name><![CDATA[caller]]></Name>
-					<X>300</X><Y>410</Y>
+					<X>300</X><Y>370</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5710,37 +5772,7 @@ send(message2, main.server);
 				<Variable Class="PlainVariable">
 					<Id>1657469793437</Id>
 					<Name><![CDATA[obs_size_dispatching]]></Name>
-					<X>300</X><Y>390</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[int]]></Type>        
-						<InitialValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
-						</InitialValue>
-					</Properties>
-				</Variable>
-				<Variable Class="PlainVariable">
-					<Id>1659615598214</Id>
-					<Name><![CDATA[targetsReached]]></Name>
-					<X>380</X><Y>220</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[int]]></Type>        
-						<InitialValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
-						</InitialValue>
-					</Properties>
-				</Variable>
-				<Variable Class="PlainVariable">
-					<Id>1659965823587</Id>
-					<Name><![CDATA[blocks]]></Name>
-					<X>380</X><Y>250</Y>
+					<X>300</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5755,7 +5787,7 @@ send(message2, main.server);
 				<Variable Class="PlainVariable">
 					<Id>1659970712115</Id>
 					<Name><![CDATA[caller_i]]></Name>
-					<X>300</X><Y>450</Y>
+					<X>300</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5799,8 +5831,8 @@ send(message2, main.server);
 				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1656343232899</Id>
-					<Name><![CDATA[nextnodes]]></Name>
-					<X>300</X><Y>430</Y>
+					<Name><![CDATA[directions]]></Name>
+					<X>300</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5830,7 +5862,37 @@ send(message2, main.server);
 				<Variable Class="CollectionVariable">
 					<Id>1659956890638</Id>
 					<Name><![CDATA[agvRewards]]></Name>
-					<X>480</X><Y>190</Y>
+					<X>625</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" AccessType="public" StaticVariable="false">
+						<CollectionClass><![CDATA[ArrayList]]></CollectionClass>
+						<ElementClass><![CDATA[Double]]></ElementClass>
+						<ValueElementClass><![CDATA[String]]></ValueElementClass>
+					</Properties>
+
+				</Variable>
+				<Variable Class="CollectionVariable">
+					<Id>1662280140132</Id>
+					<Name><![CDATA[statTitles]]></Name>
+					<X>380</X><Y>220</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" AccessType="public" StaticVariable="false">
+						<CollectionClass><![CDATA[ArrayList]]></CollectionClass>
+						<ElementClass><![CDATA[String]]></ElementClass>
+						<ValueElementClass><![CDATA[String]]></ValueElementClass>
+					</Properties>
+
+				</Variable>
+				<Variable Class="CollectionVariable">
+					<Id>1662280153695</Id>
+					<Name><![CDATA[statValues]]></Name>
+					<X>480</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5959,7 +6021,7 @@ if(obs_size_routing<(int)msg[2])
 	obs_size_routing = (int)msg[2];
 if(obs_size_dispatching<(int)msg[3])
 	obs_size_dispatching = (int)msg[3];
-nextnodes.add(0);
+directions.add(0);
 agvRewards.add(0.0);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -5993,21 +6055,11 @@ agvRewards.add(0.0);]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656063884957" Target="1656063884957" Trigger="message">
-						<Action><![CDATA[if(!main.RL_reward_separateAgv)
-	reward += (double)msg[1];
+						<Action><![CDATA[if(msg.length > 2 && (Agv)msg[2] != null)
+	addReward((double)msg[1], (Agv)msg[2]);
 else
-{
-	if(msg.length > 2)
-	{
-		Agv agv = (Agv)msg[2];
-		int i= getAgvIndex(agv);
-		if(i<agvRewards.size())
-			agvRewards.set(i, agvRewards.get(i) + (double)msg[1]);
-	}
-	else
-		for(int i = 0; i<agvRewards.size(); i++)
-			agvRewards.set(i, agvRewards.get(i) + (double)msg[1]);
-}]]></Action>
+	addReward((double)msg[1], null);
+	]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -6062,7 +6114,7 @@ if(obs_size_routing<(int)msg[2])
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1659615649319</Id>
-					<Name><![CDATA[updateTargetReached]]></Name>
+					<Name><![CDATA[updateStatistics]]></Name>
 					<X>150</X><Y>220</Y>
 					<Label><X>95</X><Y>5</Y></Label>
 					<PublicFlag>false</PublicFlag>
@@ -6076,7 +6128,23 @@ if(obs_size_routing<(int)msg[2])
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656063884957" Target="1656063884957" Trigger="message">
-						<Action><![CDATA[targetsReached += 1;]]></Action>
+						<Action><![CDATA[String title = (String)msg[1];
+boolean update = (String)msg[3]=="update";
+double value = (double)msg[2];
+
+if(!statTitles.contains(title))
+{
+	statTitles.add(title);
+	statValues.add(value);
+}
+else
+{
+	int i = statTitles.indexOf(title);
+	if(update)
+		statValues.set(i, value);
+	else
+		statValues.set(i, value + statValues.get(i));
+}]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -6090,40 +6158,7 @@ if(obs_size_routing<(int)msg[2])
 						<DefaultTransition>true</DefaultTransition>
 						<FilterType><![CDATA[satisfies]]></FilterType>
 						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[((String)msg[0]) == "tr"]]></SatisfiesExpression>
-					</Properties>	
-				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
-					<Id>1659965797535</Id>
-					<Name><![CDATA[updateBlocked]]></Name>
-					<X>150</X><Y>250</Y>
-					<Label><X>95</X><Y>5</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>80</X><Y>0</Y></Point>
-						<Point><X>80</X><Y>10</Y></Point>
-						<Point><X>0</X><Y>10</Y></Point>
-					</Points>
-					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656063884957" Target="1656063884957" Trigger="message">
-						<Action><![CDATA[blocks += 1;]]></Action>
-						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
-						</Timeout>
-						<Condition><![CDATA[true]]></Condition>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
-						</Rate>
-						<MessageType><![CDATA[Object[]]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
-						<FilterType><![CDATA[satisfies]]></FilterType>
-						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[((String)msg[0]) == "bl"]]></SatisfiesExpression>
+						<SatisfiesExpression><![CDATA[((String)msg[0]) == "su"]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
 			</StatechartElements>
@@ -6131,7 +6166,7 @@ if(obs_size_routing<(int)msg[2])
 				<Event>
 					<Id>1656345578254</Id>
 					<Name><![CDATA[runRLGeneral]]></Name>
-					<X>180</X><Y>370</Y>
+					<X>180</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6157,17 +6192,17 @@ if(obs_size_routing<(int)msg[2])
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[if(main.runMode == 1)
+					<Action><![CDATA[if(main.runMode == 1 && !main.RL_routingOnNode)
 {
 	caller = "Combined";
 	RLExperiment.takeAction(this);
 }
-else if(main.runMode == 2)
+else if(main.runMode == 2 && !main.RL_routingOnNode)
 {
 	caller = "Combined";
 	main.take_action_debug();
 }
-else if(main.runMode == 3)
+else if(main.runMode == 3 && !main.RL_routingOnNode)
 {
 	caller = "Combined";
 	main.take_action_pypeline();
@@ -6177,7 +6212,7 @@ else if(main.runMode == 3)
 				<Event>
 					<Id>1657470001830</Id>
 					<Name><![CDATA[runRLRouting]]></Name>
-					<X>180</X><Y>400</Y>
+					<X>180</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6222,7 +6257,7 @@ else if((main.runMode == 5 || main.runMode == 7) && !main.RL_routingOnNode)
 				<Event>
 					<Id>1657470025283</Id>
 					<Name><![CDATA[runRLDispatching]]></Name>
-					<X>180</X><Y>430</Y>
+					<X>180</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6256,7 +6291,6 @@ else if((main.runMode == 5 || main.runMode == 7) && !main.RL_routingOnNode)
 else if(main.runMode == 6)
 {
 	caller = "Dispatching";
-	traceln("Hi");
 	main.take_action_debug();
 }
 else if(main.runMode == 7)
@@ -6353,31 +6387,35 @@ while(toInspect.size()>0){
 						<Name><![CDATA[agv]]></Name>
 						<Type><![CDATA[Agv]]></Type>
 					</Parameter>
-					<Body><![CDATA[Object[] message = {
-	"ac",
-	0};
+					<Body><![CDATA[
 if(main.runMode == 0)
 {
+	Object[] message = {
+		"ac",
+		0};
 	Random rand = getDefaultRandomGenerator();
 	message[1] = rand.nextInt(5);
 	send(message, agv);
 	return;
 }
-else if(main.runMode == 4 && main.RL_routingOnNode)
+else if((main.runMode == 4 || main.runMode == 1)  
+&& main.RL_routingOnNode)
 {
 	int i = getAgvIndex(agv);
 	caller_i = i;
 	caller = Integer.toString(i);
 	RLExperiment.takeAction(this);
 }
-else if(main.runMode == 6 && main.RL_routingOnNode)
+else if((main.runMode == 6 || main.runMode == 2) 
+&& main.RL_routingOnNode)
 {
 	int i = getAgvIndex(agv);
 	caller_i = i;
 	caller = Integer.toString(i);
 	main.take_action_debug();
 }
-else if((main.runMode == 5 || main.runMode == 7) && main.RL_routingOnNode)
+else if((main.runMode == 5 || main.runMode == 7 || main.runMode == 3) 
+&& main.RL_routingOnNode)
 {
 	int i = getAgvIndex(agv);
 	caller_i = i;
@@ -6385,10 +6423,7 @@ else if((main.runMode == 5 || main.runMode == 7) && main.RL_routingOnNode)
 	main.take_action_pypeline();
 }
 
-int i= getAgvIndex(agv);
-if(i<registeredAgvs.size())
-	message[1] = nextnodes.get(i);
-send(message, agv);
+
 
 ]]></Body>
 				</Function>
@@ -6397,7 +6432,7 @@ send(message, agv);
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1656342239806</Id>
 					<Name><![CDATA[getObservation]]></Name>
-					<X>450</X><Y>370</Y>
+					<X>450</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6414,7 +6449,7 @@ return getObservationRouting();
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657315848043</Id>
 					<Name><![CDATA[action_agvs]]></Name>
-					<X>630</X><Y>390</Y>
+					<X>630</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6423,16 +6458,16 @@ return getObservationRouting();
 						<Name><![CDATA[nodes]]></Name>
 						<Type><![CDATA[Integer[]]]></Type>
 					</Parameter>
-					<Body><![CDATA[nextnodes.clear();
+					<Body><![CDATA[directions.clear();
 List<Integer> nextnodes_list = Arrays.asList(nodes);
-nextnodes.addAll(nextnodes_list);]]></Body>
+directions.addAll(nextnodes_list);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657316067696</Id>
 					<Name><![CDATA[action_targets]]></Name>
-					<X>630</X><Y>410</Y>
+					<X>630</X><Y>370</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6442,6 +6477,7 @@ nextnodes.addAll(nextnodes_list);]]></Body>
 						<Type><![CDATA[Integer[]]]></Type>
 					</Parameter>
 					<Body><![CDATA[INetwork net = main.getNetworks()[0];
+traceln(targets);
 for(int i = 0; i<main.agvs.size(); i++)
 {
 	Agv agv = main.agvs.get(i);
@@ -6453,7 +6489,7 @@ for(int i = 0; i<main.agvs.size(); i++)
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1657469380019</Id>
 					<Name><![CDATA[getObservationRouting]]></Name>
-					<X>450</X><Y>410</Y>
+					<X>450</X><Y>370</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6463,7 +6499,7 @@ for(int i = 0; i<main.agvs.size(); i++)
 	[obs_size_routing];
 for(int i = 0; i<registeredAgvs.size();i++)
 {
-	Agv agv = (Agv)registeredAgvs.get(i)[0];
+	Agv agv = (Agv)registeredAgvs.get(i)[0];	
 	double[] obs_i = agv.getObservation(caller);
 	for(int j = 0; j<obs_i.length; j++)
 	{
@@ -6477,7 +6513,7 @@ return obs;]]></Body>
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1657469381778</Id>
 					<Name><![CDATA[getObservationDispatching]]></Name>
-					<X>450</X><Y>430</Y>
+					<X>450</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6510,7 +6546,7 @@ return obs;]]></Body>
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1657469416865</Id>
 					<Name><![CDATA[getObservationGeneral]]></Name>
-					<X>450</X><Y>390</Y>
+					<X>450</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6563,7 +6599,7 @@ return i;]]></Body>
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1659961376911</Id>
 					<Name><![CDATA[getReward]]></Name>
-					<X>630</X><Y>430</Y>
+					<X>630</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6611,7 +6647,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659968952230</Id>
 					<Name><![CDATA[action_agv]]></Name>
-					<X>630</X><Y>370</Y>
+					<X>630</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6624,7 +6660,44 @@ else
 						<Name><![CDATA[i_agv]]></Name>
 						<Type><![CDATA[int]]></Type>
 					</Parameter>
-					<Body><![CDATA[nextnodes.set(i_agv, node);]]></Body>
+					<Body><![CDATA[Agv agv = (Agv)registeredAgvs.get(i_agv)[0];
+Object[] message = {"ac",node};
+send(message, agv);
+directions.set(i_agv, node);]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>VOID</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1661678555200</Id>
+					<Name><![CDATA[addReward]]></Name>
+					<X>380</X><Y>190</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[amount]]></Name>
+						<Type><![CDATA[double]]></Type>
+					</Parameter>
+					<Parameter>
+						<Name><![CDATA[agv]]></Name>
+						<Type><![CDATA[Agv]]></Type>
+					</Parameter>
+					<Body><![CDATA[if(!main.RL_reward_separateAgv)
+	reward += amount;
+else
+{
+	if(agv != null)
+	{
+		int i= getAgvIndex(agv);
+		if(i<agvRewards.size())
+			agvRewards.set(i, agvRewards.get(i) + amount);
+		
+	}
+	else
+		for(int i = 0; i<agvRewards.size(); i++)
+			agvRewards.set(i, agvRewards.get(i) + amount);
+}]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -6642,7 +6715,7 @@ else
 					<MessageType><![CDATA[Object]]></MessageType>
 					<StatechartReference>
 						<PackageName><![CDATA[minimatrix]]></PackageName>
-						<ClassName><![CDATA[Server]]></ClassName>
+						<ClassName><![CDATA[Controller]]></ClassName>
 						<ItemName><![CDATA[statechart]]></ItemName>
 					</StatechartReference>
 					<LineStyle>SOLID</LineStyle>
@@ -6725,6 +6798,32 @@ else
 					<InternalLighting>OFF</InternalLighting>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
 				</Figure3D>
+				<Text>
+					<Id>1662280016881</Id>
+					<Name><![CDATA[text]]></Name>
+					<X>760</X><Y>50</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[ac - AGV Command (in: "ac", AGV; out: "ac", direction)
+ab - AGV Block ("ab", blocked AGV, blocking AGV)
+ar - AGV Register ("ar", AGV, len(obs), len(dispatch-obs))
+sr - Station Register ("sr", Station, len(obs))
+ru - Reward Update ("ru", value, receiver)
+su - Statistics Update ("su", title, value, "add" || "update")]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>10</Size>
+						<Style>0</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
 			</Presentation>
 
 				</Level>
@@ -6736,7 +6835,8 @@ else
 			<Id>1656163936501</Id>
 			<Name><![CDATA[Part]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
-			<StartupCode><![CDATA[initRespot();]]></StartupCode>
+			<StartupCode><![CDATA[initRespot();
+fillVarCode();]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656163936499</Id>
@@ -6830,10 +6930,25 @@ else
 			<CurrentLevel>1656163936500</CurrentLevel>
 			<ConnectionsId>1656163936496</ConnectionsId>
 			<Variables>
+				<Variable Class="PlainVariable">
+					<Id>1662289803411</Id>
+					<Name><![CDATA[varCode]]></Name>
+					<X>640</X><Y>70</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double[]]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[new double[main.vbVariants.size()]]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657311011229</Id>
 					<Name><![CDATA[partFamily]]></Name>
-					<X>640</X><Y>50</Y>
+					<X>640</X><Y>30</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6854,7 +6969,7 @@ else
 				<Variable Class="Parameter">
 					<Id>1657311050836</Id>
 					<Name><![CDATA[partVariant]]></Name>
-					<X>640</X><Y>70</Y>
+					<X>640</X><Y>50</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7228,19 +7343,42 @@ return Integer.parseInt(geoStageStr);]]></Body>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[statechart_state[] states = statechart_state.values();
-double[] observation = new double[states.length + 2 * respot.size()];
+double[] observation = new double[varCode.length + states.length + 2 * respot.size()];
+
+for (int i = 0; i < varCode.length; i++)
+	observation[i] = varCode[i];
 
 for (int i = 0; i < states.length; i++){
 	statechart_state ss = states[i];
-	observation[i] = inState(ss) ? 1 : 0;
+	observation[i + varCode.length] = inState(ss) ? 1 : 0;
 }
 
 
 for (int i = 0; i < respot.size(); i++){
-	observation[i*2 + states.length] = respotDone.contains(i) ? 1 : 0;
-	observation[i*2 + 1 +states.length] = respotNio.contains(i) ? 1 : 0;
+	observation[i*2 + varCode.length + states.length] = 
+		respotDone.contains(i) ? 1 : 0;
+	observation[i*2 + 1 + varCode.length + states.length] = 
+		respotNio.contains(i) ? 1 : 0;
 }
+traceln(observation);
 return observation;]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>VOID</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1662289874796</Id>
+					<Name><![CDATA[fillVarCode]]></Name>
+					<X>730</X><Y>70</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[for(int i = 0; i < main.vbVariants.size(); i++)
+{
+	if(((String) main.vbVariants.get(i)[0]) == partVariant)
+		varCode[i] = 1.0;
+}
+]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -7356,7 +7494,11 @@ return observation;]]></Body>
 			<Id>1656177199656</Id>
 			<Name><![CDATA[Station]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
-			<StartupCode><![CDATA[register();]]></StartupCode>
+			<StartupCode><![CDATA[register();
+
+
+Object[] message1 = {"su", "jobDone", 0.0, "add"};
+deliver(message1, main.controller);]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656177199654</Id>
@@ -7885,13 +8027,13 @@ return observation;]]></Body>
 						<Action><![CDATA[if(isGeo())
 {
 	send(this.getName(),myPart);
-	Object[] message = {"ru", main.RL_reward_geoOperation};
-	send(message, main.server);
+	Object[] message = {"ru", main.RL_reward_geoOperation, myAgv};
+	send(message, main.controller);
 }
 else if(isRework())
 {
-	Object[] message = {"ru", main.RL_reward_reworkOperation * myPart.respotNio.size()};
-	send(message, main.server);
+	Object[] message = {"ru", main.RL_reward_reworkOperation * myPart.respotNio.size(), myAgv};
+	send(message, main.controller);
 	myPart.respotNio.clear();
 }
 else
@@ -7899,8 +8041,8 @@ else
 	for(int i:respotsToDo)
 		myPart.doRespot(i, randomTrue(main.station_ioQuote));
 	
-	Object[] message = {"ru", main.RL_reward_respotOperation * respotsToDo.size()};
-	send(message, main.server);
+	Object[] message = {"ru", main.RL_reward_respotOperation * respotsToDo.size(), myAgv};
+	send(message, main.controller);
 }
 
 ]]></Action>
@@ -8048,11 +8190,13 @@ else
 					<Properties Source="1656177729805" Target="1656177740154" Trigger="condition">
 						<Action><![CDATA[myPart = main.add_parts(partFamily, getPartVariant());
 myPart.jumpTo(getPosition().x, getPosition().y);
-if(main.runMode == 0)
+if(main.runMode == 2)
 {
 	traceln("created");
 	traceln(myPart);
-}]]></Action>
+}
+Object[] message1 = {"su", "newPart", 1.0, "add"};
+deliver(message1, main.controller);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -8120,7 +8264,7 @@ myAgv = null;]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656180059996" Target="1656177729805" Trigger="condition">
-						<Action><![CDATA[if(main.runMode == 0)
+						<Action><![CDATA[if(main.runMode == 2)
 {
 	traceln("finished");
 	traceln(myPart);
@@ -8128,14 +8272,22 @@ myAgv = null;]]></Action>
 main.remove_parts(myPart);
 send("destroy", myPart);
 
-Object[] message = {"ru", main.RL_reward_partCompleted};
-send(message, main.server);
+
+Object[] message1 = {"su", "jobDone", 1.0, "add"};
+deliver(message1, main.controller);
 
 myPart = null;
 if(myAgv != null)
-{
+{	
+	Object[] message = {"ru", main.RL_reward_partCompleted, myAgv};
+	send(message, main.controller);
 	send("unfixed", myAgv);
 	myAgv = null;
+}
+else
+{
+	Object[] message = {"ru", main.RL_reward_partCompleted};
+	send(message, main.controller);
 }]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[isLast]]></Code>
@@ -8234,8 +8386,8 @@ if(myAgv != null)
 send("fixed", a);
 myAgv = a;
 
-Object[] message = {"ru", main.RL_reward_acceptedInStation};
-send(message, main.server);]]></Action>
+Object[] message = {"ru", main.RL_reward_acceptedInStation, myAgv};
+send(message, main.controller);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -8558,7 +8710,7 @@ return "THIS SHOULD NOT EXIST; CHECK VARIANT PROPABILITIES";]]></Body>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[Object[] msg = {"sr", this, getObservation().length};
-send(msg, main.server);]]></Body>
+send(msg, main.controller);]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -9123,6 +9275,9 @@ send(msg, main.server);]]></Body>
 				<Parameter>
 					<ParameterName><![CDATA[RL_reward_separateAgv]]></ParameterName>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_reward_blocking]]></ParameterName>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
 				<EnableZoomAndPanning>true</EnableZoomAndPanning>
@@ -9169,12 +9324,12 @@ send(msg, main.server);]]></Body>
 				<Type><![CDATA[String]]></Type>
 			</ObservationField>
 			<ObservationField>
-				<Name><![CDATA[targetsReached]]></Name>
-				<Type><![CDATA[int]]></Type>
+				<Name><![CDATA[statTitles]]></Name>
+				<Type><![CDATA[String[]]]></Type>
 			</ObservationField>
 			<ObservationField>
-				<Name><![CDATA[blocks]]></Name>
-				<Type><![CDATA[int]]></Type>
+				<Name><![CDATA[statValues]]></Name>
+				<Type><![CDATA[double[]]]></Type>
 			</ObservationField>
 			<ObservationField>
 				<Name><![CDATA[n_nodes]]></Name>
@@ -9184,13 +9339,15 @@ send(msg, main.server);]]></Body>
 				<Name><![CDATA[networkcontext]]></Name>
 				<Type><![CDATA[double[][]]]></Type>
 			</ObservationField>
-			<ObservationCode><![CDATA[obs = root.server.getObservation();
-rew = root.server.getReward();
-caller = root.server.caller;
+			<ObservationCode><![CDATA[obs = root.controller.getObservation();
+rew = root.controller.getReward();
+caller = root.controller.caller;
 
 n_nodes = root.nodeCount;
-targetsReached = root.server.targetsReached;
-blocks = root.server.blocks;
+statTitles = root.controller.statTitles.toArray(new String[0]);
+statValues = new double[root.controller.statValues.size()];
+for(int i = 0; i<statValues.length; i++)
+	statValues[i] = root.controller.statValues.get(i);
 
 if(root.firstRLcall)
 {
@@ -9209,11 +9366,11 @@ else
 				<Type><![CDATA[Integer[]]]></Type>
 			</ActionField>
 			<ActionCode><![CDATA[if(receiver == -1)
-	root.server.action_agvs(actions);
+	root.controller.action_agvs(actions);
 else if(receiver == -2)
-	root.server.action_targets(actions);
+	root.controller.action_targets(actions);
 else
-	root.server.action_agv(actions[0], receiver);]]></ActionCode>
+	root.controller.action_agv(actions[0], receiver);]]></ActionCode>
 			<ConfigurationField>
 				<Name><![CDATA[runmode]]></Name>
 				<Type><![CDATA[int]]></Type>
@@ -9240,6 +9397,10 @@ else
 			</ConfigurationField>
 			<ConfigurationField>
 				<Name><![CDATA[reward_removedForBlock]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_blocking]]></Name>
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
@@ -9328,6 +9489,7 @@ root.RL_reward_geoOperation = reward_geoOperation;
 root.RL_reward_partCompleted = reward_partCompleted;
 root.RL_reward_reachedTarget = reward_reachedTarget;
 root.RL_reward_removedForBlock = reward_removedForBlock;
+root.RL_reward_blocking = reward_blocking;
 root.RL_reward_respotOperation = reward_respotOperation;
 root.RL_reward_reworkOperation = reward_reworkOperation;
 root.RL_reward_targetDistance = reward_targetDistance;

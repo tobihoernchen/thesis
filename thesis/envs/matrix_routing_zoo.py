@@ -5,11 +5,15 @@ from gym import spaces
 from typing import Union, Tuple, Dict, Optional, NoReturn
 import torch
 import random
+import numpy as np
 from .randdispatcher import RandDispatcher
 from ..utils.build_config import build_config
 from .base_alpyne_zoo import BaseAlpyneZoo
 
 counter = [0]
+global_client = [
+    None,
+]
 
 
 class MatrixRoutingMA(BaseAlpyneZoo):
@@ -33,11 +37,12 @@ class MatrixRoutingMA(BaseAlpyneZoo):
         max_fleetsize: int = 1,
         config_args: dict = dict(),
         dispatcher=None,
-        dispatcher_distance=2,
+        dispatcher_distance=None,
         max_steps: int = None,
         max_seconds: int = None,
-        suppress_initial_reset: int = 0,
+        suppress_initial_reset: int = 0,  # overwrite observation space size if sim cannot be started before initializing spaces
         verbose=False,
+        global_client=None,
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
@@ -66,19 +71,22 @@ class MatrixRoutingMA(BaseAlpyneZoo):
         self.startport = startport
 
         self.config = build_config(config_args, self.fleetsize)
+        # Relevant for MA Learning
         self.config.reward_separateAgv = True
         self.config.routingOnNode = True
-        self.config.obs_includeNodesInReach = True  # Relevant for MA Learning
+        self.config.obs_includeNodesInReach = True
+
         self.masks = {agent: None for agent in self.possible_agents}
         self._cumulative_rewards = {agent: 0 for agent in self.possible_agents}
         super().__init__(None, self.possible_agents)
 
     def start(self):
-        port = self.startport + int(counter[0])
-        counter[0] = counter[0] + 1  # increment to change port for all envs created
+        if global_client[0] is None:
+            port = self.startport + int(counter[0])
+            counter[0] = counter[0] + 1  # increment to change port for all envs created
+            global_client[0] = AlpyneClient(self.model_path, port=port, verbose=False)
 
-        self.client = AlpyneClient(self.model_path, port=port, verbose=False)
-
+        self.client = global_client[0]
         self.run = self.client.create_reinforcement_learning(self.config)
         self.started = True
         super().start(self.run)
@@ -91,7 +99,7 @@ class MatrixRoutingMA(BaseAlpyneZoo):
     def seed(self, seed: int = None):
         if self.verbose:
             print(f"seeded with {seed}")
-        if seed is None:
+        if seed is not None:
             self.config.seed = seed
         else:
             self.config.seed = random.randint(0, 1000)
@@ -142,7 +150,7 @@ class MatrixRoutingMA(BaseAlpyneZoo):
         if self.suppress_initial_reset == 0:
             if self.observations[agent] is None:
                 self.reset()
-            obs_sample = self.observations[agent]
+            obs_sample = self.observe(agent)
             shape = tuple(obs_sample.shape)
         else:
             shape = (self.max_fleetsize * self.suppress_initial_reset,)
@@ -151,11 +159,19 @@ class MatrixRoutingMA(BaseAlpyneZoo):
     def _get_action_space(self, agent) -> spaces.Space:
         return spaces.Discrete(5)
 
+    def last(self, observe=True) -> "BaseAlpyneZoo.PyObservationType":
+        value = super().last(observe)
+        self.rewards[self.agent_selection] = 0
+        return value
+
     def _save_observation(self, observation: Observation):
         agent = str(int(observation.caller))
         self.agent_selection = agent
-        self.rewards[self.agent_selection] = observation.rew[0]
-        self._cumulative_rewards[self.agent_selection] += observation.rew[0]
+        self.rewards[self.agent_selection] = +observation.rew[0]
+        #tea
+        #for agent in self.agents:
+        #    self.rewards[agent] += observation.rew[0]
+        self._cumulative_rewards[self.agent_selection] += observation.rew[0] / 50
         obs_agent = torch.Tensor(observation.obs)
         [self._save_for_agent(obs_agent, str(i), i) for i in range(self.fleetsize)]
 
@@ -173,7 +189,7 @@ class MatrixRoutingMA(BaseAlpyneZoo):
             for src, tgt in enumerate(self.shufflerule):
                 obs_converted[tgt + 1, 1:] = obs_complete[src]
             obs_converted[self.max_fleetsize :, 1:] = obs_complete[self.fleetsize :]
-        self.observations[agent] = obs_converted.flatten().numpy()
+        self.observations[agent] = np.array(obs_converted.flatten())
         mask = [
             True,
         ] + [not torch.all(act == 0) for act in obs_converted[0, 9:17].reshape(4, 2)]

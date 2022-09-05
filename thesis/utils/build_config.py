@@ -1,9 +1,11 @@
 from alpyne.data.spaces import Configuration
 
 
-def build_config(config_args: dict, fleetsize: int, seed=None) -> Configuration:
+def build_config(
+    config_args: dict, fleetsize: int, seed=None, runmode: int = 4
+) -> Configuration:
     return Configuration(
-        runmode=4,
+        runmode=runmode,
         fleetsize=fleetsize,
         station_availability=float(
             1 if not "availability" in config_args else config_args["availability"]
@@ -19,6 +21,11 @@ def build_config(config_args: dict, fleetsize: int, seed=None) -> Configuration:
         ),
         reward_removedForBlock=float(
             0 if not "reward_block" in config_args else config_args["reward_block"]
+        ),
+        reward_blocking=float(
+            0
+            if not "reward_blocking" in config_args
+            else config_args["reward_blocking"]
         ),
         reward_geoOperation=float(
             0 if not "reward_geo" in config_args else config_args["reward_geo"]

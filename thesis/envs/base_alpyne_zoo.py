@@ -39,13 +39,15 @@ class BaseAlpyneZoo(AECEnv):
         :raise ValueError: if the run has been started
         """
 
-        self.agents = agents
+        self.agents = list(agents)
+        self.agents_original = agents
         # instantiated with first reset call
         self.dones = {agent: False for agent in self.agents}
         self.infos = {agent: dict() for agent in self.agents}
         self.rewards = {agent: 0 for agent in self.agents}
         self.observations = {agent: None for agent in self.agents}
         self.agent_selection = None
+        self.observable = False
 
         self.observation_spaces = {
             agent: self._get_observation_space(agent) for agent in self.agents
@@ -75,18 +77,11 @@ class BaseAlpyneZoo(AECEnv):
         return self.action_spaces[agent]
 
     def remove_agent(self, agent):
-        # self.dones.pop(agent)
-        # self.infos.pop(agent)
-        # self.rewards.pop(agent)
-        # self.observations.pop(agent)
         self.agents.remove(agent)
 
     def add_agent(self, agent):
-        # self.dones.update({agent: False})
-        # self.infos.update({agent: dict()})
-        # self.rewards.update({agent: 0.0})
-        # self.observations.update({agent: None})
-        self.agents.append(agent)
+        if not agent in self.agents:
+            self.agents.append(agent)
 
     @abstractmethod
     def _get_observation_space(self, agent: str) -> spaces.Space:
@@ -126,6 +121,8 @@ class BaseAlpyneZoo(AECEnv):
 
     def observe(self, agent: str) -> "BaseAlpyneZoo.PyObservationType":
         """Return the observation that agent currently can make."""
+        if not self.observable:
+            self.collect()
         return self.observations[agent]
 
     def _terminal_alternative(self, observation: Observation) -> bool:
@@ -147,6 +144,8 @@ class BaseAlpyneZoo(AECEnv):
         """
         alpyne_action = self._convert_to_action(action, self.agent_selection)
         self.sim.take_action(alpyne_action)
+        self.collect()
+        self.observable = True
 
     def reset(
         self,
@@ -154,6 +153,7 @@ class BaseAlpyneZoo(AECEnv):
         seed: Optional[int] = None,
         return_info: bool = False,
         options: Optional[dict] = None,
+        agents = None,
     ) -> "BaseAlpyneZoo.PyObservationType":
         """
         A method required as part of the pettingzoo interface to revert the sim to the start.
@@ -166,13 +166,16 @@ class BaseAlpyneZoo(AECEnv):
                 for option in options.keys():
                     if option in config.names():
                         config.__setattr__(option, options[option])
-        self.agents.extend(self.observations.keys())
+        self.agents.clear()
+        if agents is None:
+            self.agents.extend(self.agents_original)
+        else:
+            self.agents.extend(agents)
+        self.dones = {agent: False for agent in self.agents}
 
         self.sim.reset(config)
-        self.sim.wait_for_completion()
-        alpyne_obs = self._catch_nontraining(self.sim.get_observation())
-        self._save_observation(alpyne_obs)
-        self.dones = {agent: False for agent in self.agents}
+        self.observable = False
+        self.collect()
         if return_info:
             return self.observe(self.agent_selection)
 
@@ -182,20 +185,24 @@ class BaseAlpyneZoo(AECEnv):
 
         :return: Observation, reward, done and info for the agent that will act next
         """
-        self.sim.wait_for_completion()
-
-        alpyne_obs = self._catch_nontraining(self.sim.get_observation())
-        self._save_observation(alpyne_obs)
-        if self.sim.is_terminal() or self._terminal_alternative(alpyne_obs):
-            [self.dones.update({agent: True}) for agent in self.agents]
-        # Move above to Step?
+        if not self.observable:
+            self.collect()
         obs = self.observations[self.agent_selection] if observe else None
         reward = self.rewards[self.agent_selection]
         done = self.dones[self.agent_selection]
         info = self.infos[self.agent_selection]
         if done and self.agent_selection in self.agents:
-            self.remove_agent(self.agent_selection)
+            # All terminate at once
+            self.agents.clear()
         return obs, reward, done, info
+
+    def collect(self):
+        self.sim.wait_for_completion()
+        alpyne_obs = self._catch_nontraining(self.sim.get_observation())
+        self._save_observation(alpyne_obs)
+        if self.sim.is_terminal() or self._terminal_alternative(alpyne_obs):
+            [self.dones.update({agent: True}) for agent in self.agents]
+        self.observable = True
 
     def render(self, mode="human") -> Optional[Union[np.ndarray, str]]:
         """
