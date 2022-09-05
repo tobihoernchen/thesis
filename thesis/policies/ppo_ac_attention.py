@@ -12,7 +12,6 @@ class CustomValueNet(nn.Module):
         super().__init__()
         self.Lin = nn.Sequential(
             nn.Linear(embed_dim, embed_dim),
-            # nn.BatchNorm1d(embed_dim),
             nn.ReLU(),
             nn.Linear(embed_dim, 1),
             nn.Tanh(),
@@ -40,6 +39,11 @@ class CustomActionNet(nn.Module):
 
 
 class AttentionACPolicy(ActorCriticPolicy):
+    """
+    Change AttentionACPolicy Behavior from [batch_size, n_features]->[batch_size, n_actions] to [batch_size, n_agents, n_features]->[batch_size, n_agents, action]
+    (Each agent's action does not depend on the other agents, but only on its own feature vector)
+    """
+
     def _build(self, lr_schedule: Schedule) -> None:
         ret = super()._build(lr_schedule)
         self.action_net = CustomActionNet(

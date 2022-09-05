@@ -6,7 +6,7 @@ import torch
 from ray.rllib.utils.typing import ModelConfigDict
 from ray.rllib.models import ModelCatalog
 from torch import nn
-from .routing_attention import RoutingFE
+from .ma_attention import MultiAgentFE
 
 
 def register_attention_model():
@@ -14,27 +14,62 @@ def register_attention_model():
 
 
 class CombinedFE(nn.Module):
-    def __init__(self, obs_space, fleetsize, n_stations, embed_dim, n_heads, depth) -> None:
-        super().__init__()
-        
-        self.agvfe = RoutingFE(obs_space["agvs"], fleetsize, embed_dim=embed_dim, n_heads=n_heads, depth=depth)
-        self.stationfe = RoutingFE(obs_space["stations"], n_stations, embed_dim=embed_dim, n_heads=n_heads, depth=depth)
-        combined_shape = (embed_dim * (fleetsize + n_stations),)
-        self.combinedfe = RoutingFE(gym.spaces.Box(0, 1, shape = combined_shape), fleetsize + n_stations, embed_dim=embed_dim, n_heads=n_heads, depth=depth)
+    """
+    Handle stations and agvs seperately for [depth] attention blocks and the combined for [depth] attention blocks.
+    """
 
+    def __init__(
+        self, obs_space, n_agents, n_stations, embed_dim, n_heads, depth
+    ) -> None:
+        super().__init__()
+
+        self.agvfe = MultiAgentFE(
+            obs_space["agvs"],
+            n_agents,
+            embed_dim=embed_dim,
+            n_heads=n_heads,
+            depth=depth,
+            use_attention_mask=True,
+        )
+        self.stationfe = MultiAgentFE(
+            obs_space["stations"],
+            n_stations,
+            embed_dim=embed_dim,
+            n_heads=n_heads,
+            depth=depth,
+            use_attention_mask=False,
+        )
+        combined_shape = (embed_dim * (n_agents + n_stations),)
+        self.combinedfe = MultiAgentFE(
+            gym.spaces.Box(0, 1, shape=combined_shape),
+            n_agents + n_stations,
+            embed_dim=embed_dim,
+            n_heads=n_heads,
+            depth=depth,
+            use_attention_mask=False,
+        )
 
     def forward(self, x):
         agvfeatures = self.agvfe(x["agvs"]).flatten(1)
         stationfeatures = self.stationfe(x["stations"]).flatten(1)
-        return self.combinedfe(torch.concat([agvfeatures, stationfeatures], axis = 1))
+        return self.combinedfe(torch.concat([agvfeatures, stationfeatures], axis=1))
 
 
 class AttentionPolicy(TorchModelV2, nn.Module):
+    """
+    Custom RLLIB model for multiagent self-attention with agvs (and stations)
+    obs_space: Should be Dict if with_action_mask and Box otherwise
+    action_space: action space
+    fleetsize: number of AGVs
+    n_stations: number of stations
+    with_action_mask: If the environment provides action masks
+
+    """
+
     def __init__(
         self,
         obs_space: gym.spaces.Space,
         action_space: gym.spaces.Discrete,
-        num_outputs: 5,
         model_config: ModelConfigDict,
         name: str,
         fleetsize: int = 10,
@@ -46,16 +81,27 @@ class AttentionPolicy(TorchModelV2, nn.Module):
     ):
         nn.Module.__init__(self)
         TorchModelV2.__init__(
-            self, obs_space, action_space, num_outputs, model_config, name
+            self, obs_space, action_space, action_space.n, model_config, name
         )
         self.embed_dim = embed_dim
         self.with_action_mask = with_action_mask
-        if with_action_mask:
+        if isinstance(obs_space.original_space, gym.spaces.Dict):
             assert n_stations > 0
-            self.fe = CombinedFE(obs_space.original_space, fleetsize, n_stations, embed_dim, n_heads, depth)
+            self.fe = CombinedFE(
+                obs_space.original_space,
+                fleetsize,
+                n_stations,
+                embed_dim,
+                n_heads,
+                depth,
+            )
         else:
-            self.fe = RoutingFE(
-                obs_space, fleetsize, embed_dim=self.embed_dim, n_heads=n_heads, depth=depth
+            self.fe = MultiAgentFE(
+                obs_space,
+                fleetsize,
+                embed_dim=self.embed_dim,
+                n_heads=n_heads,
+                depth=depth,
             )
         self.action_net = nn.Sequential(
             nn.Linear(self.embed_dim, self.embed_dim * 4),
@@ -72,7 +118,6 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         )
 
     def forward(self, obsdict, state, seq_lens):
-        # print(obsdict["obs"].shape) #(batch, obs_len)
         if self.with_action_mask:
             self.mask = obsdict["obs"]["action_mask"]
         obs = obsdict["obs"]
@@ -87,11 +132,14 @@ class AttentionPolicy(TorchModelV2, nn.Module):
 
     def value_function(self):
         features_flat = self.features.max(dim=1)[0]
-        features_flat = torch.concat([features_flat, self.mask], axis = 1)
+        features_flat = torch.concat([features_flat, self.mask], axis=1)
         return self.value_net(features_flat).flatten()
 
 
 class AgentFlatten(nn.Module):
+    """
+        Can be used instead of max-reduction, but parameters depend on the fleetsize and therefore this part can not be reused for bigger fleets
+    """
     def __init__(self, n_agents):
         super().__init__()
         self.lin = nn.Sequential(

@@ -3,5 +3,8 @@ anylogic_alpyne==0.2.0
 gym==0.21.0
 ipython==8.4.0
 numpy==1.22.3
+PettingZoo==1.19.0
+ray==1.13.0
+sb3_contrib==1.5.1a9
 stable_baselines3==1.5.1a8
 torch==1.11.0+cu113

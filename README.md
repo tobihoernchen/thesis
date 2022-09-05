@@ -22,7 +22,7 @@ If you plan to work with certain libraries in Anylogic (like Material Handling),
         - [agv_slipcourse_q_learning](./exploration/basics_re/agv_slipcourse_q_learning.ipynb): Simple example of a q-learning-agent in the environment from the [Anylogic Reinforcement Learning Tutorial](https://www.youtube.com/watch?v=NeQYsKADD_c) being trained with alpyne.
         - [agv_slipcourse_dqn](./exploration/basics_re/agv_slipcourse_dqn.ipynb): Simple example of a dqn-learning-agent in the environment from the [Anylogic Reinforcement Learning Tutorial](https://www.youtube.com/watch?v=NeQYsKADD_c) being trained with alpyne.
         - [agv_slipcourse_stable_baselines](./exploration/basics_re/agv_slipcourse_stable_baslines.ipynb): Simple example of a PPO-learning-agent (from stable basleines 3) in the environment from the [Anylogic Reinforcement Learning Tutorial](https://www.youtube.com/watch?v=NeQYsKADD_c) being trained with alpyne.
-    - [MiniMatrix](./exploration/MiniMatrix/): Different tests for the smaller MiniMatrix-Environment (smaller version of the final MatrixProduction)
+    - [MiniMatrix](./exploration/MiniMatrix/): Different tests for the smaller MiniMatrix-Environment (smaller version of the final MatrixProduction). Most tests are not maintained and older ones might not work due to changes in the environment and anylogic-model architecture. Current WIP is [rllib_complete.ipynb](./exploration/MiniMatrix/rllib_complete.ipynb)
 - [thesis](./thesis): Everything that is referenced from the notebooks in [exploration](./exploration).
     - [dqn](./thesis/dqn/): reusable code from the [agv_slipcourse_dqn-example](./exploration/basics_re/agv_slipcourse_dqn.ipynb)
     - [envs](./thesis/envs): Gym-Environments for RL Training
