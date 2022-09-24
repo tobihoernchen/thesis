@@ -2,6 +2,9 @@
 
 Master Thesis on Reinforcement Learning with Anylogic
 
+![image](examplerun.gif)
+
+
 ## Installation
 
 For the Python part, just run 'pip install -r requirements.txt'. 
