@@ -12,7 +12,7 @@ from ray.rllib.env import PettingZooEnv
 from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
 
-from thesis.policies.rllib_routing_wrapper import register_attention_model
+from thesis.policies.simplified_attention_module import register_attention_model
 from thesis.envs.matrix_routing_zoo import MatrixRoutingMA
 from thesis.envs.matrix_zoo import MatrixMA
 from thesis.utils.callbacks import CustomCallback
@@ -87,6 +87,7 @@ def rllib_ppo_config(
     lin_model=None,
     use_attention=None,
     gamma=None,
+    n_stations=5,
 ):
     config = ppo.DEFAULT_CONFIG.copy()
     env_args = dict(
@@ -94,7 +95,7 @@ def rllib_ppo_config(
         fleetsize=fleetsize,
         max_fleetsize=max_fleetsize,
         config_args=config_args,
-        with_action_masks = True,
+        with_action_masks=True,
     )
     config["framework"] = "torch"
     config["callbacks"] = lambda: CustomCallback()
@@ -111,8 +112,8 @@ def rllib_ppo_config(
         config["entropy_coeff"] = entropy_coeff
     if gamma is not None:
         config["gamma"] = gamma
-    config["lambda"] = 0.95
-    config["kl_coeff"] = 0
+    config["lambda"] = 0.98
+    config["kl_coeff"] = 0#.1
 
     config["env"] = "matrix"
     config["env_config"] = env_args
@@ -125,13 +126,15 @@ def rllib_ppo_config(
 
     if lin_model is None:
         config["model"].update(
-            custom_model="attention_model", 
-            custom_model_config = dict(
-                fleetsize = max_fleetsize,
-                embed_dim = 32,
-                n_stations = 5,
-                with_action_mask = True,
-            ))
+            custom_model="attention_model",
+            custom_model_config=dict(
+                fleetsize=max_fleetsize,
+                embed_dim=64,
+                n_stations=n_stations,
+                depth=4,
+                with_action_mask=True,
+            ),
+        )
     else:
         config["model"].update(fcnet_hiddens=lin_model, use_attention=use_attention)
 

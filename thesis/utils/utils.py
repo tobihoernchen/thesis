@@ -24,7 +24,7 @@ def save_hparams(
         fe_args=fe_args,
         net_arch=net_arch,
     )
-    models_dir = f"../../models/{dir}"
+    models_dir = f"../../models/{dir}" #../../
     run_name = (
         run_name + f"{fleetsize}-{max_fleetsize}-{time.strftime('%d_%m-%H_%M_%S')}"
     )
@@ -38,25 +38,43 @@ def manual_routing(next, target, possibles=None):
         possibles = [
             True,
         ] * 4
-    dx = abs(next[0] - target[0])
-    dy = abs(next[1] - target[1])
-    action = None
-    if dx > dy:
-        if next[0] > target[0]:
-            action = 1
-        if next[0] < target[0]:
-            action = 3
-    if dx < dy:
-        if next[1] > target[1]:
-            action = 4
-        if next[1] < target[1]:
-            action = 2
-    if action is not None and possibles[action - 1]:
-        return action
-    elif action is not None:
-        return random.choice([i + 1 for i, b in enumerate(possibles) if b])
-    else:
+
+    if np.sqrt(np.square(target[0] - next[0]) + np.square(target[1] - next[1])) < 0.001:
         return 0
+
+    expected = [
+        (next[0] - 0.1, next[1]),
+        (next[0], next[1] - 0.1),
+        (next[0] + 0.1, next[1]),
+        (next[0], next[1] + 0.1),
+    ]
+
+    distances = [
+        np.sqrt(np.square(target[0] - x) + np.square(target[1] - y))
+        for x, y in expected
+    ]
+    possible_distances = [
+        distance if possibles[action] else 1e8
+        for action, distance in enumerate(distances)
+    ]
+    return np.argmin(possible_distances) + 1
+    # action = None
+    # if dx > dy:
+    #     if next[0] > target[0]:
+    #         action = 1
+    #     if next[0] < target[0]:
+    #         action = 3
+    # if dx < dy:
+    #     if next[1] > target[1]:
+    #         action = 2
+    #     if next[1] < target[1]:
+    #         action = 4
+    # if action is not None and possibles[action - 1]:
+    #     return action
+    # elif action is not None:
+    #     return random.choice([i + 1 for i, b in enumerate(possibles) if b])
+    # else:
+    #     return 0
 
 
 class RewardCheck:
@@ -71,10 +89,14 @@ class RewardCheck:
         else:
             self.zoo = False
             self.gym = True
-        if obs2action is not None:
+        if obs2action is not None and not isinstance(obs2action, str):
             self.obs2action = obs2action
+        elif obs2action == "target":
+            self.obs2action = lambda obs: self.get_action_target(obs)
+        elif obs2action == "build":
+            self.obs2action = lambda obs: self.get_action_build(obs)
         else:
-            self.obs2action = lambda obs: self.get_action(obs)
+            self.obs2action = lambda obs: self.get_action_rand(obs)
 
     def run(
         self,
@@ -97,7 +119,8 @@ class RewardCheck:
         )
         while counter < n_episodes or n_episodes is None:
             self.env.reset(seed=seed)
-            self.action = 0
+            self.actions = {agent: 0 for agent in self.env.possible_agents}
+            self.extras = {agent: None for agent in self.env.possible_agents}
             self.total_rew = 0
             if self.gym:
                 self.state = [0] * 20, 0, 0, 0
@@ -106,16 +129,24 @@ class RewardCheck:
                     agent: [[0] * 20, 0, 0, 0] for agent in self.env.possible_agents
                 }
             self.steps = 0
+            self.extra = ""
             if self.zoo:
                 for agent in self.env.agent_iter():
                     last = self.env.last()
-                    self.action = self.obs2action(last[0])
-                    before = time.time()
-                    self.env.step(self.action)
-                    self.times.append(time.time() - before)
                     self.state[agent] = self.check(
-                        self.state[agent], self.action, agent, last
+                        self.state[agent],
+                        self.actions[agent],
+                        agent,
+                        last,
+                        self.extras[agent],
                     )
+                    action, extra = self.obs2action(last[0])
+                    self.actions[agent] = action
+                    self.extras[agent] = extra
+                    before = time.time()
+                    self.env.step(action)
+                    self.times.append(time.time() - before)
+
                     self.total_rew += self.state[agent][1]
                     self.steps += 1
             if self.gym:
@@ -123,9 +154,15 @@ class RewardCheck:
                 obs = reward = done = info = None
                 agent = "default"
                 while not done:
-                    self.action = self.obs2action(obs, reward, done, info, agent)
+                    self.action, self.extra = self.obs2action(
+                        obs, reward, done, info, agent
+                    )
                     obs, reward, done, info = self.check(
-                        self.state, self.action, agent, self.env.step(self.action)
+                        self.state,
+                        self.action,
+                        agent,
+                        self.env.step(self.action),
+                        self.extra,
                     )
                     self.steps += 1
             counter += 1
@@ -135,10 +172,13 @@ class RewardCheck:
                 f"Mean Step Time: {np.mean(self.times)}s ; Max: {max(self.times)}s ; Min: {min(self.times)}s"
             )
 
-    def check(self, old_state, action, agent, new_state):
+    def check(self, old_state, action, agent, new_state, extra=None):
 
         obs_o, reward_o, done_o, info_o = old_state
         obs_n, reward_n, done_n, info_n = new_state
+        if isinstance(obs_o, dict):
+            obs_o = obs_o["agvs"]
+        obs_n = obs_n["agvs"]
 
         if self.check_for[0] is None or agent in self.check_for:
             if reward_n > self.reward_above or reward_n < self.reward_below:
@@ -149,7 +189,17 @@ class RewardCheck:
                 print(f"NEW: {obs_n[:3]} \t done:{done_n}")
                 print(f"NEW: curr: {obs_n[3:5]}\t next:{obs_n[5:7]}\t tar:{obs_n[7:9]}")
                 print(f"REWARD: {reward_n}")
+                if extra is not None:
+                    print(extra)
 
+        if action == 1:
+            assert obs_n[3] > obs_n[5], (obs_n[3], obs_n[5])
+        if action == 4:
+            assert obs_n[6] > obs_n[4], (obs_n[6], obs_n[4])
+        if action == 3:
+            assert obs_n[5] > obs_n[3], (obs_n[5], obs_n[3])
+        if action == 2:
+            assert obs_n[4] > obs_n[6], (obs_n[4], obs_n[6])
         if np.all(np.isclose(obs_n[5:7], obs_n[7:9], 0.01)):
             pass
             # assert reward_n > 0.7
@@ -158,8 +208,61 @@ class RewardCheck:
             # assert np.all(np.isclose(obs_n[5:7], obs_n[7:9], 0.01))
         return obs_n, reward_n, done_n, info_n
 
-    def get_action(self, observation):
+    def get_action_target(self, observation):
         next = observation[5:7]
         target = observation[7:9]
         action = manual_routing(next, target)
-        return action
+        return action, None
+
+    stations = dict(
+        geo1=(0.32954545454545453, 0.49767441860465117),
+        geo2=(0.32954545454545453, 0.9395348837209302),
+        hsn=(0.5727272727272728, 0.7209302325581395),
+        wps=(0.7909090909090909, 0.7209302325581395),
+        rework=(0.9727272727272728, 0.7209302325581395),
+    )
+
+    def get_action_build(self, obs):
+        obs = obs["agvs"]
+        possibles = [
+            obs[x] != 0 and obs[y] != 0
+            for x, y in zip(range(7, 15, 2), range(8, 15, 2))
+        ]
+        var1 = obs[15] == 1
+        var2 = obs[16] == 1
+        geo01 = obs[17] == 1
+        geo12 = obs[18] == 1
+        geo2d = obs[19] == 1
+        d = obs[20] == 1
+        if var1:
+            hwm = 23
+        else:
+            hwm = 25
+        respotsDone = [obs[i] == 1 for i in range(21, hwm, 2)]
+        respotsNio = [obs[i] == 1 for i in range(22, hwm, 2)]
+        if any(respotsNio):
+            target = "rework"
+        elif not any([geo01, geo12, geo2d, d]):
+            target = "geo1"
+        elif not any(respotsDone):
+            target = "wps"
+        elif not all(respotsDone):
+            target = "hsn"
+        else:
+            target = "geo2"
+        action = manual_routing(obs[5:7], list(self.stations[target]), possibles)
+        if action > 0:
+            assert possibles[action - 1]
+        return (
+            action,
+            f"POSSIBLE: {possibles} \t GOAL: {target}-{list(self.stations[target])} \t PART:{obs[15:25]}",
+        )
+
+    def get_action_rand(self, obs):
+        obs = obs["agvs"]
+        possibles = [
+            i + 1
+            for i, (x, y) in enumerate(zip(range(7, 15, 2), range(8, 15, 2)))
+            if obs[x] != 0 and obs[y] != 0
+        ]
+        return random.choice(possibles), possibles

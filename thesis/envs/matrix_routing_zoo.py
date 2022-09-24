@@ -41,8 +41,8 @@ class MatrixRoutingMA(BaseAlpyneZoo):
         max_steps: int = None,
         max_seconds: int = None,
         suppress_initial_reset: int = 0,  # overwrite observation space size if sim cannot be started before initializing spaces
+        with_action_masks=False,
         verbose=False,
-        global_client=None,
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
@@ -50,14 +50,18 @@ class MatrixRoutingMA(BaseAlpyneZoo):
         self.max_steps = max_steps
         self.max_seconds = max_seconds
         self.suppress_initial_reset = suppress_initial_reset
+        self.with_action_masks = with_action_masks
         self.verbose = verbose
 
         self.stepcounter = 0
         self.context = None
 
         self.possible_agents = [str(agent) for agent in range(fleetsize)]
+        if self.with_action_masks:
+            self.action_masks = {agent: None for agent in self.possible_agents}
 
         self.metadata = dict(is_parallelizable=True)
+        self.statistics = None
 
         self.shuffle()
 
@@ -76,7 +80,6 @@ class MatrixRoutingMA(BaseAlpyneZoo):
         self.config.routingOnNode = True
         self.config.obs_includeNodesInReach = True
 
-        self.masks = {agent: None for agent in self.possible_agents}
         self._cumulative_rewards = {agent: 0 for agent in self.possible_agents}
         super().__init__(None, self.possible_agents)
 
@@ -151,10 +154,24 @@ class MatrixRoutingMA(BaseAlpyneZoo):
             if self.observations[agent] is None:
                 self.reset()
             obs_sample = self.observe(agent)
-            shape = tuple(obs_sample.shape)
+            if self.with_action_masks:
+                shape_agvs = tuple(obs_sample["agvs"].shape)
+                shape_stations = tuple(obs_sample["stations"].shape)
+            else:
+                shape = tuple(obs_sample.shape)
         else:
             shape = (self.max_fleetsize * self.suppress_initial_reset,)
-        return spaces.Box(low=0, high=1, shape=shape)
+
+        if self.with_action_masks:
+            return spaces.Dict(
+                {
+                    "agvs": spaces.Box(low=0, high=1, shape=shape_agvs),
+                    "stations": spaces.Box(low=0, high=1, shape=shape_stations),
+                    "action_mask": spaces.Box(low=0, high=1, shape=(5,)),
+                }
+            )
+        else:
+            return spaces.Box(low=0, high=1, shape=shape)
 
     def _get_action_space(self, agent) -> spaces.Space:
         return spaces.Discrete(5)
@@ -162,15 +179,22 @@ class MatrixRoutingMA(BaseAlpyneZoo):
     def last(self, observe=True) -> "BaseAlpyneZoo.PyObservationType":
         value = super().last(observe)
         self.rewards[self.agent_selection] = 0
-        return value
+        return value 
 
     def _save_observation(self, observation: Observation):
         agent = str(int(observation.caller))
         self.agent_selection = agent
         self.rewards[self.agent_selection] = +observation.rew[0]
-        #tea
-        #for agent in self.agents:
-        #    self.rewards[agent] += observation.rew[0]
+        # team rewards
+        for agent in self.agents:
+            self.rewards[agent] += observation.rew[0] / 50
+
+        if "statTitles" in observation.names():
+            self.statistics = {
+                title: value
+                for title, value in zip(observation.statTitles, observation.statValues)
+            }
+
         self._cumulative_rewards[self.agent_selection] += observation.rew[0] / 50
         obs_agent = torch.Tensor(observation.obs)
         [self._save_for_agent(obs_agent, str(i), i) for i in range(self.fleetsize)]
@@ -189,11 +213,18 @@ class MatrixRoutingMA(BaseAlpyneZoo):
             for src, tgt in enumerate(self.shufflerule):
                 obs_converted[tgt + 1, 1:] = obs_complete[src]
             obs_converted[self.max_fleetsize :, 1:] = obs_complete[self.fleetsize :]
-        self.observations[agent] = np.array(obs_converted.flatten())
-        mask = [
-            True,
-        ] + [not torch.all(act == 0) for act in obs_converted[0, 9:17].reshape(4, 2)]
-        self.masks[agent] = mask
+        if self.with_action_masks:
+            mask = [1.0,] + [
+                1.0 if not torch.all(act == 0) else 0.0
+                for act in obs_converted[0, 7:15].reshape(4, 2)
+            ]
+            self.observations[agent] = dict(
+                agvs=np.array(obs_converted[: self.max_fleetsize].flatten()),
+                stations=np.array(obs_converted[self.max_fleetsize :].flatten()),
+                action_mask=np.array(mask, dtype=np.float32),
+            )
+        else:
+            self.observations[agent] = np.array(obs_converted.flatten())
 
     def _convert_to_action(self, action: "BaseAlpyneEnv.PyActionType", agent) -> Action:
         """Convert the action sent as part of the Gym interface to an Alpyne Action object"""

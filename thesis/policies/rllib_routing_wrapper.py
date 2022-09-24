@@ -23,6 +23,9 @@ class CombinedFE(nn.Module):
     ) -> None:
         super().__init__()
 
+        self.n_agents = n_agents
+        self.n_stations = n_stations
+
         self.agvfe = MultiAgentFE(
             obs_space["agvs"],
             n_agents,
@@ -31,28 +34,40 @@ class CombinedFE(nn.Module):
             depth=depth,
             use_attention_mask=True,
         )
-        self.stationfe = MultiAgentFE(
-            obs_space["stations"],
-            n_stations,
-            embed_dim=embed_dim,
-            n_heads=n_heads,
-            depth=depth,
-            use_attention_mask=False,
-        )
+        if n_stations > 0:
+            self.stationfe = MultiAgentFE(
+                obs_space["stations"],
+                n_stations,
+                embed_dim=embed_dim,
+                n_heads=n_heads,
+                depth=depth,
+                use_attention_mask=False,
+            )
         combined_shape = (embed_dim * (n_agents + n_stations),)
+
+        combined_attn_mask = torch.ones((n_agents + n_stations, n_agents + n_stations))
+        combined_attn_mask[:n_agents, :n_agents] = 0
+
         self.combinedfe = MultiAgentFE(
             gym.spaces.Box(0, 1, shape=combined_shape),
             n_agents + n_stations,
             embed_dim=embed_dim,
             n_heads=n_heads,
             depth=depth,
-            use_attention_mask=False,
+            use_attention_mask=combined_attn_mask,
         )
 
     def forward(self, x):
-        agvfeatures = self.agvfe(x["agvs"]).flatten(1)
-        stationfeatures = self.stationfe(x["stations"]).flatten(1)
-        return self.combinedfe(torch.concat([agvfeatures, stationfeatures], axis=1))
+        features = self.agvfe(
+            x["agvs"]  # + torch.rand(x["agvs"].shape, device=x["agvs"].device) * 0.001
+        ).flatten(1)
+        if self.n_stations > 0:
+            stationfeatures = self.stationfe(
+                x["stations"]
+                # + torch.rand(x["stations"].shape, device=x["stations"].device) * 0.001
+            ).flatten(1)
+            features = torch.concat([features, stationfeatures], axis=1)
+        return self.combinedfe(features)[:, : self.n_agents]
 
 
 class AttentionPolicy(TorchModelV2, nn.Module):
@@ -70,11 +85,12 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         self,
         obs_space: gym.spaces.Space,
         action_space: gym.spaces.Discrete,
+        num_outputs: int,
         model_config: ModelConfigDict,
         name: str,
         fleetsize: int = 10,
         n_stations: int = 0,
-        embed_dim=32,
+        embed_dim=64,
         n_heads=8,
         depth=4,
         with_action_mask=True,
@@ -85,8 +101,7 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         )
         self.embed_dim = embed_dim
         self.with_action_mask = with_action_mask
-        if isinstance(obs_space.original_space, gym.spaces.Dict):
-            assert n_stations > 0
+        if with_action_mask:
             self.fe = CombinedFE(
                 obs_space.original_space,
                 fleetsize,
@@ -98,11 +113,14 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         else:
             self.fe = MultiAgentFE(
                 obs_space,
-                fleetsize,
+                fleetsize + n_stations,
                 embed_dim=self.embed_dim,
                 n_heads=n_heads,
                 depth=depth,
             )
+
+        self.state_net = StateNet(embed_dim)
+
         self.action_net = nn.Sequential(
             nn.Linear(self.embed_dim, self.embed_dim * 4),
             nn.ReLU(),
@@ -121,25 +139,64 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         if self.with_action_mask:
             self.mask = obsdict["obs"]["action_mask"]
         obs = obsdict["obs"]
-        self.features = self.fe(obs)
-        flat = self.features.max(dim=1)[0]
-        actions = self.action_net(flat)
+        raw_features = self.fe(obs)
+        features = raw_features.max(dim=1)[0]  # self.features[:, 0]  #
+        self.features, state = self.state_net(features, state)
+        actions = self.action_net(self.features)
         if self.with_action_mask:
-            actions = torch.masked_fill(actions, self.mask == 0, 1e-9)
-        state = []
+            actions = (
+                actions + (self.mask - 1) * 1e8
+            )  # .masked_fill(self.mask == 0, -1e8)
+            # pass
+        # state = []
 
         return actions, state
 
     def value_function(self):
-        features_flat = self.features.max(dim=1)[0]
+        features_flat = self.features  # .max(dim=1)[0]  # self.features[:, 0]  #
         features_flat = torch.concat([features_flat, self.mask], axis=1)
         return self.value_net(features_flat).flatten()
+
+    def get_initial_state(self):
+        return [
+            torch.zeros(64),
+        ]
+
+
+class StateNet(nn.Module):
+    def __init__(self, embed_dim) -> None:
+        super().__init__()
+        self.embed_dim = embed_dim
+        self.net = nn.Sequential(
+            nn.Linear(embed_dim * 2, embed_dim * 4),
+            nn.ReLU(),
+            nn.Linear(embed_dim * 4, embed_dim * 4),
+            nn.ReLU(),
+            nn.Linear(embed_dim * 4, embed_dim),
+        )
+
+    def forward(self, features, state):
+        if len(state) == 0 or state[0].shape != features.shape:
+            state = torch.zeros(
+                (features.shape[0], self.embed_dim), device=features.device
+            )
+        else:
+            state = state[0]
+        x = torch.concat([features, state], axis=1)
+        features_out = self.net(x)
+        return (
+            features_out,
+            [
+                features,
+            ],
+        )
 
 
 class AgentFlatten(nn.Module):
     """
-        Can be used instead of max-reduction, but parameters depend on the fleetsize and therefore this part can not be reused for bigger fleets
+    Can be used instead of max-reduction, but parameters depend on the fleetsize and therefore this part can not be reused for bigger fleets
     """
+
     def __init__(self, n_agents):
         super().__init__()
         self.lin = nn.Sequential(

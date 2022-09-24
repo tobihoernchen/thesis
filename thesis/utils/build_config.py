@@ -52,6 +52,11 @@ def build_config(
         reward_separateAgv=False
         if not "reward_separateAgv" in config_args
         else config_args["reward_separateAgv"],
+        reward_invalid=float(
+            0
+            if not "reward_invalid" in config_args
+            else config_args["reward_invalid"]
+        ),
         obs_includeNodesInReach=False
         if not "includeNodesInReach" in config_args
         else config_args["includeNodesInReach"],

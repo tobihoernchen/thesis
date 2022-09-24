@@ -2,7 +2,7 @@ from alpyne.client.abstract import BaseAlpyneEnv
 from alpyne.client.alpyne_client import AlpyneClient
 from alpyne.data.spaces import Configuration, Observation, Action
 from gym import spaces
-from typing import Union, Tuple, Dict, Optional, NoReturn
+from typing import OrderedDict, Union, Tuple, Dict, Optional, NoReturn
 import torch
 import random
 import numpy as np
@@ -67,6 +67,8 @@ class MatrixMA(BaseAlpyneZoo):
         self.started = False
         self.model_path = model_path
         self.startport = startport
+        if "worker_index" in config_args.keys():
+            self.startport += 4 * config_args["worker_index"]
 
         self.config = build_config(config_args, self.fleetsize, runmode=1)
         # Relevant for MA Learning
@@ -74,9 +76,6 @@ class MatrixMA(BaseAlpyneZoo):
         self.config.routingOnNode = True
         self.config.obs_includeNodesInReach = True
 
-        self.masks = {
-            agent: np.ones((5,), dtype=np.float32) for agent in self.possible_agents
-        }
         self._cumulative_rewards = {agent: 0 for agent in self.possible_agents}
         super().__init__(None, self.possible_agents)
 
@@ -117,8 +116,8 @@ class MatrixMA(BaseAlpyneZoo):
             self.start()
         self.shuffle()
         self.stepcounter = 0
-        self.seed()
-        return super().reset(config, seed, return_info, options)
+        self.seed(seed=seed)
+        return super().reset(self.config, seed, return_info, options)
 
     def step(
         self, action: "BaseAlpyneZoo.PyActionType"
@@ -156,7 +155,7 @@ class MatrixMA(BaseAlpyneZoo):
                 {
                     "agvs": spaces.Box(low=0, high=1, shape=shape_agvs),
                     "stations": spaces.Box(low=0, high=1, shape=shape_stations),
-                    "action_mask": spaces.MultiBinary(5),
+                    "action_mask": spaces.Box(low=0, high=1, shape=(5,)),
                 }
             )
         else:
@@ -206,9 +205,8 @@ class MatrixMA(BaseAlpyneZoo):
         if self.with_action_masks:
             mask = [1.0,] + [
                 1.0 if not torch.all(act == 0) else 0.0
-                for act in obs_converted[0, 9:17].reshape(4, 2)
+                for act in obs_converted[0, 7:15].reshape(4, 2)
             ]
-            self.masks[agent] = mask
             self.observations[agent] = dict(
                 agvs=np.array(obs_converted[: self.max_fleetsize].flatten()),
                 stations=np.array(obs_converted[self.max_fleetsize :].flatten()),

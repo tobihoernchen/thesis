@@ -11,26 +11,25 @@ class AttentionBlock(nn.Module):
     Applies regular self attention and a feedforward-layer to an input shaped [batch_size, n_agents, embed_dim]
     """
 
-    def __init__(self, embed_dim=64, n_heads=8, fn_mask=None, fleetsize=10):
+    def __init__(self, embed_dim=64, n_heads=8, fn_mask=None, n_agents=10):
         super().__init__()
         self.fn_mask = fn_mask
         self.n_heads = n_heads
 
         self.attention = nn.MultiheadAttention(embed_dim, n_heads, batch_first=True)
-        self.norm1 = nn.LayerNorm((fleetsize, embed_dim))
+        self.norm1 = nn.LayerNorm((n_agents, embed_dim))
         self.ff = nn.Sequential(
             nn.Linear(embed_dim, 4 * embed_dim),
             nn.ReLU(),
             nn.Linear(4 * embed_dim, embed_dim),
             nn.ReLU(),
         )
-        self.norm2 = nn.LayerNorm((fleetsize, embed_dim))
+        self.norm2 = nn.LayerNorm((n_agents, embed_dim))
         self.fn_mask = fn_mask
 
     def forward(self, x):
         if self.fn_mask is not None:
             mask = self.fn_mask()
-            mask = mask.repeat_interleave(self.n_heads, dim=0)
         else:
             mask = None
         attended = self.attention(
@@ -49,7 +48,7 @@ class AttentionBlock(nn.Module):
         return x
 
 
-class MultiAgentFE(BaseFeaturesExtractor):
+class MultiAgentFE(nn.Module):
     """
     Self-attention-based feature extractor for Stabel Baselines 3 (Will also be used within RLLIB custom models).
     For each agent, the feature vektor is first embedded (resulting shape [batch_size, n_agents, embed_dim])
@@ -77,7 +76,7 @@ class MultiAgentFE(BaseFeaturesExtractor):
         use_attention_mask=False,
     ):
         n_features = embed_dim * n_agents if n_features is None else n_features
-        super().__init__(observation_space, n_features)
+        super().__init__()  # observation_space, n_features)
         self.embed_dim = embed_dim
         if isinstance(observation_space, spaces.Box):
             self.n_obs_per_agv = observation_space.shape[0] // n_agents
@@ -88,6 +87,7 @@ class MultiAgentFE(BaseFeaturesExtractor):
         self.n_agents = n_agents
         self.use_attention_mask = use_attention_mask
         self.mask = None
+        self.n_heads = n_heads
         self.aye = None
 
         self.embedd = nn.Sequential(
@@ -99,21 +99,46 @@ class MultiAgentFE(BaseFeaturesExtractor):
             nn.ReLU(),
         )
 
+        self.cross_agent_embedd = nn.Sequential(
+            nn.Linear(n_agents, n_agents * 4),
+            nn.ReLU(),
+            nn.Linear(n_agents * 4, n_agents * 4),
+            nn.ReLU(),
+            nn.Linear(n_agents * 4, n_agents),
+            nn.ReLU(),
+        )
+
+        if isinstance(self.use_attention_mask, torch.Tensor):
+            fn_mask = self.get_mask_constant
+        elif self.use_attention_mask == False:
+            fn_mask = None
+        elif self.use_attention_mask == True:
+            fn_mask = self.get_mask
+
         ablocks = []
         for i in range(depth):
             ablocks.append(
                 AttentionBlock(
                     embed_dim=embed_dim,
                     n_heads=n_heads,
-                    fleetsize=n_agents,
-                    fn_mask=self.get_mask if self.use_attention_mask else None,
+                    n_agents=n_agents,
+                    fn_mask=fn_mask,
                 )
             )
         self.ablocks = nn.Sequential(*ablocks)
 
     def get_mask(self):
         m = self.mask
-        return m.repeat(1, 1, m.shape[1]) + self.aye == 0
+        return (m.repeat(1, 1, m.shape[1]) + self.aye == 0).repeat_interleave(
+            self.n_heads, dim=0
+        )
+
+    def get_mask_constant(self):
+        if self.use_attention_mask.device != self.mask.device:
+            self.use_attention_mask = self.use_attention_mask.to(
+                device=self.mask.device
+            )
+        return self.use_attention_mask
 
     def forward(self, x: torch.Tensor):
         """
@@ -126,8 +151,10 @@ class MultiAgentFE(BaseFeaturesExtractor):
         self.mask = reshaped[:, :, 1, None]
         if self.aye is None:
             self.aye = torch.eye(self.mask.shape[1], device=self.mask.device)
-        x = self.embedd(reshaped)
-        x = self.ablocks(x)
+
+        reshaped = self.cross_agent_embedd(reshaped.transpose(1, 2)).transpose(1, 2)
+        embeddings = self.embedd(reshaped)
+        x = self.ablocks(embeddings)
         return x
 
 

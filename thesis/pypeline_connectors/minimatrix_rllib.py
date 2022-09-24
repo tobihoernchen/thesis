@@ -1,17 +1,12 @@
 import json
-import torch
-
 import ray.rllib.agents.ppo as ppo
-from alpyne.data.spaces import Observation, Action
-
-from ..envs.matrix_routing_zoo import MatrixRoutingMA
-from ..utils.build_config import build_config
+from alpyne.data.spaces import Observation
 from ..utils.rllib_utils import rllib_ppo_config, setup_ray
 
-setup_ray(env = "Complete")
+setup_ray(env="Complete")
 
-model_path = "../../models/Default/6-10-03_09-19_26_32/checkpoint_000120/checkpoint-120"
-hparams_path = "../../models/Default/6-10-03_09-19_26_32.json"
+model_path = "../../models/Default/6-10-23_09-08_49_03/checkpoint_000045/checkpoint-45"
+hparams_path = "../../models/Default/6-10-23_09-08_49_03.json"
 
 with open(hparams_path) as json_file:
     hparams = json.load(json_file)
@@ -38,8 +33,9 @@ def get_action(observation, caller, n_nodes, context):
     )
 
     env._save_observation(alpyneobs)
+
     action = trainer.get_policy("agv").compute_single_action(
-        env.last()[0].flatten(), explore=False
+        env.last()[0], explore=False
     )[0]
 
     return env._convert_to_action(action, caller)
