@@ -9473,9 +9473,6 @@ send(msg, main.controller);]]></Body>
 					<ParameterName><![CDATA[RL_withCollisions]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_routingOnNode]]></ParameterName>
-				</Parameter>
-				<Parameter>
 					<ParameterName><![CDATA[RL_reward_targetDistance]]></ParameterName>
 				</Parameter>
 				<Parameter>
@@ -9495,6 +9492,9 @@ send(msg, main.controller);]]></Body>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[RL_reward_invalid]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_routingOnNode]]></ParameterName>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
