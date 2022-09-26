@@ -24,7 +24,7 @@ def save_hparams(
         fe_args=fe_args,
         net_arch=net_arch,
     )
-    models_dir = f"../../models/{dir}" #../../
+    models_dir = f"../../models/{dir}"  # ../../
     run_name = (
         run_name + f"{fleetsize}-{max_fleetsize}-{time.strftime('%d_%m-%H_%M_%S')}"
     )
@@ -183,24 +183,24 @@ class RewardCheck:
         if self.check_for[0] is None or agent in self.check_for:
             if reward_n > self.reward_above or reward_n < self.reward_below:
                 print(f"{self.steps}---{agent}" + "-" * 20)
-                print(f"OLD: {obs_o[:3]} \t done:{done_o}")
-                print(f"OLD: curr: {obs_o[3:5]}\t next:{obs_o[5:7]}\t tar:{obs_o[7:9]}")
+                print(f"OLD: {obs_o[:2]} \t done:{done_o}")
+                print(f"OLD: curr: {obs_o[2:4]}\t next:{obs_o[4:6]}\t tar:{obs_o[6:8]}")
                 print(f"ACTION: {action}")
-                print(f"NEW: {obs_n[:3]} \t done:{done_n}")
-                print(f"NEW: curr: {obs_n[3:5]}\t next:{obs_n[5:7]}\t tar:{obs_n[7:9]}")
+                print(f"NEW: {obs_n[:2]} \t done:{done_n}")
+                print(f"NEW: curr: {obs_n[2:4]}\t next:{obs_n[4:6]}\t tar:{obs_n[6:8]}")
                 print(f"REWARD: {reward_n}")
                 if extra is not None:
                     print(extra)
 
-        if action == 1:
-            assert obs_n[3] > obs_n[5], (obs_n[3], obs_n[5])
-        if action == 4:
-            assert obs_n[6] > obs_n[4], (obs_n[6], obs_n[4])
-        if action == 3:
-            assert obs_n[5] > obs_n[3], (obs_n[5], obs_n[3])
-        if action == 2:
-            assert obs_n[4] > obs_n[6], (obs_n[4], obs_n[6])
-        if np.all(np.isclose(obs_n[5:7], obs_n[7:9], 0.01)):
+        # if action == 1:
+        #     assert obs_n[2] >= obs_n[4], (obs_n[2], obs_n[4])
+        # if action == 4:
+        #     assert obs_n[5] >= obs_n[3], (obs_n[5], obs_n[3])
+        # if action == 3:
+        #     assert obs_n[4] >= obs_n[2], (obs_n[4], obs_n[2])
+        # if action == 2:
+        #     assert obs_n[3] >= obs_n[5], (obs_n[3], obs_n[5])
+        if np.all(np.isclose(obs_n[4:6], obs_n[6:8], 0.01)):
             pass
             # assert reward_n > 0.7
         if reward_n > 0.7:
@@ -209,9 +209,15 @@ class RewardCheck:
         return obs_n, reward_n, done_n, info_n
 
     def get_action_target(self, observation):
-        next = observation[5:7]
-        target = observation[7:9]
-        action = manual_routing(next, target)
+        if isinstance(observation, dict):
+            observation = observation["agvs"]
+        possibles = [
+            observation[x] != 0 and observation[y] != 0
+            for x, y in zip(range(8, 16, 2), range(9, 16, 2))
+        ]
+        next = observation[4:6]
+        target = observation[6:8]
+        action = manual_routing(next, target, possibles)
         return action, None
 
     stations = dict(
@@ -226,20 +232,20 @@ class RewardCheck:
         obs = obs["agvs"]
         possibles = [
             obs[x] != 0 and obs[y] != 0
-            for x, y in zip(range(7, 15, 2), range(8, 15, 2))
+            for x, y in zip(range(6, 14, 2), range(7, 14, 2))
         ]
-        var1 = obs[15] == 1
-        var2 = obs[16] == 1
-        geo01 = obs[17] == 1
-        geo12 = obs[18] == 1
-        geo2d = obs[19] == 1
-        d = obs[20] == 1
+        var1 = obs[14] == 1
+        var2 = obs[15] == 1
+        geo01 = obs[16] == 1
+        geo12 = obs[17] == 1
+        geo2d = obs[18] == 1
+        d = obs[19] == 1
         if var1:
-            hwm = 23
+            hwm = 22
         else:
-            hwm = 25
-        respotsDone = [obs[i] == 1 for i in range(21, hwm, 2)]
-        respotsNio = [obs[i] == 1 for i in range(22, hwm, 2)]
+            hwm = 24
+        respotsDone = [obs[i] == 1 for i in range(20, hwm, 2)]
+        respotsNio = [obs[i] == 1 for i in range(21, hwm, 2)]
         if any(respotsNio):
             target = "rework"
         elif not any([geo01, geo12, geo2d, d]):
@@ -250,12 +256,12 @@ class RewardCheck:
             target = "hsn"
         else:
             target = "geo2"
-        action = manual_routing(obs[5:7], list(self.stations[target]), possibles)
+        action = manual_routing(obs[4:6], list(self.stations[target]), possibles)
         if action > 0:
             assert possibles[action - 1]
         return (
             action,
-            f"POSSIBLE: {possibles} \t GOAL: {target}-{list(self.stations[target])} \t PART:{obs[15:25]}",
+            f"POSSIBLE: {possibles} \t GOAL: {target}-{list(self.stations[target])} \t PART:{obs[14:24]}",
         )
 
     def get_action_rand(self, obs):

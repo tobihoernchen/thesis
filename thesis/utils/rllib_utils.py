@@ -13,7 +13,7 @@ from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
 
 from thesis.policies.simplified_attention_module import register_attention_model
-from thesis.envs.matrix_routing_zoo import MatrixRoutingMA
+from thesis.envs.matrix_dispatching_zoo import MatrixDispatchingMA
 from thesis.envs.matrix_zoo import MatrixMA
 from thesis.utils.callbacks import CustomCallback
 
@@ -113,7 +113,7 @@ def rllib_ppo_config(
     if gamma is not None:
         config["gamma"] = gamma
     config["lambda"] = 0.98
-    config["kl_coeff"] = 0#.1
+    config["kl_coeff"] = 0  # .1
 
     config["env"] = "matrix"
     config["env_config"] = env_args
@@ -142,7 +142,7 @@ def rllib_ppo_config(
 
 
 def setup_matrix_routing_for_ray(verbose=False):
-    env_fn = lambda config: MatrixRoutingMA(
+    env_fn = lambda config: MatrixDispatchingMA(
         model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
         verbose=verbose,
         **config

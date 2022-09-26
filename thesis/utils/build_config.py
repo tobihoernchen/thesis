@@ -19,6 +19,11 @@ def build_config(
             if not "reward_acceptance" in config_args
             else config_args["reward_acceptance"]
         ),
+        reward_declinedInStation=float(
+            0
+            if not "reward_declined" in config_args
+            else config_args["reward_declined"]
+        ),
         reward_removedForBlock=float(
             0 if not "reward_block" in config_args else config_args["reward_block"]
         ),
@@ -53,9 +58,7 @@ def build_config(
         if not "reward_separateAgv" in config_args
         else config_args["reward_separateAgv"],
         reward_invalid=float(
-            0
-            if not "reward_invalid" in config_args
-            else config_args["reward_invalid"]
+            0 if not "reward_invalid" in config_args else config_args["reward_invalid"]
         ),
         obs_includeNodesInReach=False
         if not "includeNodesInReach" in config_args
@@ -84,6 +87,9 @@ def build_config(
         routingOnNode=False
         if not "routingOnNode" in config_args
         else config_args["routingOnNode"],
+        dispatchingOnArrival=False
+        if not "dispatchingOnArrival" in config_args
+        else config_args["dispatchingOnArrival"],
         withCollisions=True
         if not "withCollisions" in config_args
         else config_args["withCollisions"],

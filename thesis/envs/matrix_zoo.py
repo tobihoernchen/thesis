@@ -41,6 +41,7 @@ class MatrixMA(BaseAlpyneZoo):
         suppress_initial_reset: int = 0,  # overwrite observation space size if sim cannot be started before initializing spaces
         with_action_masks=False,
         verbose=False,
+        runmode=1,
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
@@ -70,7 +71,7 @@ class MatrixMA(BaseAlpyneZoo):
         if "worker_index" in config_args.keys():
             self.startport += 4 * config_args["worker_index"]
 
-        self.config = build_config(config_args, self.fleetsize, runmode=1)
+        self.config = build_config(config_args, self.fleetsize, runmode=runmode)
         # Relevant for MA Learning
         self.config.reward_separateAgv = True
         self.config.routingOnNode = True

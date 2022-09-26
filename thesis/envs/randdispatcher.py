@@ -48,7 +48,7 @@ class Dispatcher:
         ):
             self.get_context(obs.networkcontext)
 
-    def makeAction(self, actions):
+    def makeAction(self, actions, receiver: int = 2001):
         return Action(
             data=[
                 {
@@ -60,7 +60,7 @@ class Dispatcher:
                 {
                     "name": "receiver",
                     "type": "INTEGER",
-                    "value": -2,
+                    "value": receiver,
                     "unit": None,
                 },
             ]
@@ -68,7 +68,7 @@ class Dispatcher:
 
 
 class RandDispatcher(Dispatcher):
-    def __init__(self, distance = 2) -> None:
+    def __init__(self, distance=2) -> None:
         super().__init__()
         self.distance = distance
 
@@ -77,8 +77,8 @@ class RandDispatcher(Dispatcher):
         if self.context is None or self.distance is None:
             actions = random.sample(range(obs.n_nodes), len(obs.obs))
         else:
-            lasts = [i[2:4] for i in obs.obs]
-            nexts = [i[4:6] for i in obs.obs]
+            lasts = [i[1:3] for i in obs.obs]
+            nexts = [i[3:5] for i in obs.obs]
             actions = [self.getNode(l, n) for l, n in zip(lasts, nexts)]
         return self.makeAction(actions)
 
@@ -98,6 +98,33 @@ class RandDispatcher(Dispatcher):
             next = random.choice(possible)
         return next
 
+
+class StationDispatcher(Dispatcher):
+    def __init__(self) -> None:
+        super().__init__()
+        self.stations = self.stations = dict(
+            geo1=(0.32954545454545453, 0.49767441860465117),
+            geo2=(0.32954545454545453, 0.9395348837209302),
+            hsn=(0.7909090909090909, 0.7209302325581395),
+            wps=(0.9727272727272728, 0.7209302325581395),
+            rework=(0.5727272727272728, 0.7209302325581395),
+        )
+
+    def __call__(self, obs: Observation) -> Action:
+        receiver = int(obs.caller.replace("_Dispatching", "")) + 1000
+        super().__call__(obs)
+        if self.context is None:
+            action = random.choice(range(obs.n_nodes))
+        else:
+            coords = random.choice(list(self.stations.values()))
+            action = self.getClosest(tuple(coords))
+
+        return self.makeAction(
+            [
+                action,
+            ],
+            receiver,
+        )
 
 
 # class CleverDispatcher(Dispatcher):
@@ -124,4 +151,3 @@ class RandDispatcher(Dispatcher):
 #             state = self.states[int(obs.caller)]
 #             nexts = [i[4:6] for i in obs.obs]
 #             if obs.
-
