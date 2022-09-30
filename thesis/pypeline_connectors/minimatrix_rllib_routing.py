@@ -2,10 +2,7 @@ import json
 import torch
 
 import ray.rllib.agents.ppo as ppo
-from alpyne.data.spaces import Observation, Action
-
-from ..envs.matrix_dispatching_zoo import MatrixDispatchingMA
-from ..utils.build_config import build_config
+from alpyne.data.spaces import Observation
 from ..utils.rllib_utils import rllib_ppo_config, setup_ray
 
 setup_ray(env="Routing")

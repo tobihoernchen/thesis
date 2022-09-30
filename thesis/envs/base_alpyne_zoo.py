@@ -153,7 +153,7 @@ class BaseAlpyneZoo(AECEnv):
         seed: Optional[int] = None,
         return_info: bool = False,
         options: Optional[dict] = None,
-        agents = None,
+        agents=None,
     ) -> "BaseAlpyneZoo.PyObservationType":
         """
         A method required as part of the pettingzoo interface to revert the sim to the start.

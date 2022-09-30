@@ -92,11 +92,23 @@ class RewardCheck:
         if obs2action is not None and not isinstance(obs2action, str):
             self.obs2action = obs2action
         elif obs2action == "target":
-            self.obs2action = lambda obs: self.get_action_target(obs)
+            self.obs2action = (
+                lambda obs, agent: self.get_action_target(obs, agent)
+                if not agent.endswith("Dispatching")
+                else self.get_action_disp(obs, agent)
+            )
         elif obs2action == "build":
-            self.obs2action = lambda obs: self.get_action_build(obs)
+            self.obs2action = (
+                lambda obs, agent: self.get_action_build(obs, agent)
+                if not agent.endswith("Dispatching")
+                else self.get_action_disp(obs, agent)
+            )
         else:
-            self.obs2action = lambda obs: self.get_action_rand(obs)
+            self.obs2action = (
+                lambda obs, agent: self.get_action_rand(obs, agent)
+                if not agent.endswith("Dispatching")
+                else self.get_action_disp(obs, agent)
+            )
 
     def run(
         self,
@@ -121,6 +133,7 @@ class RewardCheck:
             self.env.reset(seed=seed)
             self.actions = {agent: 0 for agent in self.env.possible_agents}
             self.extras = {agent: None for agent in self.env.possible_agents}
+            self.targets = {agent: None for agent in self.env.possible_agents}
             self.total_rew = 0
             if self.gym:
                 self.state = [0] * 20, 0, 0, 0
@@ -140,7 +153,7 @@ class RewardCheck:
                         last,
                         self.extras[agent],
                     )
-                    action, extra = self.obs2action(last[0])
+                    action, extra = self.obs2action(last[0], agent)
                     self.actions[agent] = action
                     self.extras[agent] = extra
                     before = time.time()
@@ -208,7 +221,7 @@ class RewardCheck:
             # assert np.all(np.isclose(obs_n[5:7], obs_n[7:9], 0.01))
         return obs_n, reward_n, done_n, info_n
 
-    def get_action_target(self, observation):
+    def get_action_target(self, observation, agent):
         if isinstance(observation, dict):
             observation = observation["agvs"]
         possibles = [
@@ -221,54 +234,74 @@ class RewardCheck:
         return action, None
 
     stations = dict(
-        geo1=(0.32954545454545453, 0.49767441860465117),
-        geo2=(0.32954545454545453, 0.9395348837209302),
-        hsn=(0.5727272727272728, 0.7209302325581395),
-        wps=(0.7909090909090909, 0.7209302325581395),
-        rework=(0.9727272727272728, 0.7209302325581395),
+        geo1=(0.32954545454545453, 0.428),
+        geo2=(0.32954545454545453, 0.808),
+        hsn=(0.5727272727272728, 0.62),
+        wps=(0.7909090909090909, 0.62),
+        rework=(0.9727272727272728, 0.62),
+        park=(0.9727272727272728, 1.0),
     )
 
-    def get_action_build(self, obs):
+    def get_action_build(self, obs, agent):
         obs = obs["agvs"]
         possibles = [
             obs[x] != 0 and obs[y] != 0
-            for x, y in zip(range(6, 14, 2), range(7, 14, 2))
+            for x, y in zip(range(8, 16, 2), range(9, 16, 2))
         ]
-        var1 = obs[14] == 1
-        var2 = obs[15] == 1
-        geo01 = obs[16] == 1
-        geo12 = obs[17] == 1
-        geo2d = obs[18] == 1
-        d = obs[19] == 1
+        var1 = obs[16] == 1
+        var2 = obs[17] == 1
+        geo01 = obs[18] == 1
+        geo12 = obs[19] == 1
+        geo2d = obs[20] == 1
+        d = obs[21] == 1
         if var1:
-            hwm = 22
-        else:
             hwm = 24
-        respotsDone = [obs[i] == 1 for i in range(20, hwm, 2)]
-        respotsNio = [obs[i] == 1 for i in range(21, hwm, 2)]
-        if any(respotsNio):
-            target = "rework"
-        elif not any([geo01, geo12, geo2d, d]):
-            target = "geo1"
-        elif not any(respotsDone):
-            target = "wps"
-        elif not all(respotsDone):
-            target = "hsn"
         else:
-            target = "geo2"
-        action = manual_routing(obs[4:6], list(self.stations[target]), possibles)
+            hwm = 26
+        respotsDone = [obs[i] == 1 for i in range(22, hwm, 2)]
+        respotsNio = [obs[i] == 1 for i in range(23, hwm, 2)]
+        if any(respotsNio):
+            self.targets[agent] = "rework"
+        elif not any([geo01, geo12, geo2d, d]):
+            self.targets[agent] = "geo1"
+        elif not any(respotsDone):
+            self.targets[agent] = "wps"
+        elif not all(respotsDone):
+            self.targets[agent] = "hsn"
+        else:
+            self.targets[agent] = "geo2"
+        action = manual_routing(
+            obs[4:6], list(self.stations[self.targets[agent]]), possibles
+        )
         if action > 0:
             assert possibles[action - 1]
         return (
             action,
-            f"POSSIBLE: {possibles} \t GOAL: {target}-{list(self.stations[target])} \t PART:{obs[14:24]}",
+            f"POSSIBLE: {possibles} \t GOAL: {self.targets[agent]}-{list(self.stations[self.targets[agent]])} \t PART:{obs[16:26]}",
         )
 
-    def get_action_rand(self, obs):
+    def get_action_rand(self, obs, agent):
         obs = obs["agvs"]
         possibles = [
             i + 1
-            for i, (x, y) in enumerate(zip(range(7, 15, 2), range(8, 15, 2)))
+            for i, (x, y) in enumerate(zip(range(8, 16, 2), range(9, 16, 2)))
             if obs[x] != 0 and obs[y] != 0
         ]
         return random.choice(possibles), possibles
+
+    station_nodes = dict(
+        geo1=1,
+        geo2=0,
+        hsn=2,
+        wps=3,
+        rework=4,
+        park=5,
+    )
+
+    def get_action_disp(self, observation, agent):
+        agent_to_dispatch = agent.split("_")[0]
+        target = self.targets[agent_to_dispatch]
+        if target is None:
+            return random.randint(0, 5), None
+        else:
+            return self.station_nodes[target], target

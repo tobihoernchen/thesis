@@ -76,12 +76,23 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         )
         self.with_action_mask = with_action_mask
         self.n_features = self.obs_space.original_space["agvs"].shape[0] // fleetsize
+        self.fleetsize = fleetsize
+        self.n_stations = n_stations
 
         self.embedd_main = Embedder(embed_dim, self.n_features, activation)
         self.embedd_agvs = Embedder(embed_dim, self.n_features * 2, activation)
         self.embedd_station = Embedder(embed_dim, self.n_features, activation)
 
         self.attention_blocks = nn.ModuleList(
+            [
+                AttentionBlock(
+                    embed_dim, n_heads, fleetsize + n_stations - 1, activation
+                )
+                for _ in range(depth)
+            ]
+        )
+
+        self.attention_blocks_val = nn.ModuleList(
             [
                 AttentionBlock(
                     embed_dim, n_heads, fleetsize + n_stations - 1, activation
@@ -120,14 +131,14 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         )
         stations_embedded = self.embedd_station(station_data)
 
-        queries = torch.concat([agvs_embedded, stations_embedded], 1)
-        values = main_embedded.repeat(1, queries.shape[1], 1)
+        self.queries = torch.concat([agvs_embedded, stations_embedded], 1)
+        self.values = main_embedded.repeat(1, self.queries.shape[1], 1)
         for block in self.attention_blocks:
-            values = block(queries, values, values)
+            values = block(self.queries, self.values, self.values)
 
-        self.features = values.max(dim=1)[0]
+        features = values.max(dim=1)[0]
 
-        actions = self.action_net(self.features)
+        actions = self.action_net(features)
 
         if self.with_action_mask:
             actions = actions + (obsdict["obs"]["action_mask"] - 1) * 1e8
@@ -135,4 +146,9 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         return actions, []
 
     def value_function(self):
-        return self.value_net(self.features).flatten()
+
+        for block in self.attention_blocks_val:
+            values = block(self.queries, self.values, self.values)
+
+        features = values.max(dim=1)[0]
+        return self.value_net(features).flatten()

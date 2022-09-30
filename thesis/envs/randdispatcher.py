@@ -11,6 +11,7 @@ class Dispatcher:
         nodecontext = [c for c in context if c[-1] == 0]
         self.nodes = dict()
         [self.nodes.update({i: tuple(n[:2])}) for i, n in enumerate(nodecontext)]
+        self.stations = {i: tuple(n[:2]) for i, n in enumerate(nodecontext) if n[2] == 1}
         self.nodeCoords = np.array(list(self.nodes.values()))
 
         pathcontext = [c for c in context if c[-1] != 0]
@@ -102,13 +103,7 @@ class RandDispatcher(Dispatcher):
 class StationDispatcher(Dispatcher):
     def __init__(self) -> None:
         super().__init__()
-        self.stations = self.stations = dict(
-            geo1=(0.32954545454545453, 0.49767441860465117),
-            geo2=(0.32954545454545453, 0.9395348837209302),
-            hsn=(0.7909090909090909, 0.7209302325581395),
-            wps=(0.9727272727272728, 0.7209302325581395),
-            rework=(0.5727272727272728, 0.7209302325581395),
-        )
+
 
     def __call__(self, obs: Observation) -> Action:
         receiver = int(obs.caller.replace("_Dispatching", "")) + 1000
