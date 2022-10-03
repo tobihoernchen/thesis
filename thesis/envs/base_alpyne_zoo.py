@@ -82,6 +82,10 @@ class BaseAlpyneZoo(AECEnv):
     def add_agent(self, agent):
         if not agent in self.agents:
             self.agents.append(agent)
+            self.dones[agent] = False
+            self.infos[agent] = dict()
+            self.rewards[agent] = 0
+            self.observations[agent] = None
 
     @abstractmethod
     def _get_observation_space(self, agent: str) -> spaces.Space:
@@ -191,7 +195,7 @@ class BaseAlpyneZoo(AECEnv):
         reward = self.rewards[self.agent_selection]
         done = self.dones[self.agent_selection]
         info = self.infos[self.agent_selection]
-        if done and self.agent_selection in self.agents:
+        if all(self.dones.values()):
             # All terminate at once
             self.agents.clear()
         return obs, reward, done, info

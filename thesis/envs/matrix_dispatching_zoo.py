@@ -50,6 +50,7 @@ class MatrixDispatchingMA(MatrixMA):
             self.dispatcher = StationDispatcher()
         else:
             self.dispatcher = dispatcher
+        self.general_reward = 0.1
         super().__init__(
             model_path,
             startport,
@@ -130,7 +131,7 @@ class MatrixDispatchingMA(MatrixMA):
     def _save_observation(self, observation: Observation):
         agent = observation.caller
         self.agent_selection = agent
-        self.rewards[self.agent_selection] = observation.rew[0]
+        self.rewards[self.agent_selection] = observation.rew[0] + self.general_reward
 
         # team rewards
         # for agent in self.agents:
@@ -155,6 +156,8 @@ class MatrixDispatchingMA(MatrixMA):
                 obs_converted[tgt + 1, 1 : obs_complete.shape[1] + 1] = obs_complete[
                     src
                 ]
+            obs_converted[1:, :2] = 0
+            obs_converted[1:, 6:] = 0
             if obs_complete.shape[0] > self.fleetsize - 1:
                 obs_converted[
                     self.max_fleetsize :,

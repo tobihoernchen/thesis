@@ -4649,6 +4649,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="120" Height="40">
+						<EntryAction><![CDATA[requestCommand();]]></EntryAction>
 						<FillColor/>
 					</Properties>
 				</StatechartElement>

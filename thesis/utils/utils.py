@@ -104,8 +104,8 @@ class RewardCheck:
                 else self.get_action_disp(obs, agent)
             )
         else:
-            self.obs2action = (
-                lambda obs, agent: self.get_action_rand(obs, agent)
+            self.obs2action = lambda obs, agent: (
+                self.get_action_rand(obs, agent)
                 if not agent.endswith("Dispatching")
                 else self.get_action_disp(obs, agent)
             )
@@ -280,14 +280,31 @@ class RewardCheck:
             f"POSSIBLE: {possibles} \t GOAL: {self.targets[agent]}-{list(self.stations[self.targets[agent]])} \t PART:{obs[16:26]}",
         )
 
+    def check_possible(self, others_nexts, others_lasts, possibles, my_next):
+        returns = [
+            0,
+        ]
+        for i, possible in enumerate(possibles):
+            is_possible = not possible == (0.0, 0.0)
+            for others_next, others_last in zip(others_nexts, others_lasts):
+                if possible == others_last and my_next == others_next:
+                    possible = False
+            if is_possible:
+                returns.append(i + 1)
+        return returns
+
     def get_action_rand(self, obs, agent):
         obs = obs["agvs"]
-        possibles = [
-            i + 1
-            for i, (x, y) in enumerate(zip(range(8, 16, 2), range(9, 16, 2)))
-            if obs[x] != 0 and obs[y] != 0
-        ]
-        return random.choice(possibles), possibles
+        others_lasts = [(obs[i], obs[i + 1]) for i in range(26, len(obs), 24)]
+        others_nexts = [(obs[i], obs[i + 1]) for i in range(28, len(obs), 24)]
+        possibles = [(obs[i], obs[i + 1]) for i in range(6, 14, 2)]
+        possibles = self.check_possible(
+            others_nexts, others_lasts, possibles, (obs[4], obs[5])
+        )
+        if len(possibles) > 1:
+            return random.choice(possibles[1:]), str(possibles) + str(obs[26:30])
+        else:
+            return 0
 
     station_nodes = dict(
         geo1=1,

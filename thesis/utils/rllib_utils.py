@@ -13,6 +13,7 @@ from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
 
 from thesis.policies.simplified_attention_module import register_attention_model
+from thesis.policies.just_lin import register_lin_model
 from thesis.envs.matrix_routing_zoo import MatrixRoutingMA
 from thesis.envs.matrix_dispatching_zoo import MatrixDispatchingMA
 from thesis.envs.matrix_zoo import MatrixMA
@@ -32,6 +33,7 @@ def setup_ray(path="../..", env="Routing"):
     if env == "Dispatching":
         setup_matrix_dispatching_for_ray()
     register_attention_model()
+    register_lin_model()
     ray.init(ignore_reinit_error=True, include_dashboard=True)
 
 
@@ -43,6 +45,7 @@ def rllib_ppo_config(
     n_stations=5,
     dispatching=False,
     with_dispatcher=False,
+    lin_model=False,
 ):
     config = ppo.DEFAULT_CONFIG.copy()
     env_args = dict(
@@ -55,18 +58,20 @@ def rllib_ppo_config(
 
     agvconfig = dict(
         fleetsize=max_fleetsize,
-        embed_dim=64,
+        embed_dim=16,
         n_stations=n_stations,
         depth=4,
         with_action_mask=True,
+        with_stations=False,
     )
 
     dispconfig = dict(
         fleetsize=max_fleetsize,
-        embed_dim=64,
+        embed_dim=16,
         n_stations=n_stations,
         depth=4,
         with_action_mask=True,
+        with_agvs=False,
     )
 
     if dispatching:
@@ -78,7 +83,11 @@ def rllib_ppo_config(
                 }
             ),
             "dispatcher": PolicySpec(
-                config={"model": dict(custom_model_config=None)}  # dispconfig
+                config={
+                    "model": dict(custom_model_config=dispconfig),
+                    "gamma": 0.3,
+                    "lambda": 0.3,
+                }
             ),
         }
 
@@ -99,7 +108,7 @@ def rllib_ppo_config(
     config["gamma"] = 0.98
     config["lambda"] = 0.98
     config["kl_coeff"] = 0
-
+    config["no_done_at_end"] = (True,)
     config["env"] = "matrix"
     config["env_config"] = env_args
     config["multiagent"] = {
@@ -114,10 +123,11 @@ def rllib_ppo_config(
         else [
             "dispatcher",
         ],
+        "count_steps_by": "env_steps",
     }
 
     config["model"].update(
-        custom_model="attention_model",
+        custom_model="attention_model" if not lin_model else "lin_model",
     )
 
     return config
