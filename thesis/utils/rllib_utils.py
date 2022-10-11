@@ -16,6 +16,7 @@ from thesis.policies.simplified_attention_module import register_attention_model
 from thesis.policies.just_lin import register_lin_model
 from thesis.envs.matrix_routing_zoo import MatrixRoutingMA
 from thesis.envs.matrix_dispatching_zoo import MatrixDispatchingMA
+from thesis.envs.matrix_dispatching_zoo_death import MatrixDispatchingMA_Death
 from thesis.envs.matrix_zoo import MatrixMA
 from thesis.utils.callbacks import CustomCallback
 
@@ -32,6 +33,8 @@ def setup_ray(path="../..", env="Routing"):
         setup_matrix_complete_for_ray()
     if env == "Dispatching":
         setup_matrix_dispatching_for_ray()
+    if env == "Death":
+        setup_matrix_death_for_ray()
     register_attention_model()
     register_lin_model()
     ray.init(ignore_reinit_error=True, include_dashboard=True)
@@ -58,9 +61,9 @@ def rllib_ppo_config(
 
     agvconfig = dict(
         fleetsize=max_fleetsize,
-        embed_dim=16,
+        embed_dim=32,
         n_stations=n_stations,
-        depth=4,
+        depth=6,
         with_action_mask=True,
         with_stations=False,
     )
@@ -79,14 +82,13 @@ def rllib_ppo_config(
             "agv": PolicySpec(
                 config={
                     "model": dict(custom_model_config=agvconfig),
-                    "explore": True if with_dispatcher else False,
                 }
             ),
             "dispatcher": PolicySpec(
                 config={
                     "model": dict(custom_model_config=dispconfig),
-                    "gamma": 0.3,
-                    "lambda": 0.3,
+                    "gamma": 0.8,
+                    "lambda": 0.8,
                 }
             ),
         }
@@ -102,32 +104,33 @@ def rllib_ppo_config(
     config["num_gpus"] = 1
     config["num_workers"] = 0
     config["num_envs_per_worker"] = n_envs
-    config["train_batch_size"] = 700 * 10
-    config["sgd_minibatch_size"] = 700
+    config["train_batch_size"] = 2000 * 5
+    config["sgd_minibatch_size"] = 2000
     config["entropy_coeff"] = 0
     config["gamma"] = 0.98
     config["lambda"] = 0.98
     config["kl_coeff"] = 0
-    config["no_done_at_end"] = (True,)
+    config["lr"] = 1e-3
+
+    config["batch_mode"] = "complete_episodes"
+
     config["env"] = "matrix"
     config["env_config"] = env_args
     config["multiagent"] = {
         "policies": policies,
-        "policy_mapping_fn": lambda agent_id, episode, worker, **kwargs: "dispatcher"
-        if agent_id.endswith("Dispatching")
-        else "agv",
+        "policy_mapping_fn": lambda agent_id, episode, worker, **kwargs: (
+            "dispatcher" if agent_id.endswith("Dispatching") else "agv"
+        ),
         "policies_to_train": [
             "agv",
-        ]
-        if with_dispatcher
-        else [
             "dispatcher",
         ],
-        "count_steps_by": "env_steps",
+        "count_steps_by": "agent_steps",
     }
 
     config["model"].update(
         custom_model="attention_model" if not lin_model else "lin_model",
+        vf_share_layers=True,
     )
 
     return config
@@ -144,6 +147,15 @@ def setup_matrix_routing_for_ray(verbose=False):
 
 def setup_matrix_dispatching_for_ray(verbose=False):
     env_fn = lambda config: MatrixDispatchingMA(
+        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
+        verbose=verbose,
+        **config
+    )
+    register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
+
+
+def setup_matrix_death_for_ray(verbose=False):
+    env_fn = lambda config: MatrixDispatchingMA_Death(
         model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
         verbose=verbose,
         **config
@@ -173,3 +185,13 @@ def custom_log_creator(custom_path, custom_str):
         return UnifiedLogger(config, logdir, loggers=None)
 
     return logger_creator
+
+
+def save(trainer, name: str, path: str):
+    torch.save(trainer.workers.local_worker().get_policy(name).model.state_dict(), path)
+
+
+def load(trainer, name, path):
+    trainer.workers.local_worker().get_policy(name).model.load_state_dict(
+        torch.load(path)
+    )

@@ -29,13 +29,15 @@ class PositionEncoder(nn.Module):
         last_col = None
         for col in self.pos_cols:
             if last_col is None:
-                blocks.append(x[:, :, :col])
+                blocks.append(x[:, :, : col + 2])
+            else:
+                blocks.append(x[:, :, last_col + 2 : col + 2])
             last_col = col
             to_encode = x[:, :, col : col + 2]
             to_encode = (to_encode * (self.resolution - 1)).int()
             encoded = self.embedding(to_encode).flatten(2)
             blocks.append(encoded)
-        blocks.append(x[:, :, col:])
+        blocks.append(x[:, :, col + 2 :])
         out = torch.concat(blocks, 2)
         return out
 
@@ -140,7 +142,7 @@ class AttentionPolicy(TorchModelV2, nn.Module):
                 1,
             ],
             self.n_features,
-            4,
+            2,
         )
 
         self.embedd_main = Embedder(
@@ -150,7 +152,7 @@ class AttentionPolicy(TorchModelV2, nn.Module):
             embed_dim, self.encode_main.out_features() * 2, activation
         )
         self.embedd_station = Embedder(
-            embed_dim, self.encode_main.out_features(), activation
+            embed_dim, self.encode_station.out_features(), activation
         )
 
         self.attention_blocks = nn.ModuleList(

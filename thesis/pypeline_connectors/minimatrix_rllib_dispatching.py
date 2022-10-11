@@ -5,14 +5,14 @@ import ray.rllib.agents.ppo as ppo
 from alpyne.data.spaces import Observation
 from ..utils.rllib_utils import rllib_ppo_config, setup_ray
 
-setup_ray(env="Dispatching")
+setup_ray(env="Death")
 
-model_path = "../../models/Default/3-10-27_09-23_05_22/checkpoint_000060/checkpoint-60"
-hparams_path = "../../models/Default/3-10-27_09-23_05_22.json"
+model_path = "../../models/Default/6-10-07_10-10_14_51/checkpoint_000300/checkpoint-300"
+hparams_path = "../../models/Default/6-10-07_10-10_14_51.json"
 
 with open(hparams_path) as json_file:
     hparams = json.load(json_file)
-fleetsize = hparams["fleetsize"]
+fleetsize = 1  # hparams["fleetsize"]
 max_fleetsize = hparams["max_fleetsize"]
 config = hparams["env_args"]
 
@@ -24,6 +24,8 @@ trainer = ppo.PPOTrainer(
         n_envs=1,
         n_stations=5,
         dispatching=True,
+        with_dispatcher=True,
+        lin_model=True,
     )
 )
 trainer.restore(model_path)

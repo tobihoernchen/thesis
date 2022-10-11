@@ -29,7 +29,9 @@ class PositionEncoder(nn.Module):
         last_col = None
         for col in self.pos_cols:
             if last_col is None:
-                blocks.append(x[:, :, :col])
+                blocks.append(x[:, :, : col + 2])
+            else:
+                blocks.append(x[:, :, last_col + 2 : col + 2])
             last_col = col
             to_encode = x[:, :, col : col + 2]
             to_encode = (to_encode * (self.resolution - 1)).int()
@@ -40,7 +42,7 @@ class PositionEncoder(nn.Module):
         return out
 
     def out_features(self):
-        return self.original_dim + len(self.pos_cols) * (self.embed_size - 1) * 2
+        return self.original_dim + len(self.pos_cols) * (self.embed_size) * 2
 
 
 class Embedder(nn.Module):
@@ -88,8 +90,12 @@ class LinPolicy(TorchModelV2, nn.Module):
         self.n_features = self.obs_space.original_space["agvs"].shape[0] // fleetsize
         self.fleetsize = fleetsize
         self.n_stations = n_stations
-
-        self.embedd_main = Embedder(embed_dim, self.n_features, activation)
+        self.embed_dim = embed_dim
+        self.name = name
+        self.encode_main = PositionEncoder(list(range(2, 15, 2)), self.n_features, 2)
+        self.embedd_main = Embedder(
+            embed_dim, self.encode_main.out_features(), activation
+        )
 
         self.main_ff = nn.Sequential(
             nn.Linear(embed_dim, 2 * embed_dim),
@@ -102,7 +108,14 @@ class LinPolicy(TorchModelV2, nn.Module):
 
         self.with_agvs = with_agvs
         if with_agvs:
-            self.embedd_agvs = Embedder(embed_dim *2, self.n_features * 2, activation)
+            self.encode_agvs = PositionEncoder(
+                list(range(2, 15, 2)), self.n_features, 2
+            )
+            self.embedd_agvs = Embedder(
+                embed_dim * 2,
+                self.encode_agvs.out_features() + self.encode_main.out_features(),
+                activation,
+            )
             self.lintention_agvs = nn.Sequential(
                 nn.Linear(2 * embed_dim, 4 * embed_dim),
                 activation(),
@@ -114,7 +127,18 @@ class LinPolicy(TorchModelV2, nn.Module):
 
         self.with_stations = with_stations
         if with_stations:
-            self.embedd_station = Embedder(embed_dim * 2, self.n_features * 2, activation)
+            self.encode_station = PositionEncoder(
+                [
+                    1,
+                ],
+                self.n_features,
+                2,
+            )
+            self.embedd_station = Embedder(
+                embed_dim * 2,
+                self.encode_station.out_features() + self.encode_main.out_features(),
+                activation,
+            )
             self.lintention_station = nn.Sequential(
                 nn.Linear(2 * embed_dim, 4 * embed_dim),
                 activation(),
@@ -146,16 +170,18 @@ class LinPolicy(TorchModelV2, nn.Module):
 
     def forward(self, obsdict, state, seq_lengths):
         features = []
-        main_data = obsdict["obs"]["agvs"][:, : self.n_features]
+        main_data = self.encode_main(obsdict["obs"]["agvs"][:, None, : self.n_features])
         main_embedded = self.embedd_main(main_data)
-        features_main = self.main_ff(main_embedded).squeeze(dim = 1)
+        features_main = self.main_ff(main_embedded).squeeze(dim=1)
         features.append(features_main)
 
         if self.with_agvs:
             agvs_data = obsdict["obs"]["agvs"][:, self.n_features :]
             n_agvs = agvs_data.shape[1] // self.n_features
-            agvs_reshaped = agvs_data.reshape((agvs_data.shape[0], n_agvs, self.n_features))
-            main_repeated = main_data[:, None, :].repeat(1, n_agvs, 1)
+            agvs_reshaped = self.encode_agvs(agvs_data.reshape(
+                (agvs_data.shape[0], n_agvs, self.n_features)
+            ))
+            main_repeated = main_data.repeat(1, n_agvs, 1)
             agvs_embedded = self.embedd_agvs(
                 torch.concat([main_repeated, agvs_reshaped], 2)
             )
@@ -166,8 +192,10 @@ class LinPolicy(TorchModelV2, nn.Module):
         if self.with_stations:
             station_data = obsdict["obs"]["stations"]
             n_stations = station_data.shape[1] // self.n_features
-            stations_reshaped = station_data.reshape((station_data.shape[0], n_stations, self.n_features))
-            main_repeated = main_data[:, None, :].repeat(1, n_stations, 1)
+            stations_reshaped = self.encode_station(station_data.reshape(
+                (station_data.shape[0], n_stations, self.n_features)
+            ))
+            main_repeated = main_data.repeat(1, n_stations, 1)
             stations_embedded = self.embedd_station(
                 torch.concat([main_repeated, stations_reshaped], 2)
             )

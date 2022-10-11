@@ -24,7 +24,7 @@ global_client = [
 ]
 
 
-class MatrixDispatchingMA(BaseAlpyneZoo):
+class MatrixDispatchingMA_Death(BaseAlpyneZoo):
     """
     Pettingzoo Env for each AGV routing when it needs to.
 
@@ -59,7 +59,7 @@ class MatrixDispatchingMA(BaseAlpyneZoo):
 
         self.stepcounter = 0
         self.context = None
-
+        self.general_reward = 0#-0.2#.1
         self.possible_agents = self.get_agents()
         self.agents = [str(i) for i in range(self.fleetsize)] + [
             str(i) + "_Dispatching" for i in range(self.fleetsize)
@@ -204,7 +204,7 @@ class MatrixDispatchingMA(BaseAlpyneZoo):
             agent_i = self.current_alias[int(observation.caller)]
             agent = str(agent_i)
         self.agent_selection = agent
-        self.rewards[self.agent_selection] = observation.rew[0]
+        self.rewards[self.agent_selection] = observation.rew[0] + self.general_reward
 
         # team rewards
         # for agent in self.agents:
@@ -246,8 +246,6 @@ class MatrixDispatchingMA(BaseAlpyneZoo):
                 obs_converted[tgt + 1, 1 : obs_complete.shape[1] + 1] = obs_complete[
                     src
                 ]
-            obs_converted[1:, :2] = 0
-            obs_converted[1:, 6:] = 0
             if obs_complete.shape[0] > self.fleetsize - 1:
                 obs_converted[
                     self.max_fleetsize :,
@@ -335,6 +333,7 @@ class MatrixDispatchingMA(BaseAlpyneZoo):
                 )
                 self.shape_agvs = (self.max_fleetsize, features)
                 self.shape_stat = (int(self.statistics["n_stat"]), features)
+                self.statistics = {}
         if self.n_nodes is None and "n_nodes" in observation.names():
             self.n_nodes = int(observation.n_nodes)
 

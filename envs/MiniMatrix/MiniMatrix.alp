@@ -18,7 +18,8 @@
 			<Name><![CDATA[Main]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.BooleanArraySerializer;
-import com.anylogic.cloud.util.RandomUtils;]]></Import>
+import com.anylogic.cloud.util.RandomUtils;
+import org.eclipse.jetty.util.Scanner.ScanCycleListener;]]></Import>
 			<StartupCode><![CDATA[
 init_pypeline();
 init_network();
@@ -214,7 +215,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[6]]></Code>
+							<Code><![CDATA[7]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -1030,8 +1031,8 @@ else
 		getFeedback(Double.class);
 	station_ioQuote = py.runResults("get_config('station_ioQuote')").
 		getFeedback(Double.class);
-	fleetSize = py.runResults("get_config('fleetsize')").
-		getFeedback(Integer.class);
+	//fleetSize = py.runResults("get_config('fleetsize')").
+	//	getFeedback(Integer.class);
 	RL_blockTimeout = py.runResults("get_config('blockTimeout')").
 		getFeedback(Integer.class);
 }]]></Body>
@@ -1049,7 +1050,15 @@ else
 					<Body><![CDATA[double[][] obs = controller.getObservation();
 String obsstr = toStr2(obs);
 String context = "None";
-traceln(obsstr);
+//traceln(obsstr);
+
+if(controller.caller.endsWith("Dispatching"))
+{
+	traceln(controller.getReward());
+	controller.action_target(editbox.getIntValue(), controller.caller_i);
+	return;
+}
+
 if(firstRLcall)
 {
 	context = toStr2(getNetworkContext());
@@ -1065,7 +1074,7 @@ String actstr = py.runResults(
 	+ "," 
 	+ context
 	+ ")").getFeedback(String.class);
-	traceln(actstr);
+	//traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
 String intstr = "";
 for(int i = 0; i<actstr.length(); i++)
@@ -1100,8 +1109,8 @@ for(int i = actstr.length()-1; i>0; i--)
 		break;
 	} //fleetsize < 10!!!
 }
-traceln(act);
-traceln(receiver);
+//traceln(act);
+//traceln(receiver);
 if(receiver == 2000)
 	controller.action_agvs(act.toArray(new Integer[0]));
 else if(receiver == 2001)
@@ -1776,7 +1785,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[procedureDuration]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA[4.5]]></Code>
+								<Code><![CDATA[6.5]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>
@@ -4233,6 +4242,28 @@ return str;]]></Body>
 					</Font>
 					<Alignment>LEFT</Alignment>
 				</Text>
+				<Control Type="EditBox">
+				 	<EmbeddedIcon>false</EmbeddedIcon>				
+					<Id>1665389694452</Id>
+					<Name><![CDATA[editbox]]></Name>
+					<X>-450</X><Y>480</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<BasicProperties Width="100" Height="30">
+                        <EmbeddedIcon>false</EmbeddedIcon>	
+						<FillColor/>
+						<TextColor/>
+						<Enabled>true</Enabled>
+					</BasicProperties>
+					<ExtendedProperties>
+						<Font Name="Dialog" Size="11" Style="0"/>
+						<DefaultValueCode><![CDATA["13"]]></DefaultValueCode>
+						<LinkTo>false</LinkTo>
+					</ExtendedProperties>
+				</Control>
 			</Presentation>
 
 				</Level>
@@ -4761,7 +4792,9 @@ if(contents().size() == 1)
 	contents().get(0).moveTo(nextNode);
 	
 if(targetNode == nextNode)
-	sendArrival();]]></Action>
+	sendArrival(true);
+else if(((PointNode)nextNode).getRadius() != 10)
+	sendArrival(false);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[0.05]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -5670,8 +5703,18 @@ if(targetNode != null)
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[main.controller.addReward(main.RL_reward_reachedTarget, this, false);
-main.controller.getStatistic("targetReached", 1.0, false);]]></Body>
+					<Parameter>
+						<Name><![CDATA[right]]></Name>
+						<Type><![CDATA[boolean]]></Type>
+					</Parameter>
+					<Body><![CDATA[if(right)
+{
+	main.controller.addReward(main.RL_reward_reachedTarget, this, false);
+	main.controller.getStatistic("targetReached", 1.0, false);
+}
+else
+	main.controller.addReward(-main.RL_reward_reachedTarget/10, this, false);
+	]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -7565,10 +7608,10 @@ fillVarCode();]]></StartupCode>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[if(partVariant == "Normal")
 {
-	Object[] rsp1 = {"HSN", 15, 1, 2, 2 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp1 = {"HSN", 5, 1, 2, 2 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp1);
 }
-Object[] rsp2 = {"WPS", 30, 1, 2, 2 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+Object[] rsp2 = {"WPS", 10, 1, 2, 2 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 respot.add(rsp2);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -9805,7 +9848,11 @@ if(root.firstRLcall)
 {
 	networkcontext = root.getNetworkContext();
 	root.firstRLcall = false;
-	statTitles = new String[]{"rout_len", "disp_len", "n_stat"};
+	statTitles = new String[]{
+		"rout_len", 
+		"disp_len", 
+		"n_stat"
+	};
 	statValues = new double[]{
 		(double)root.controller.obs_size_routing,
 		(double)root.controller.obs_size_dispatching,
