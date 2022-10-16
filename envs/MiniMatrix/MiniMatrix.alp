@@ -1031,8 +1031,8 @@ else
 		getFeedback(Double.class);
 	station_ioQuote = py.runResults("get_config('station_ioQuote')").
 		getFeedback(Double.class);
-	//fleetSize = py.runResults("get_config('fleetsize')").
-	//	getFeedback(Integer.class);
+	fleetSize = py.runResults("get_config('fleetsize')").
+		getFeedback(Integer.class);
 	RL_blockTimeout = py.runResults("get_config('blockTimeout')").
 		getFeedback(Integer.class);
 }]]></Body>
@@ -1052,7 +1052,7 @@ String obsstr = toStr2(obs);
 String context = "None";
 //traceln(obsstr);
 
-if(controller.caller.endsWith("Dispatching"))
+if(controller.caller.endsWith("0_Dispatching"))
 {
 	traceln(controller.getReward());
 	controller.action_target(editbox.getIntValue(), controller.caller_i);
@@ -5713,8 +5713,10 @@ if(targetNode != null)
 	main.controller.getStatistic("targetReached", 1.0, false);
 }
 else
-	main.controller.addReward(-main.RL_reward_reachedTarget/10, this, false);
-	]]></Body>
+{
+	main.controller.addReward(-main.RL_reward_reachedTarget, this, false);
+	main.controller.getStatistic("wrongTarget", 1.0, false);
+}]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>

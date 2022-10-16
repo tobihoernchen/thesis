@@ -17,6 +17,7 @@ import numpy as np
 from .randdispatcher import RandDispatcher
 from ..utils.build_config import build_config
 from .base_alpyne_zoo import BaseAlpyneZoo
+from torch.nn.functional import one_hot
 
 counter = [0]
 global_client = [
@@ -59,13 +60,12 @@ class MatrixDispatchingMA_Death(BaseAlpyneZoo):
 
         self.stepcounter = 0
         self.context = None
-        self.general_reward = 0#-0.2#.1
+        self.general_reward = 0  # -0.2#.1
         self.possible_agents = self.get_agents()
         self.agents = [str(i) for i in range(self.fleetsize)] + [
             str(i) + "_Dispatching" for i in range(self.fleetsize)
         ]
         self.current_alias = list(range(self.fleetsize))
-
         self.metadata = dict(is_parallelizable=True)
         self.statistics = None
 
@@ -93,6 +93,7 @@ class MatrixDispatchingMA_Death(BaseAlpyneZoo):
         self.agent_hwm = self.fleetsize
         self.agent_dict = {}
 
+        self.last_action = {agent: 0 for agent in self.possible_agents}
         super().__init__(None, self.agents)
 
     def get_config(self, config_args):
@@ -145,6 +146,7 @@ class MatrixDispatchingMA_Death(BaseAlpyneZoo):
             str(i) + "_Dispatching" for i in range(self.fleetsize)
         ]
         self.current_alias = list(range(self.fleetsize))
+        self.agent_hwm = self.fleetsize
 
         if self.verbose:
             print(f"reset")
@@ -185,6 +187,7 @@ class MatrixDispatchingMA_Death(BaseAlpyneZoo):
                     low=0, high=1, shape=(self.shape_stat[0] * self.shape_stat[1],)
                 ),
                 "action_mask": spaces.Box(low=0, high=1, shape=(self.n_nodes,)),
+                "last_action": spaces.Box(low=0, high=1, shape=(self.n_nodes,)),
             }
         )
 
@@ -273,12 +276,16 @@ class MatrixDispatchingMA_Death(BaseAlpyneZoo):
             agvs=np.array(obs_converted[: self.max_fleetsize].flatten()),
             stations=np.array(obs_converted[self.max_fleetsize :].flatten()),
             action_mask=np.array(mask, dtype=np.float32),
+            last_action=one_hot(
+                torch.tensor(self.last_action[agent]), num_classes=self.n_nodes
+            ).numpy(),
         )
 
     def _convert_to_action(self, action, agent):
         """Convert the action sent as part of the Gym interface to an Alpyne Action object"""
         agent = self.agent_selection
         action = action if action is not None else 0
+        self.last_action[agent] = action
         if self.val_nodes is not None and agent.endswith("Dispatching"):
             action = list(self.val_nodes.keys())[action]
         iagent = self.current_alias.index(int(agent.split("_")[0]))

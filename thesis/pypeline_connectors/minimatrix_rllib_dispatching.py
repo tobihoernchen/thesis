@@ -7,12 +7,12 @@ from ..utils.rllib_utils import rllib_ppo_config, setup_ray
 
 setup_ray(env="Death")
 
-model_path = "../../models/Default/6-10-07_10-10_14_51/checkpoint_000300/checkpoint-300"
-hparams_path = "../../models/Default/6-10-07_10-10_14_51.json"
+model_path = "../../models/Default/6-10-14_10-09_04_16/checkpoint_000300/checkpoint-300"
+hparams_path = "../../models/Default/6-10-14_10-09_04_16.json"
 
 with open(hparams_path) as json_file:
     hparams = json.load(json_file)
-fleetsize = 1  # hparams["fleetsize"]
+fleetsize = hparams["fleetsize"]
 max_fleetsize = hparams["max_fleetsize"]
 config = hparams["env_args"]
 

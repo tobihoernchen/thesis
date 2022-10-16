@@ -106,11 +106,13 @@ def rllib_ppo_config(
     config["num_envs_per_worker"] = n_envs
     config["train_batch_size"] = 2000 * 5
     config["sgd_minibatch_size"] = 2000
-    config["entropy_coeff"] = 0
+    config["entropy_coeff"] = 0.01
     config["gamma"] = 0.98
-    config["lambda"] = 0.98
+    config["lambda"] = 0.95
     config["kl_coeff"] = 0
-    config["lr"] = 1e-3
+    config["lr"] = 3e-4
+    config["vf_loss_coeff"] = 0.5
+    config["clip_param"] = 0.2
 
     config["batch_mode"] = "complete_episodes"
 
