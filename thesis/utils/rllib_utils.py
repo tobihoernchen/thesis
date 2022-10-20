@@ -84,7 +84,19 @@ def rllib_ppo_config(
                     "model": dict(custom_model_config=agvconfig),
                 }
             ),
+            "agv1": PolicySpec(
+                config={
+                    "model": dict(custom_model_config=agvconfig),
+                }
+            ),
             "dispatcher": PolicySpec(
+                config={
+                    "model": dict(custom_model_config=dispconfig),
+                    "gamma": 0.8,
+                    "lambda": 0.8,
+                }
+            ),
+            "dispatcher1": PolicySpec(
                 config={
                     "model": dict(custom_model_config=dispconfig),
                     "gamma": 0.8,
@@ -110,7 +122,8 @@ def rllib_ppo_config(
     config["gamma"] = 0.98
     config["lambda"] = 0.95
     config["kl_coeff"] = 0
-    config["lr"] = 3e-4
+    config["lr"] = 3e-5
+    config["lr_schedule"] = [[0, 3e-4], [10000000, 3e-8]]
     config["vf_loss_coeff"] = 0.5
     config["clip_param"] = 0.2
 
@@ -118,14 +131,24 @@ def rllib_ppo_config(
 
     config["env"] = "matrix"
     config["env_config"] = env_args
+
+    def pmfn(agent_id, episode, worker, **kwargs):
+        alias = worker.env.env.current_alias
+        if agent_id.endswith("Dispatching"):
+            if agent_id.startswith(str(alias[0])):
+                return "dispatcher1"
+            return "dispatcher"
+        else:
+            # if agent_id.startswith(str(alias[1])):
+            #     return "agv1"
+            return "agv"
+
     config["multiagent"] = {
         "policies": policies,
-        "policy_mapping_fn": lambda agent_id, episode, worker, **kwargs: (
-            "dispatcher" if agent_id.endswith("Dispatching") else "agv"
-        ),
+        "policy_mapping_fn": pmfn,
         "policies_to_train": [
             "agv",
-            "dispatcher",
+            "dispatcher1",
         ],
         "count_steps_by": "agent_steps",
     }

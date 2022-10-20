@@ -1054,7 +1054,8 @@ String context = "None";
 
 if(controller.caller.endsWith("0_Dispatching"))
 {
-	traceln(controller.getReward());
+	traceln(editbox.getIntValue());
+	traceln(controller.caller_i);
 	controller.action_target(editbox.getIntValue(), controller.caller_i);
 	return;
 }
@@ -1118,7 +1119,10 @@ else if(receiver == 2001)
 else if(receiver<1000)
 	controller.action_agv(act.get(0), receiver);
 else
+{	
+	traceln(actstr);
 	controller.action_target(act.get(0), receiver-1000);
+}
 ]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -5845,7 +5849,7 @@ else{
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[if(main.RL_dispatchingOnArrival)
 {
-	main.controller.dispatch(Integer.toString(index) + "_Dispatching");
+	main.controller.dispatch(Integer.toString(index) + "_Dispatching", this);
 	DispatchTimeout.restart(main.RL_dispatchingInterval, SECOND);
 	main.controller.getStatistic("dispatch", 1.0, false);
 
@@ -6588,8 +6592,8 @@ else if((main.runMode == 5 || main.runMode == 7) && !main.RL_routingOnNode)
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[if(!main.RL_dispatchingOnArrival)
-	dispatch("Dispatching");]]></Action>
+					<Action><![CDATA[if(!main.RL_dispatchingOnArrival && main.runMode>=4)
+	dispatch("Dispatching", null);]]></Action>
 				</Event>
 			</Events>
 			<Functions>
@@ -7073,9 +7077,18 @@ else
 						<Name><![CDATA[caller_in]]></Name>
 						<Type><![CDATA[String]]></Type>
 					</Parameter>
-					<Body><![CDATA[if(main.runMode == 4 || main.runMode == 5)
+					<Parameter>
+						<Name><![CDATA[agv]]></Name>
+						<Type><![CDATA[Agv]]></Type>
+					</Parameter>
+					<Body><![CDATA[if(agv == null)
+	caller_i = 0;
+else
+	caller_i = getAgvIndex(agv);
+caller = caller_in;
+
+if(main.runMode == 4 || main.runMode == 5)
 {
-	caller = caller_in;
 	RLExperiment.takeAction(this);
 }
 else if(main.runMode == 6)

@@ -82,7 +82,7 @@ class RewardCheck:
 
     def __init__(self, env, obs2action=None) -> None:
         self.env = env
-        self.hist = dict()
+        self.hist = dict(rewards = [])
         if "agent_selection" in env.__dict__.keys():
             self.zoo = True
             self.gym = False
@@ -146,6 +146,7 @@ class RewardCheck:
             if self.zoo:
                 for agent in self.env.agent_iter():
                     last = self.env.last()
+                    self.hist["rewards"].append(last[1])
                     self.state[agent] = self.check(
                         self.state[agent],
                         self.actions[agent],
