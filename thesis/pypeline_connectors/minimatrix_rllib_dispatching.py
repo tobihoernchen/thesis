@@ -7,8 +7,8 @@ from ..utils.rllib_utils import rllib_ppo_config, setup_ray
 
 setup_ray(env="Death")
 
-model_path = "../../models/Default/4-10-19_10-00_10_31/checkpoint_000220/checkpoint-220"
-hparams_path = "../../models/Default/4-10-19_10-00_10_31.json"
+model_path = "../../models/Default/6-10-23_10-10_03_26/checkpoint_000180/checkpoint-180"
+hparams_path = "../../models/Default/6-10-23_10-10_03_26.json"
 
 with open(hparams_path) as json_file:
     hparams = json.load(json_file)
@@ -24,8 +24,9 @@ trainer = ppo.PPOTrainer(
         n_envs=1,
         n_stations=5,
         dispatching=True,
-        with_dispatcher=True,
+        # with_dispatcher=True,
         lin_model=True,
+        startport=51140,
     )
 )
 trainer.restore(model_path)

@@ -49,6 +49,7 @@ def rllib_ppo_config(
     dispatching=False,
     with_dispatcher=False,
     lin_model=False,
+    startport=51150,
 ):
     config = ppo.DEFAULT_CONFIG.copy()
     env_args = dict(
@@ -57,6 +58,7 @@ def rllib_ppo_config(
         fleetsize=fleetsize,
         max_fleetsize=max_fleetsize,
         config_args=config_args,
+        startport=startport,
     )
 
     agvconfig = dict(
@@ -74,7 +76,7 @@ def rllib_ppo_config(
         n_stations=n_stations,
         depth=4,
         with_action_mask=True,
-        with_agvs=False,
+        with_agvs=True,
     )
 
     if dispatching:
@@ -123,7 +125,7 @@ def rllib_ppo_config(
     config["lambda"] = 0.95
     config["kl_coeff"] = 0
     config["lr"] = 3e-5
-    config["lr_schedule"] = [[0, 3e-4], [10000000, 3e-8]]
+    config["lr_schedule"] = [[0, 3e-4], [1000000, 3e-5]]
     config["vf_loss_coeff"] = 0.5
     config["clip_param"] = 0.2
 
@@ -135,8 +137,8 @@ def rllib_ppo_config(
     def pmfn(agent_id, episode, worker, **kwargs):
         alias = worker.env.env.current_alias
         if agent_id.endswith("Dispatching"):
-            if agent_id.startswith(str(alias[0])):
-                return "dispatcher1"
+            # if agent_id.startswith(str(alias[0])):
+            #     return "dispatcher1"
             return "dispatcher"
         else:
             # if agent_id.startswith(str(alias[1])):
@@ -148,7 +150,7 @@ def rllib_ppo_config(
         "policy_mapping_fn": pmfn,
         "policies_to_train": [
             "agv",
-            "dispatcher1",
+            "dispatcher",
         ],
         "count_steps_by": "agent_steps",
     }

@@ -481,7 +481,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[0]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1657463746018</Id>
@@ -1052,13 +1052,13 @@ String obsstr = toStr2(obs);
 String context = "None";
 //traceln(obsstr);
 
-if(controller.caller.endsWith("0_Dispatching"))
+/*if(controller.caller.endsWith("0_Dispatching"))
 {
 	traceln(editbox.getIntValue());
 	traceln(controller.caller_i);
 	controller.action_target(editbox.getIntValue(), controller.caller_i);
 	return;
-}
+}*/
 
 if(firstRLcall)
 {
@@ -7259,7 +7259,9 @@ sr - Station Register ("sr", Station, len(obs))]]></Text>
 			<Name><![CDATA[Part]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<StartupCode><![CDATA[initRespot();
-fillVarCode();]]></StartupCode>
+fillVarCode();
+if(partVariant == "Normal")
+	washer.setColor("MA_material", yellow);]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656163936499</Id>
@@ -7904,6 +7906,57 @@ return observation;]]></Body>
 					<ApplyShading>true</ApplyShading>
 					<InternalLighting>OFF</InternalLighting>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[partFamily == "VB"]]></VisibleCode>
+				</Figure3D>
+				<Figure3D>
+					<Id>1666434736066</Id>
+					<Name><![CDATA[bicycle]]></Name>
+					<X>0</X><Y>0</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<X>0</X><Y>0</Y><Z>50</Z>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<ResourceReference>
+						<PackageName><![CDATA[minimatrix]]></PackageName>
+						<ClassName><![CDATA[3d/bicycle.dae]]></ClassName>
+					</ResourceReference>
+					<ColorTable>
+						<ColorMapping>
+							<Name><![CDATA[wheel_centers]]></Name>
+							<OriginalColor>-9737365</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[wheels]]></Name>
+							<OriginalColor>-8947849</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[handles]]></Name>
+							<OriginalColor>-9737365</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[frame]]></Name>
+							<OriginalColor>-1556433</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[pedal]]></Name>
+							<OriginalColor>-9409942</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[seat]]></Name>
+							<OriginalColor>-10264994</OriginalColor>
+						</ColorMapping>
+					</ColorTable>
+					<AutoScale>true</AutoScale>
+					<Scale>0.5</Scale>
+					<Rotation>0.0</Rotation>
+					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
+					<ApplyShading>true</ApplyShading>
+					<InternalLighting>OFF</InternalLighting>
+					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[partFamily == "HC"]]></VisibleCode>
 				</Figure3D>
 			</Presentation>
 
@@ -9047,6 +9100,8 @@ if(found!= null)
 		boolean valid = false;
 		if(isGeo())
 			valid = partValidGeo(prt);
+		else if(isRework())
+			valid = partValidRework(prt);
 		else
 			valid = partValidRespot(prt);
 		if(valid)
@@ -9101,7 +9156,7 @@ return prt.checkReadyForGeo(geoNr);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656249675076</Id>
 					<Name><![CDATA[initRespots]]></Name>
-					<X>410</X><Y>110</Y>
+					<X>410</X><Y>130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9115,7 +9170,7 @@ respotsToDo.addAll(possible);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656249792494</Id>
 					<Name><![CDATA[workDuration]]></Name>
-					<X>410</X><Y>130</Y>
+					<X>410</X><Y>150</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9209,6 +9264,22 @@ return "THIS SHOULD NOT EXIST; CHECK VARIANT PROPABILITIES";]]></Body>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[Object[] msg = {"sr", this, getObservation().length};
 send(msg, main.controller);]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
+					<ReturnType><![CDATA[boolean]]></ReturnType>
+					<Id>1666357562612</Id>
+					<Name><![CDATA[partValidRework]]></Name>
+					<X>410</X><Y>110</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[prt]]></Name>
+						<Type><![CDATA[Part]]></Type>
+					</Parameter>
+					<Body><![CDATA[return prt.respotNio.size() > 0;]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -10073,6 +10144,10 @@ root.seed = seed;]]></ConfigurationCode>
 		</Resource>
 		<Resource>
 			<Path><![CDATA[3d/fire.dae]]></Path>
+			<ReferencedFromUserCode>false</ReferencedFromUserCode>
+		</Resource>
+		<Resource>
+			<Path><![CDATA[3d/bicycle.dae]]></Path>
 			<ReferencedFromUserCode>false</ReferencedFromUserCode>
 		</Resource>
 	</ModelResources>
