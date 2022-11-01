@@ -25,7 +25,7 @@ init_pypeline();
 init_network();
 
 setDefaultRandomGenerator(new Random(seed));
-for(int i = 0; i<fleetSize; i++)
+for(int i = 0; i<fleetsize; i++)
 	add_agvs();
 ]]></StartupCode>
 			<Generic>false</Generic>
@@ -124,7 +124,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1656086162050</Id>
 					<Name><![CDATA[unit]]></Name>
-					<X>-140</X><Y>110</Y>
+					<X>-250</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -139,7 +139,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1656249385661</Id>
 					<Name><![CDATA[agvSpeed]]></Name>
-					<X>-140</X><Y>90</Y>
+					<X>-250</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -154,7 +154,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657465070128</Id>
 					<Name><![CDATA[nodeCount]]></Name>
-					<X>-120</X><Y>490</Y>
+					<X>-260</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -166,7 +166,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657471379249</Id>
 					<Name><![CDATA[maxX]]></Name>
-					<X>-240</X><Y>510</Y>
+					<X>-420</X><Y>500</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -178,7 +178,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657471381238</Id>
 					<Name><![CDATA[maxY]]></Name>
-					<X>-120</X><Y>510</Y>
+					<X>-260</X><Y>500</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -190,7 +190,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1659625806429</Id>
 					<Name><![CDATA[firstRLcall]]></Name>
-					<X>-240</X><Y>590</Y>
+					<X>-260</X><Y>540</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -202,10 +202,40 @@ for(int i = 0; i<fleetSize; i++)
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1667145895341</Id>
+					<Name><![CDATA[RL_pypeline_path]]></Name>
+					<X>-420</X><Y>420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA["../.."]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1667145898322</Id>
+					<Name><![CDATA[RL_pypeline_name]]></Name>
+					<X>-420</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[String]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA["minimatrix_rllib_dispatching"]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1656161191956</Id>
-					<Name><![CDATA[runMode]]></Name>
-					<X>-290</X><Y>20</Y>
+					<Name><![CDATA[runmode]]></Name>
+					<X>-450</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -215,7 +245,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[7]]></Code>
+							<Code><![CDATA[2]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -228,8 +258,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1656344279464</Id>
-					<Name><![CDATA[fleetSize]]></Name>
-					<X>-290</X><Y>40</Y>
+					<Name><![CDATA[fleetsize]]></Name>
+					<X>-350</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -239,7 +269,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[8]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656344279462</Id>
@@ -252,8 +282,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657310401337</Id>
-					<Name><![CDATA[RL_reward_acceptedInStation]]></Name>
-					<X>-460</X><Y>200</Y>
+					<Name><![CDATA[RL_reward_accepted_in_station]]></Name>
+					<X>-420</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -276,8 +306,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657310468453</Id>
-					<Name><![CDATA[RL_reward_removedForBlock]]></Name>
-					<X>-460</X><Y>220</Y>
+					<Name><![CDATA[RL_reward_removed_for_block]]></Name>
+					<X>-420</X><Y>230</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -300,8 +330,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657310532924</Id>
-					<Name><![CDATA[RL_reward_geoOperation]]></Name>
-					<X>-460</X><Y>260</Y>
+					<Name><![CDATA[RL_reward_geo_operation]]></Name>
+					<X>-420</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -324,8 +354,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657310545392</Id>
-					<Name><![CDATA[RL_reward_respotOperation]]></Name>
-					<X>-460</X><Y>280</Y>
+					<Name><![CDATA[RL_reward_respot_operation]]></Name>
+					<X>-420</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -348,8 +378,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657310886056</Id>
-					<Name><![CDATA[RL_reward_partCompleted]]></Name>
-					<X>-460</X><Y>320</Y>
+					<Name><![CDATA[RL_reward_part_completed]]></Name>
+					<X>-420</X><Y>380</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -372,8 +402,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657313113301</Id>
-					<Name><![CDATA[RL_reward_reachedTarget]]></Name>
-					<X>-460</X><Y>340</Y>
+					<Name><![CDATA[RL_reward_reached_target]]></Name>
+					<X>-420</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -396,8 +426,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657459370503</Id>
-					<Name><![CDATA[RL_obs_coordinates]]></Name>
-					<X>-240</X><Y>200</Y>
+					<Name><![CDATA[RL_coordinates]]></Name>
+					<X>-130</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -421,7 +451,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="Parameter">
 					<Id>1657461195968</Id>
 					<Name><![CDATA[station_availability]]></Name>
-					<X>-290</X><Y>60</Y>
+					<X>-220</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>false</PresentationFlag>
@@ -446,7 +476,7 @@ for(int i = 0; i<fleetSize; i++)
 					<Id>1657461223303</Id>
 					<Name><![CDATA[station_mttr]]></Name>
 					<Description><![CDATA[in Minutes]]></Description>
-					<X>-290</X><Y>80</Y>
+					<X>-220</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -469,9 +499,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657463746020</Id>
-					<Name><![CDATA[station_ioQuote]]></Name>
-					<Description><![CDATA[in Minutes]]></Description>
-					<X>-290</X><Y>120</Y>
+					<Name><![CDATA[station_io_quote]]></Name>
+					<X>-220</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -494,8 +523,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657464127029</Id>
-					<Name><![CDATA[RL_reward_reworkOperation]]></Name>
-					<X>-460</X><Y>300</Y>
+					<Name><![CDATA[RL_reward_rework_operation]]></Name>
+					<X>-420</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -518,8 +547,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657465614689</Id>
-					<Name><![CDATA[RL_obsdisp_includeAgvTarget]]></Name>
-					<X>-240</X><Y>220</Y>
+					<Name><![CDATA[RL_obs_include_agv_target]]></Name>
+					<X>-220</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -542,8 +571,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657466207482</Id>
-					<Name><![CDATA[RL_obsrout_includePartInfo]]></Name>
-					<X>-240</X><Y>240</Y>
+					<Name><![CDATA[RL_obs_include_part_info]]></Name>
+					<X>-220</X><Y>210</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -565,57 +594,9 @@ for(int i = 0; i<fleetSize; i++)
 					</Properties>                 
 				</Variable>
 				<Variable Class="Parameter">
-					<Id>1657467201670</Id>
-					<Name><![CDATA[RL_pypelinePath]]></Name>
-					<X>-240</X><Y>260</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
-						<Type><![CDATA[String]]></Type>
-						<UnitType><![CDATA[NONE]]></UnitType>
-						<SdArray>false</SdArray>
-						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["../.."]]></Code>
-						</DefaultValue>
-						<ParameterEditor>
-							<Id>1657467201668</Id>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<DelimeterType>NO_DELIMETER</DelimeterType>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
-					<Id>1657467534129</Id>
-					<Name><![CDATA[RL_pypelineName]]></Name>
-					<X>-240</X><Y>280</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
-						<Type><![CDATA[String]]></Type>
-						<UnitType><![CDATA[NONE]]></UnitType>
-						<SdArray>false</SdArray>
-						<DefaultValue Class="CodeValue">
-							<Code><![CDATA["minimatrix_rllib_dispatching"]]></Code>
-						</DefaultValue>
-						<ParameterEditor>
-							<Id>1657467534127</Id>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<DelimeterType>NO_DELIMETER</DelimeterType>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
 					<Id>1657468272265</Id>
-					<Name><![CDATA[RL_routingInterval]]></Name>
-					<X>-240</X><Y>380</Y>
+					<Name><![CDATA[RL_routing_interval]]></Name>
+					<X>-280</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -638,8 +619,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1657468307402</Id>
-					<Name><![CDATA[RL_dispatchingInterval]]></Name>
-					<X>-240</X><Y>320</Y>
+					<Name><![CDATA[RL_dispatching_interval]]></Name>
+					<X>-280</X><Y>120</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -662,8 +643,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1658128631134</Id>
-					<Name><![CDATA[RL_withCollisions]]></Name>
-					<X>-240</X><Y>340</Y>
+					<Name><![CDATA[RL_with_collisions]]></Name>
+					<X>-130</X><Y>120</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -686,8 +667,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1658128652628</Id>
-					<Name><![CDATA[RL_routingOnNode]]></Name>
-					<X>-240</X><Y>360</Y>
+					<Name><![CDATA[RL_routing_ma]]></Name>
+					<X>-420</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -710,8 +691,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1658134858952</Id>
-					<Name><![CDATA[RL_reward_targetDistance]]></Name>
-					<X>-460</X><Y>360</Y>
+					<Name><![CDATA[RL_reward_target_distance]]></Name>
+					<X>-420</X><Y>170</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -734,8 +715,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1659362027928</Id>
-					<Name><![CDATA[RL_blockTimeout]]></Name>
-					<X>-240</X><Y>400</Y>
+					<Name><![CDATA[RL_block_timeout]]></Name>
+					<X>-130</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -758,8 +739,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1659624839755</Id>
-					<Name><![CDATA[RL_obs_includeNodesInReach]]></Name>
-					<X>-240</X><Y>180</Y>
+					<Name><![CDATA[RL_obs_include_nodes_in_reach]]></Name>
+					<X>-220</X><Y>170</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -781,57 +762,9 @@ for(int i = 0; i<fleetSize; i++)
 					</Properties>                 
 				</Variable>
 				<Variable Class="Parameter">
-					<Id>1659959122609</Id>
-					<Name><![CDATA[RL_reward_separateAgv]]></Name>
-					<X>-460</X><Y>380</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
-						<Type><![CDATA[boolean]]></Type>
-						<UnitType><![CDATA[NONE]]></UnitType>
-						<SdArray>false</SdArray>
-						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[true]]></Code>
-						</DefaultValue>
-						<ParameterEditor>
-							<Id>1659959122607</Id>
-							<EditorContolType>CHECK_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<DelimeterType>NO_DELIMETER</DelimeterType>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
-					<Id>1662199669836</Id>
-					<Name><![CDATA[RL_reward_blocking]]></Name>
-					<X>-460</X><Y>240</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
-						<Type><![CDATA[double]]></Type>
-						<UnitType><![CDATA[NONE]]></UnitType>
-						<SdArray>false</SdArray>
-						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
-						</DefaultValue>
-						<ParameterEditor>
-							<Id>1662199669834</Id>
-							<EditorContolType>TEXT_BOX</EditorContolType>
-							<MinSliderValue><![CDATA[0]]></MinSliderValue>
-							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
-							<DelimeterType>NO_DELIMETER</DelimeterType>
-						</ParameterEditor>
-					</Properties>                 
-				</Variable>
-				<Variable Class="Parameter">
 					<Id>1662889644906</Id>
 					<Name><![CDATA[seed]]></Name>
-					<X>-460</X><Y>-10</Y>
+					<X>-350</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -855,7 +788,7 @@ for(int i = 0; i<fleetSize; i++)
 				<Variable Class="Parameter">
 					<Id>1663419816560</Id>
 					<Name><![CDATA[RL_reward_invalid]]></Name>
-					<X>-460</X><Y>400</Y>
+					<X>-420</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -878,8 +811,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1664015112966</Id>
-					<Name><![CDATA[RL_dispatchingOnArrival]]></Name>
-					<X>-240</X><Y>300</Y>
+					<Name><![CDATA[RL_dispatching_ma]]></Name>
+					<X>-420</X><Y>120</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -889,7 +822,7 @@ for(int i = 0; i<fleetSize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[true]]></Code>
+							<Code><![CDATA[false]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1664015112964</Id>
@@ -902,8 +835,8 @@ for(int i = 0; i<fleetSize; i++)
 				</Variable>
 				<Variable Class="Parameter">
 					<Id>1664179180254</Id>
-					<Name><![CDATA[RL_reward_declinedInStation]]></Name>
-					<X>-460</X><Y>180</Y>
+					<Name><![CDATA[RL_reward_declined_in_station]]></Name>
+					<X>-420</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -924,10 +857,82 @@ for(int i = 0; i<fleetSize; i++)
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1667145006860</Id>
+					<Name><![CDATA[RL_dispatch]]></Name>
+					<X>-350</X><Y>60</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[true]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1667145006858</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1667145719310</Id>
+					<Name><![CDATA[RL_reward_wrong_target]]></Name>
+					<X>-420</X><Y>210</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1667145719308</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1667151775208</Id>
+					<Name><![CDATA[RL_remove_all_blocked]]></Name>
+					<X>-280</X><Y>140</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1667151775206</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
-					<X>-140</X><Y>130</Y>
+					<X>-250</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -952,14 +957,14 @@ for(int i = 0; i<fleetSize; i++)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656346938043</Id>
 					<Name><![CDATA[take_action_debug]]></Name>
-					<X>-240</X><Y>430</Y>
+					<X>-420</X><Y>460</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[traceln(controller.getObservation());
 traceln(controller.getReward());
-traceln(controller.caller);
+traceln(controller.caller_i);
 //controller.getObservation();
 //controller.getReward();
 
@@ -969,23 +974,23 @@ for(int i = 0; i<statValues.length; i++)
 	statValues[i] = controller.statValues.get(i);
 
 int max = 5;
-if(controller.caller.endsWith("Dispatching"))
+if(controller.caller_i>=1000 && controller.caller_i != 2000)
 	max = nodeCount;
-Integer[] act = new Integer[fleetSize];
-for(int i = 0; i<fleetSize; i++)
+Integer[] act = new Integer[fleetsize];
+for(int i = 0; i<fleetsize; i++)
 	act[i] = getDefaultRandomGenerator().nextInt(max);
 
-if(controller.caller == "Dispatching")
+if(controller.caller_i == 2001)
 	controller.action_targets(act);
-else if(controller.caller == "Routing")
+else if(controller.caller_i == 2000)
 {	
 	traceln(act);
 	controller.action_agvs(act);
 }
-else if( controller.caller.endsWith("Dispatching"))
+else if( controller.caller_i>=1000)
 {
 	traceln(act);
-	controller.action_target(act[0], controller.caller_i);
+	controller.action_target(act[0], controller.caller_i - 1000);
 }
 else
 {
@@ -997,44 +1002,55 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656943173118</Id>
 					<Name><![CDATA[init_pypeline]]></Name>
-					<X>-240</X><Y>450</Y>
+					<X>-260</X><Y>420</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(runMode == 3 || runMode == 5 || runMode == 7)
+					<Body><![CDATA[if(runmode == 3)
 {
 	py.run("import sys");
-	py.run("sys.path.append('"+RL_pypelinePath+"')");
-	py.run("from thesis.pypeline_connectors."+RL_pypelineName+" import get_action, get_config");
-	RL_obs_coordinates = py.runResults("get_config('obs_coordinates')").
+	py.run("sys.path.append('"+RL_pypeline_path+"')");
+	py.run("from thesis.pypeline_connectors."+RL_pypeline_name+" import get_action, get_config");
+	// Sim Parameters
+	fleetsize = py.runResults("get_config('fleetsize')").
+		getFeedback(Integer.class);
+	RL_dispatch = py.runResults("get_config('dispatch')").
 		getFeedback(Boolean.class);
-	RL_obs_includeNodesInReach = py.runResults("get_config('obs_includeNodesInReach')").
+	RL_routing_ma = py.runResults("get_config('routing_ma')").
 		getFeedback(Boolean.class);
-	RL_obsdisp_includeAgvTarget = py.runResults("get_config('obsdisp_includeAgvTarget')").
+	RL_dispatching_ma = py.runResults("get_config('dispatching_ma')").
 		getFeedback(Boolean.class);
-	RL_obsrout_includePartInfo = py.runResults("get_config('obsrout_includePartInfo')").
-		getFeedback(Boolean.class);
-	RL_withCollisions = py.runResults("get_config('withCollisions')").
-		getFeedback(Boolean.class);
-	RL_routingOnNode = py.runResults("get_config('routingOnNode')").
-		getFeedback(Boolean.class);
-	RL_routingInterval = py.runResults("get_config('routinginterval')").
+	RL_routing_interval = py.runResults("get_config('routing_interval')").
 		getFeedback(Double.class);
-	RL_dispatchingOnArrival = py.runResults("get_config('dispatchingOnArrival')").
-		getFeedback(Boolean.class);
-	RL_dispatchingInterval = py.runResults("get_config('dispatchinginterval')").
+	RL_dispatching_interval = py.runResults("get_config('dispatching_interval')").
 		getFeedback(Double.class);
+	RL_coordinates = py.runResults("get_config('coordinates')").
+		getFeedback(Boolean.class);
+	RL_with_collisions = py.runResults("get_config('with_collisions')").
+		getFeedback(Boolean.class);	
+	RL_block_timeout = py.runResults("get_config('block_timeout')").
+		getFeedback(Integer.class);
+	RL_remove_all_blocked = py.runResults("get_config('remove_all_blocked')").
+		getFeedback(Boolean.class);	
+		
+	// AGV Parameters
+	RL_obs_include_nodes_in_reach = py.runResults("get_config('obs_include_nodes_in_reach')").
+		getFeedback(Boolean.class);
+	RL_obs_include_agv_target = py.runResults("get_config('obs_include_agv_target')").
+		getFeedback(Boolean.class);
+	RL_obs_include_part_info = py.runResults("get_config('obsrout_include_part_info')").
+		getFeedback(Boolean.class);
+
+	// Station Parameters
 	station_availability = py.runResults("get_config('station_availability')").
 		getFeedback(Double.class);
 	station_mttr = py.runResults("get_config('station_mttr')").
 		getFeedback(Double.class);
-	station_ioQuote = py.runResults("get_config('station_ioQuote')").
+	station_io_quote = py.runResults("get_config('station_io_quote')").
 		getFeedback(Double.class);
-	fleetSize = py.runResults("get_config('fleetsize')").
-		getFeedback(Integer.class);
-	RL_blockTimeout = py.runResults("get_config('blockTimeout')").
-		getFeedback(Integer.class);
+
+
 }]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -1042,7 +1058,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656953880415</Id>
 					<Name><![CDATA[take_action_pypeline]]></Name>
-					<X>-240</X><Y>470</Y>
+					<X>-260</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1050,15 +1066,7 @@ else
 					<Body><![CDATA[double[][] obs = controller.getObservation();
 String obsstr = toStr2(obs);
 String context = "None";
-//traceln(obsstr);
 
-/*if(controller.caller.endsWith("0_Dispatching"))
-{
-	traceln(editbox.getIntValue());
-	traceln(controller.caller_i);
-	controller.action_target(editbox.getIntValue(), controller.caller_i);
-	return;
-}*/
 
 if(firstRLcall)
 {
@@ -1068,9 +1076,9 @@ if(firstRLcall)
 String actstr = py.runResults(
 	"get_action(" 
 	+ obsstr 
-	+ ",'" 
-	+ controller.caller 
-	+ "'," 
+	+ "," 
+	+ controller.caller_i
+	+ "," 
 	+ nodeCount
 	+ "," 
 	+ context
@@ -1130,7 +1138,7 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657458590124</Id>
 					<Name><![CDATA[node2obs]]></Name>
-					<X>-240</X><Y>530</Y>
+					<X>-420</X><Y>520</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1140,7 +1148,7 @@ else
 						<Type><![CDATA[INode]]></Type>
 					</Parameter>
 					<Body><![CDATA[INetwork net = getNetworks()[0];
-if(!RL_obs_coordinates)
+if(!RL_coordinates)
 {
 	int n_nodes = nodeCount;
 	int n_bits = 6;
@@ -1171,7 +1179,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657462158695</Id>
 					<Name><![CDATA[station_mtbf]]></Name>
-					<X>-290</X><Y>100</Y>
+					<X>-220</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1186,7 +1194,7 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657471403592</Id>
 					<Name><![CDATA[init_network]]></Name>
-					<X>-240</X><Y>490</Y>
+					<X>-420</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1211,7 +1219,7 @@ for(int i=0; i<nodeCount; i++)
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1659625665194</Id>
 					<Name><![CDATA[getNetworkContext]]></Name>
-					<X>-240</X><Y>550</Y>
+					<X>-420</X><Y>540</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1255,7 +1263,7 @@ return context;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659716736727</Id>
 					<Name><![CDATA[toStr2]]></Name>
-					<X>-100</X><Y>450</Y>
+					<X>-200</X><Y>460</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1277,7 +1285,7 @@ return str;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659959662180</Id>
 					<Name><![CDATA[toStr1]]></Name>
-					<X>-100</X><Y>470</Y>
+					<X>-260</X><Y>460</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1961,8 +1969,8 @@ return str;]]></Body>
 				<EmbeddedObject>
 					<Id>1656943069102</Id>
 					<Name><![CDATA[py]]></Name>
-					<X>330</X><Y>-80</Y>
-					<Label><X>10</X><Y>-5</Y></Label>
+					<X>-120</X><Y>400</Y>
+					<Label><X>40</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
@@ -4218,7 +4226,7 @@ return str;]]></Body>
 				<Text>
 					<Id>1657310144443</Id>
 					<Name><![CDATA[text]]></Name>
-					<X>-470</X><Y>10</Y>
+					<X>-440</X><Y>30</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4228,17 +4236,10 @@ return str;]]></Body>
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 					<Color>-16777216</Color>
-					<Text><![CDATA[RunModes: 
-	0: AGVs bewegen sich zufällig
-	Komplett-RL
+					<Text><![CDATA[	0: Zufällig
 	1: Lauf in RL
-	2: Simuliertes RL (debug)
-	3: Lauf mit Pypeline
-	Dispatching & Routing
-	4: Lauf in RL(train Routing)
-	5: Lauf in RL, Routing mit Pypeline
-	6: Simuliertes RL (debug)
-	7: Lauf mit Pypeline]]></Text>
+	2: Simuliertes RL
+	3: Pypeline]]></Text>
 					<Font>
 						<Name>SansSerif</Name>
 						<Size>10</Size>
@@ -4246,28 +4247,6 @@ return str;]]></Body>
 					</Font>
 					<Alignment>LEFT</Alignment>
 				</Text>
-				<Control Type="EditBox">
-				 	<EmbeddedIcon>false</EmbeddedIcon>				
-					<Id>1665389694452</Id>
-					<Name><![CDATA[editbox]]></Name>
-					<X>-450</X><Y>480</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<BasicProperties Width="100" Height="30">
-                        <EmbeddedIcon>false</EmbeddedIcon>	
-						<FillColor/>
-						<TextColor/>
-						<Enabled>true</Enabled>
-					</BasicProperties>
-					<ExtendedProperties>
-						<Font Name="Dialog" Size="11" Style="0"/>
-						<DefaultValueCode><![CDATA["13"]]></DefaultValueCode>
-						<LinkTo>false</LinkTo>
-					</ExtendedProperties>
-				</Control>
 			</Presentation>
 
 				</Level>
@@ -4826,9 +4805,9 @@ else if(((PointNode)nextNode).getRadius() != 10)
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>0</X><Y>30</Y></Point>
-						<Point><X>-50</X><Y>30</Y></Point>
-						<Point><X>-50</X><Y>-120</Y></Point>
-						<Point><X>-30</X><Y>-120</Y></Point>
+						<Point><X>-60</X><Y>30</Y></Point>
+						<Point><X>-60</X><Y>-110</Y></Point>
+						<Point><X>-30</X><Y>-110</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655918031397" Target="1655919201546" Trigger="arrival">
@@ -4905,9 +4884,7 @@ if(contents().size() == 1)
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1655918031397" Trigger="condition">
-						<Action><![CDATA[//Object[] msg = {"ab", this, null};
-//deliver(msg, main.controller);
-main.controller.agvProgressBlocking(this, null);
+						<Action><![CDATA[main.controller.agvHandleBlock(this, null);
 moveTo(nextNode);
 
 if(contents().size() == 1)
@@ -5087,9 +5064,8 @@ if(contents().size() == 1)
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1656056734573" Trigger="timeout">
-						<Action><![CDATA[//Object[] msg = {"ab", this, scannerFree()};
-//deliver(msg, main.controller);
-main.controller.agvProgressBlocking(this, scannerFree());]]></Action>
+						<Action><![CDATA[
+main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -5154,10 +5130,9 @@ main.controller.agvProgressBlocking(this, scannerFree());]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1655919201546" Trigger="timeout">
-						<Action><![CDATA[//requestCommand();
-requestPending = true;]]></Action>
+						<Action><![CDATA[requestPending = true;]]></Action>
 						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[main.RL_routingInterval]]></Code>
+							<Code><![CDATA[main.RL_routing_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[true]]></Condition>
@@ -5188,7 +5163,8 @@ requestPending = true;]]></Action>
 					<Properties Source="1656057083242" Target="1656071070696" Trigger="message">
 						<Action><![CDATA[setXY(.0, .0);
 if(contents().size() == 1)
-	contents().get(0).setXY(.0, .0);]]></Action>
+	contents().get(0).setXY(.0, .0);
+main.controller.agvHandleBlock(this, null);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -5220,7 +5196,7 @@ if(contents().size() == 1)
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656071070696" Target="1656057083242" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[main.RL_blockTimeout]]></Code>
+							<Code><![CDATA[main.RL_block_timeout]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[true]]></Condition>
@@ -5349,7 +5325,7 @@ if((int)msg[1] > 0)
 					<ShowLabel>true</ShowLabel>
 					<Properties TriggerType="timeout" Mode="userControls">
 						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[main.RL_dispatchingInterval]]></Code>
+							<Code><![CDATA[main.RL_dispatching_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Rate Class="CodeUnitValue">
@@ -5382,7 +5358,7 @@ if((int)msg[1] > 0)
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(!main.RL_withCollisions)
+					<Body><![CDATA[if(!main.RL_with_collisions)
 	return null;
 LengthUnits unit = main.unit;
 double alpha = -getRotation();
@@ -5543,15 +5519,15 @@ return possible;]]></Body>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Parameter>
-						<Name><![CDATA[caller]]></Name>
-						<Type><![CDATA[String]]></Type>
+						<Name><![CDATA[dispatching]]></Name>
+						<Type><![CDATA[boolean]]></Type>
 					</Parameter>
-					<Body><![CDATA[boolean include_part = main.runMode < 4 
-	|| caller.endsWith("Dispatching") 
-	|| main.RL_obsrout_includePartInfo;
-boolean include_target = (main.runMode >= 4 
-	&&  !caller.endsWith("Dispatching")) 
-	|| main.RL_obsdisp_includeAgvTarget;
+					<Body><![CDATA[boolean include_part = !main.RL_dispatch 
+	|| dispatching
+	|| main.RL_obs_include_part_info;
+boolean include_target = !main.RL_dispatch  
+	|| !dispatching
+	|| main.RL_obs_include_agv_target;
 	
 
 double inSys = inState(inSystem) ? 1.0 : 0.0;
@@ -5564,7 +5540,7 @@ if(include_part)
 	obs_len += maxPartObsSize;
 if(include_target)
 	obs_len += nObsNode;
-if(main.RL_obs_includeNodesInReach)
+if(main.RL_obs_include_nodes_in_reach)
 	obs_len += 4*nObsNode;
 	
 double obs[] = new double[obs_len];
@@ -5585,7 +5561,7 @@ if(include_target)
 }
 
 
-if(main.RL_obs_includeNodesInReach)
+if(main.RL_obs_include_nodes_in_reach)
 {
 	INode[] nir = {null, null, null, null};
 	if(nextNode != null)
@@ -5620,7 +5596,7 @@ return obs;
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[Object[] msg = {"ar", this, getObservation("Routing").length,  getObservation("Dispatching").length};
+					<Body><![CDATA[Object[] msg = {"ar", this, getObservation(false).length,  getObservation(true).length};
 deliver(msg, main.controller);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -5661,9 +5637,8 @@ return atan2fast(dy, dx);]]></Body>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[if(
 	targetNode != null 
-	&& main.RL_reward_targetDistance != 0 
+	&& main.RL_reward_target_distance != 0 
 	&& PointNode.class.isInstance(targetNode)
-	//&& PointNode.class.isInstance(lastNode)
 	&& PointNode.class.isInstance(nextNode)
 )
 {
@@ -5673,7 +5648,7 @@ return atan2fast(dy, dx);]]></Body>
 	double dy = abs(tnode.getY() - nnode.getY()) / main.maxY;
 	double fact = sqrt(sqr(dx) + sqr(dy));
 	
-	main.controller.addReward(fact * main.RL_reward_targetDistance, this, false);
+	main.controller.addReward(fact * main.RL_reward_target_distance, this, false);
 }
 ]]></Body>
 				</Function>
@@ -5713,12 +5688,12 @@ if(targetNode != null)
 					</Parameter>
 					<Body><![CDATA[if(right)
 {
-	main.controller.addReward(main.RL_reward_reachedTarget, this, false);
+	main.controller.addReward(main.RL_reward_reached_target, this, false);
 	main.controller.getStatistic("targetReached", 1.0, false);
 }
 else
 {
-	main.controller.addReward(-main.RL_reward_reachedTarget, this, false);
+	main.controller.addReward(main.RL_reward_wrong_target, this, false);
 	main.controller.getStatistic("wrongTarget", 1.0, false);
 }]]></Body>
 				</Function>
@@ -5732,7 +5707,7 @@ else
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[main.controller.addReward(main.RL_reward_removedForBlock, this, false);
+					<Body><![CDATA[main.controller.addReward(main.RL_reward_removed_for_block, this, false);
 main.controller.getStatistic("block", 1.0, false);
 ]]></Body>
 				</Function>
@@ -5761,13 +5736,11 @@ main.controller.getStatistic("taken_invalid", 1.0, false);
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[//Rewards - Sinnvoll wenn RoutingOnNode
-if(main.RL_routingOnNode)
+if(main.RL_routing_ma)
 {
 	sendDistanceReward();
 }
 //Frage nach nächstem Ziel
-//Object[] message = {"ac", this};
-//deliver(message,main.controller);
 main.controller.sendAgvCommand(this);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -5818,12 +5791,13 @@ if(direction > 0)
 	int index = direction-1;
 	if(possible.length > (index))
 		if(possible[index] != null)
+		{
 			drive(possible[index]);
+			return;
+		}
 }
-else{
-	if(currentNode != targetNode)
-		sendInvalid();
-}]]></Body>
+if(currentNode != targetNode)
+	sendInvalid();]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -5847,10 +5821,10 @@ else{
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(main.RL_dispatchingOnArrival)
+					<Body><![CDATA[if(main.RL_dispatching_ma && main.RL_dispatch)
 {
-	main.controller.dispatch(Integer.toString(index) + "_Dispatching", this);
-	DispatchTimeout.restart(main.RL_dispatchingInterval, SECOND);
+	main.controller.dispatch(this);
+	DispatchTimeout.restart(main.RL_dispatching_interval, SECOND);
 	main.controller.getStatistic("dispatch", 1.0, false);
 
 }]]></Body>
@@ -6121,33 +6095,6 @@ else{
 					</Properties>
 				</Variable>
 				<Variable Class="PlainVariable">
-					<Id>1656342396395</Id>
-					<Name><![CDATA[reward]]></Name>
-					<X>250</X><Y>210</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[double]]></Type>        
-						<InitialValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
-						</InitialValue>
-					</Properties>
-				</Variable>
-				<Variable Class="PlainVariable">
-					<Id>1657465337778</Id>
-					<Name><![CDATA[caller]]></Name>
-					<X>300</X><Y>370</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
-						<Type><![CDATA[String]]></Type>        
-					</Properties>
-				</Variable>
-				<Variable Class="PlainVariable">
 					<Id>1657469793437</Id>
 					<Name><![CDATA[obs_size_dispatching]]></Name>
 					<X>300</X><Y>350</Y>
@@ -6165,7 +6112,7 @@ else{
 				<Variable Class="PlainVariable">
 					<Id>1659970712115</Id>
 					<Name><![CDATA[caller_i]]></Name>
-					<X>300</X><Y>390</Y>
+					<X>300</X><Y>370</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6210,7 +6157,7 @@ else{
 				<Variable Class="CollectionVariable">
 					<Id>1656343232899</Id>
 					<Name><![CDATA[directions]]></Name>
-					<X>300</X><Y>410</Y>
+					<X>300</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6240,7 +6187,7 @@ else{
 				<Variable Class="CollectionVariable">
 					<Id>1659956890638</Id>
 					<Name><![CDATA[agvRewards]]></Name>
-					<X>320</X><Y>210</Y>
+					<X>250</X><Y>210</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6270,7 +6217,7 @@ else{
 				<Variable Class="CollectionVariable">
 					<Id>1662280153695</Id>
 					<Name><![CDATA[statValues]]></Name>
-					<X>320</X><Y>230</Y>
+					<X>340</X><Y>230</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6284,8 +6231,8 @@ else{
 				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1664016147000</Id>
-					<Name><![CDATA[agvRewardsDispatching]]></Name>
-					<X>410</X><Y>210</Y>
+					<Name><![CDATA[agvRewardsDisp]]></Name>
+					<X>340</X><Y>210</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6327,7 +6274,7 @@ else{
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656063884957" Target="1656063884957" Trigger="message">
-						<Action><![CDATA[agvProgressBlocking((Agv)msg[1], (Agv)msg[2]);]]></Action>
+						<Action><![CDATA[agvHandleBlock((Agv)msg[1], (Agv)msg[2]);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -6416,7 +6363,7 @@ if(obs_size_dispatching<(int)msg[3])
 	obs_size_dispatching = (int)msg[3];
 directions.add(0);
 agvRewards.add(0.0);
-agvRewardsDispatching.add(0.0);
+agvRewardsDisp.add(0.0);
 ((Agv)msg[1]).index = directions.size()-1;]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -6496,24 +6443,24 @@ if(obs_size_routing<(int)msg[2] + 1)
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
-							<Code><![CDATA[main.RL_routingInterval]]></Code>
+							<Code><![CDATA[main.RL_routing_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[if(main.runMode == 1 && !main.RL_routingOnNode)
+					<Action><![CDATA[if(main.runmode == 1 && !main.RL_dispatch && !main.RL_routing_ma)
 {
-	caller = "Combined";
+	caller_i = 2000;
 	RLExperiment.takeAction(this);
 }
-else if(main.runMode == 2 && !main.RL_routingOnNode)
+else if(main.runmode == 2 && !main.RL_dispatch && !main.RL_routing_ma)
 {
-	caller = "Combined";
+	caller_i = 2000;
 	main.take_action_debug();
 }
-else if(main.runMode == 3 && !main.RL_routingOnNode)
+else if(main.runmode == 3 && !main.RL_dispatch && !main.RL_routing_ma)
 {
-	caller = "Combined";
+	caller_i = 2000;
 	main.take_action_pypeline();
 }
 	]]></Action>
@@ -6542,24 +6489,24 @@ else if(main.runMode == 3 && !main.RL_routingOnNode)
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
-							<Code><![CDATA[main.RL_routingInterval]]></Code>
+							<Code><![CDATA[main.RL_routing_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[if(main.runMode == 4 && !main.RL_routingOnNode)
+					<Action><![CDATA[if(main.runmode == 1 && main.RL_dispatch && !main.RL_routing_ma)
 {
-	caller = "Routing";
+	caller_i = 2000;
 	RLExperiment.takeAction(this);
 }
-else if(main.runMode == 6 && !main.RL_routingOnNode)
+else if(main.runmode == 2 && main.RL_dispatch && !main.RL_routing_ma)
 {
-	caller = "Routing";
+	caller_i = 2000;
 	main.take_action_debug();
 }
-else if((main.runMode == 5 || main.runMode == 7) && !main.RL_routingOnNode)
+else if(main.runmode == 3 && main.RL_dispatch && !main.RL_routing_ma)
 {
-	caller = "Routing";
+	caller_i = 2000;
 	main.take_action_pypeline();
 }]]></Action>
 				</Event>
@@ -6587,13 +6534,13 @@ else if((main.runMode == 5 || main.runMode == 7) && !main.RL_routingOnNode)
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
-							<Code><![CDATA[main.RL_dispatchingInterval]]></Code>
+							<Code><![CDATA[main.RL_dispatching_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[if(!main.RL_dispatchingOnArrival && main.runMode>=4)
-	dispatch("Dispatching", null);]]></Action>
+					<Action><![CDATA[if(!main.RL_dispatching_ma && main.RL_dispatch)
+	dispatch(null);]]></Action>
 				</Event>
 			</Events>
 			<Functions>
@@ -6601,7 +6548,7 @@ else if((main.runMode == 5 || main.runMode == 7) && !main.RL_routingOnNode)
 					<ReturnModificator>VOID</ReturnModificator>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656064947548</Id>
-					<Name><![CDATA[agvProgressBlocking]]></Name>
+					<Name><![CDATA[agvHandleBlock]]></Name>
 					<X>470</X><Y>70</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
@@ -6646,10 +6593,13 @@ while(toInspect.size()>0){
 			if(a == next)
 			{
 				for(Agv b: blockCircle)
+				{
 					b.sendBlock();
-				//deliver("reset", a);
-				a.reset();
-				agvProgressBlocking(a,null);
+					if(main.RL_remove_all_blocked)
+						b.reset();
+				}
+				if(!main.RL_remove_all_blocked)
+					a.reset();
 				break;
 			}
 		}
@@ -6685,40 +6635,36 @@ while(toInspect.size()>0){
 						<Type><![CDATA[Agv]]></Type>
 					</Parameter>
 					<Body><![CDATA[
-if(main.runMode == 0)
+if(main.runmode == 0)
 {
-	//Object[] message = {
-	//	"ac",
-	//	0};
 	Random rand = getDefaultRandomGenerator();
 	int direction = rand.nextInt(5);
-	//deliver(message, agv);
 	agv.take_action(direction);
 	return;
 }
-else if((main.runMode == 4 || main.runMode == 1)  
-&& main.RL_routingOnNode)
+else if(main.runmode == 1 && main.RL_routing_ma)
 {
-	int i = getAgvIndex(agv);
+	int i = agv.index;
 	caller_i = i;
-	caller = Integer.toString(i);
 	RLExperiment.takeAction(this);
 }
-else if((main.runMode == 6 || main.runMode == 2) 
-&& main.RL_routingOnNode)
+else if(main.runmode == 2 && main.RL_routing_ma)
 {
-	int i = getAgvIndex(agv);
+	int i = agv.index;
 	caller_i = i;
-	caller = Integer.toString(i);
 	main.take_action_debug();
 }
-else if((main.runMode == 5 || main.runMode == 7 || main.runMode == 3) 
-&& main.RL_routingOnNode)
+else if( main.runmode == 3 && main.RL_routing_ma)
 {
-	int i = getAgvIndex(agv);
+	int i = agv.index;
 	caller_i = i;
-	caller = Integer.toString(i);
 	main.take_action_pypeline();
+}
+else
+{
+	int i = agv.index;
+	int direction = directions.get(i);
+	agv.take_action(direction);
 }
 
 
@@ -6735,9 +6681,9 @@ else if((main.runMode == 5 || main.runMode == 7 || main.runMode == 3)
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(main.runMode < 4)
+					<Body><![CDATA[if(!main.RL_dispatch)
 	return getObservationGeneral();
-else if(caller.endsWith("Dispatching"))
+else if(caller_i>=1000 && caller_i != 2000)
 	return getObservationDispatching();
 return getObservationRouting();
 ]]></Body>
@@ -6797,7 +6743,7 @@ for(int i = 0; i<main.agvs.size(); i++)
 for(int i = 0; i<registeredAgvs.size();i++)
 {
 	Agv agv = (Agv)registeredAgvs.get(i)[0];	
-	double[] obs_i = agv.getObservation(caller);
+	double[] obs_i = agv.getObservation(false);
 	for(int j = 0; j<obs_i.length; j++)
 	{
 		obs[i][j] = obs_i[j];
@@ -6821,7 +6767,7 @@ return obs;]]></Body>
 for(int i = 0; i<registeredAgvs.size();i++)
 {
 	Agv agv = (Agv)registeredAgvs.get(i)[0];
-	double[] obs_i = agv.getObservation(caller);
+	double[] obs_i = agv.getObservation(true);
 	for(int j = 0; j<obs_i.length; j++)
 	{
 		obs[i][j] = obs_i[j];
@@ -6854,7 +6800,7 @@ return obs;]]></Body>
 for(int i = 0; i<registeredAgvs.size();i++)
 {
 	Agv agv = (Agv)registeredAgvs.get(i)[0];
-	double[] obs_i = agv.getObservation(caller);
+	double[] obs_i = agv.getObservation(false);
 	for(int j = 0; j<obs_i.length; j++)
 	{
 		obs[i][j] = obs_i[j];
@@ -6877,7 +6823,7 @@ return obs;]]></Body>
 					<ReturnType><![CDATA[int]]></ReturnType>
 					<Id>1659960510756</Id>
 					<Name><![CDATA[getAgvIndex]]></Name>
-					<X>630</X><Y>100</Y>
+					<X>520</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6894,64 +6840,35 @@ return i;]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
-					<ReturnType><![CDATA[double[]]]></ReturnType>
+					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659961376911</Id>
 					<Name><![CDATA[getReward]]></Name>
-					<X>450</X><Y>410</Y>
+					<X>770</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(!main.RL_reward_separateAgv)
+					<Body><![CDATA[boolean dispatching = caller_i >= 1000 && caller_i != 2000;
+
+int who = 0;
+if(dispatching && main.RL_dispatching_ma)
+	who = caller_i - 1000;
+else if(!dispatching && main.RL_routing_ma)
+	who = caller_i;
+
+double reward = 0.0;
+if(dispatching)
 {
-	double rew[] = {reward};
-	if(main.runMode < 4 || (main.runMode == 4 && caller != "Dispatching"))
-		reward = 0.0;
-	else if(main.runMode == 5 && caller == "Dispatching")
-		reward = 0.0;
-	return rew;
+	reward = agvRewardsDisp.get(who);
+	agvRewardsDisp.set(who, 0.0);
 }
 else
 {
-	if(!caller.endsWith("Dispatching"))
-	{
-		if(!main.RL_routingOnNode)
-		{
-			double rew[] = new double[agvRewards.size()];
-			for(int i = 0; i<agvRewards.size(); i++)
-				rew[i] = agvRewards.get(i);
-			agvRewards.clear();
-			for(double d : rew)
-				agvRewards.add(0.0);
-			return rew;
-		}
-		else
-		{
-			double[] rew = {agvRewards.get(caller_i)};
-			agvRewards.set(caller_i, 0.0);
-			return rew;
-		}
-	}
-	else
-	{
-		if(!main.RL_dispatchingOnArrival)
-		{
-			double rew[] = new double[agvRewardsDispatching.size()];
-			for(int i = 0; i<agvRewardsDispatching.size(); i++)
-				rew[i] = agvRewardsDispatching.get(i);
-			agvRewardsDispatching.clear();
-			for(double d : rew)
-				agvRewardsDispatching.add(0.0);
-			return rew;
-		}
-		else
-		{
-			double[] rew = {agvRewardsDispatching.get(caller_i)};
-			agvRewardsDispatching.set(caller_i, 0.0);
-			return rew;
-		}
-	}
-}]]></Body>
+	reward = agvRewards.get(who);
+	agvRewards.set(who, 0.0);
+}
+
+return reward;]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -6997,34 +6914,30 @@ directions.set(i_agv, node);]]></Body>
 						<Name><![CDATA[dispatching]]></Name>
 						<Type><![CDATA[boolean]]></Type>
 					</Parameter>
-					<Body><![CDATA[dispatching = dispatching && main.runMode>=4;
-if(!main.RL_reward_separateAgv)
-	reward += amount;
+					<Body><![CDATA[dispatching = dispatching && main.RL_dispatch;
+
+int who = 0;
+if(agv == null)
+	who = -1;	// for each
+else if( (dispatching && main.RL_dispatching_ma) 
+	 || (!dispatching && main.RL_routing_ma))
+	who = agv.index;
+
+if(who != -1)
+{
+	if(dispatching)
+		agvRewardsDisp.set(who, agvRewardsDisp.get(who) + amount);
+	else
+		agvRewards.set(who, agvRewards.get(who) + amount);
+}
 else
 {
-	if(agv != null)
-	{
-		int i= getAgvIndex(agv);
-		if(!dispatching && i<agvRewards.size())
-			agvRewards.set(i, agvRewards.get(i) + amount);
-		if(dispatching && i<agvRewardsDispatching.size())
-		{
-			agvRewardsDispatching.set(i, agvRewardsDispatching.get(i) + amount);
-		}
-	}
+	if(dispatching)
+		for(int i = 0; i<agvRewardsDisp.size(); i++)
+			agvRewardsDisp.set(i, agvRewardsDisp.get(i) + amount);
 	else
-	{
-		if(dispatching)
-		{
-			for(int i = 0; i<agvRewardsDispatching.size(); i++)
-				agvRewardsDispatching.set(i, agvRewardsDispatching.get(i) + amount);
-		}
-		else
-		{
-			for(int i = 0; i<agvRewards.size(); i++)
-				agvRewards.set(i, agvRewards.get(i) + amount);
-		}
-	}
+		for(int i = 0; i<agvRewards.size(); i++)
+			agvRewards.set(i, agvRewards.get(i) + amount);
 }]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -7074,33 +6987,20 @@ else
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Parameter>
-						<Name><![CDATA[caller_in]]></Name>
-						<Type><![CDATA[String]]></Type>
-					</Parameter>
-					<Parameter>
 						<Name><![CDATA[agv]]></Name>
 						<Type><![CDATA[Agv]]></Type>
 					</Parameter>
 					<Body><![CDATA[if(agv == null)
-	caller_i = 0;
+	caller_i = 2001;
 else
-	caller_i = getAgvIndex(agv);
-caller = caller_in;
+	caller_i = agv.index + 1000;
 
-if(main.runMode == 4 || main.runMode == 5)
-{
+if(main.runmode == 1 && main.RL_dispatch)
 	RLExperiment.takeAction(this);
-}
-else if(main.runMode == 6)
-{
-	caller = caller_in;
+else if(main.runmode == 2 && main.RL_dispatch)
 	main.take_action_debug();
-}
-else if(main.runMode == 7)
-{
-	caller = caller_in;
-	main.take_action_pypeline();
-}	]]></Body>
+else if(main.runmode == 3 && main.RL_dispatch)
+	main.take_action_pypeline();]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -8515,18 +8415,18 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 						<Action><![CDATA[if(isGeo())
 {
 	deliver(this.getName(),myPart);
-	main.controller.addReward(main.RL_reward_geoOperation, myAgv, true);
+	main.controller.addReward(main.RL_reward_geo_operation, myAgv, true);
 }
 else if(isRework())
 {
-	main.controller.addReward(main.RL_reward_reworkOperation * myPart.respotNio.size(), myAgv, true);
+	main.controller.addReward(main.RL_reward_rework_operation * myPart.respotNio.size(), myAgv, true);
 	myPart.respotNio.clear();
 }
 else
 {
 	for(int i:respotsToDo)
-		myPart.doRespot(i, randomTrue(main.station_ioQuote));
-	main.controller.addReward( main.RL_reward_respotOperation * respotsToDo.size(), myAgv, true);
+		myPart.doRespot(i, randomTrue(main.station_io_quote));
+	main.controller.addReward( main.RL_reward_respot_operation * respotsToDo.size(), myAgv, true);
 	
 }
 
@@ -8583,7 +8483,7 @@ else
 	if(a.fix())
 	{
 		myAgv = a;
-		main.controller.addReward(main.RL_reward_acceptedInStation, myAgv, true);
+		main.controller.addReward(main.RL_reward_accepted_in_station, myAgv, true);
 	}
 }]]></Action>
 						<Timeout Class="CodeUnitValue">
@@ -8754,7 +8654,7 @@ deliver("destroy", myPart);
 main.controller.getStatistic("jobDone", 1.0, false);
 
 myPart = null;
-main.controller.addReward(main.RL_reward_partCompleted, myAgv, true);
+main.controller.addReward(main.RL_reward_part_completed, myAgv, true);
 ]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[isLast]]></Code>
@@ -8851,7 +8751,7 @@ main.controller.addReward(main.RL_reward_partCompleted, myAgv, true);
 if(a.fix())
 {
 	myAgv = a;
-	main.controller.addReward(main.RL_reward_acceptedInStation, myAgv, true);
+	main.controller.addReward(main.RL_reward_accepted_in_station, myAgv, true);
 }]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -9069,7 +8969,7 @@ if(found != null)
 		return found;
 	if(last != found)
 	{	
-		main.controller.addReward(main.RL_reward_declinedInStation, found, true);
+		main.controller.addReward(main.RL_reward_declined_in_station, found, true);
 	}
 }
 return null;]]></Body>
@@ -9109,7 +9009,7 @@ if(found!= null)
 	}
 	if(last != found)
 	{	
-		main.controller.addReward(main.RL_reward_declinedInStation, found, true);
+		main.controller.addReward(main.RL_reward_declined_in_station, found, true);
 	}
 
 }
@@ -9770,31 +9670,31 @@ send(msg, main.controller);]]></Body>
 
 			<Parameters>			
 				<Parameter>
-					<ParameterName><![CDATA[runMode]]></ParameterName>
+					<ParameterName><![CDATA[runmode]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[fleetSize]]></ParameterName>
+					<ParameterName><![CDATA[fleetsize]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_acceptedInStation]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_accepted_in_station]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_removedForBlock]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_removed_for_block]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_geoOperation]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_geo_operation]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_respotOperation]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_respot_operation]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_partCompleted]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_part_completed]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_reachedTarget]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_reached_target]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_obs_coordinates]]></ParameterName>
+					<ParameterName><![CDATA[RL_coordinates]]></ParameterName>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[station_mttr]]></ParameterName>
@@ -9803,46 +9703,34 @@ send(msg, main.controller);]]></Body>
 					<ParameterName><![CDATA[station_availability]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[station_ioQuote]]></ParameterName>
+					<ParameterName><![CDATA[station_io_quote]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_reworkOperation]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_rework_operation]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_obsdisp_includeAgvTarget]]></ParameterName>
+					<ParameterName><![CDATA[RL_obs_include_agv_target]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_obsrout_includePartInfo]]></ParameterName>
+					<ParameterName><![CDATA[RL_obs_include_part_info]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_pypelinePath]]></ParameterName>
+					<ParameterName><![CDATA[RL_routing_interval]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_pypelineName]]></ParameterName>
+					<ParameterName><![CDATA[RL_dispatching_interval]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_routingInterval]]></ParameterName>
+					<ParameterName><![CDATA[RL_with_collisions]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_dispatchingInterval]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_target_distance]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_withCollisions]]></ParameterName>
+					<ParameterName><![CDATA[RL_block_timeout]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_targetDistance]]></ParameterName>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[RL_blockTimeout]]></ParameterName>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[RL_obs_includeNodesInReach]]></ParameterName>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[RL_reward_separateAgv]]></ParameterName>
-				</Parameter>
-				<Parameter>
-					<ParameterName><![CDATA[RL_reward_blocking]]></ParameterName>
+					<ParameterName><![CDATA[RL_obs_include_nodes_in_reach]]></ParameterName>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[seed]]></ParameterName>
@@ -9851,13 +9739,22 @@ send(msg, main.controller);]]></Body>
 					<ParameterName><![CDATA[RL_reward_invalid]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_routingOnNode]]></ParameterName>
+					<ParameterName><![CDATA[RL_routing_ma]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_dispatchingOnArrival]]></ParameterName>
+					<ParameterName><![CDATA[RL_dispatching_ma]]></ParameterName>
 				</Parameter>
 				<Parameter>
-					<ParameterName><![CDATA[RL_reward_declinedInStation]]></ParameterName>
+					<ParameterName><![CDATA[RL_reward_declined_in_station]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_dispatch]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_reward_wrong_target]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_remove_all_blocked]]></ParameterName>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
@@ -9898,11 +9795,11 @@ send(msg, main.controller);]]></Body>
 			</ObservationField>
 			<ObservationField>
 				<Name><![CDATA[rew]]></Name>
-				<Type><![CDATA[double[]]]></Type>
+				<Type><![CDATA[double]]></Type>
 			</ObservationField>
 			<ObservationField>
 				<Name><![CDATA[caller]]></Name>
-				<Type><![CDATA[String]]></Type>
+				<Type><![CDATA[int]]></Type>
 			</ObservationField>
 			<ObservationField>
 				<Name><![CDATA[statTitles]]></Name>
@@ -9922,7 +9819,7 @@ send(msg, main.controller);]]></Body>
 			</ObservationField>
 			<ObservationCode><![CDATA[obs = root.controller.getObservation();
 rew = root.controller.getReward();
-caller = root.controller.caller;
+caller = root.controller.caller_i;
 
 n_nodes = root.nodeCount;
 statTitles = root.controller.statTitles.toArray(new String[0]);
@@ -9937,12 +9834,14 @@ if(root.firstRLcall)
 	statTitles = new String[]{
 		"rout_len", 
 		"disp_len", 
-		"n_stat"
+		"n_stat",
+		"n_agv",
 	};
 	statValues = new double[]{
 		(double)root.controller.obs_size_routing,
 		(double)root.controller.obs_size_dispatching,
 		(double)root.controller.registeredStations.size(),
+		(double)root.controller.registeredAgvs.size(),
 	};
 }
 else
@@ -9973,6 +9872,102 @@ else
 				<Type><![CDATA[int]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[seed]]></Name>
+				<Type><![CDATA[int]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[dispatch]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[routing_ma]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[dispatching_ma]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[routing_interval]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[dispatching_interval]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[coordinates]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[with_collisions]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[block_timeout]]></Name>
+				<Type><![CDATA[int]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[remove_all_blocked]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_target_distance]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_reached_target]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_wrong_target]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_removed_for_block]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_invalid]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[obs_include_nodes_in_reach]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[obs_include_agv_target]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[obs_include_part_info]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_declined_in_station]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_accepted_in_station]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_geo_operation]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_rework_operation]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_respot_operation]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_part_completed]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[station_availability]]></Name>
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
@@ -9981,140 +9976,45 @@ else
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
-				<Name><![CDATA[station_ioQuote]]></Name>
+				<Name><![CDATA[station_io_quote]]></Name>
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_declinedInStation]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_acceptedInStation]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_removedForBlock]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_blocking]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_geoOperation]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_respotOperation]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_reworkOperation]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_partCompleted]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_reachedTarget]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_targetDistance]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_separateAgv]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[reward_invalid]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[obs_includeNodesInReach]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[obs_coordinates]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[pypelineName]]></Name>
-				<Type><![CDATA[String]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[pypelinePath]]></Name>
-				<Type><![CDATA[String]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[routinginterval]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[dispatchinginterval]]></Name>
-				<Type><![CDATA[double]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[obsdisp_includeAgvTarget]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[obsrout_includePartInfo]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[withCollisions]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[dispatchingOnArrival]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[routingOnNode]]></Name>
-				<Type><![CDATA[boolean]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[blockTimeout]]></Name>
-				<Type><![CDATA[int]]></Type>
-			</ConfigurationField>
-			<ConfigurationField>
-				<Name><![CDATA[seed]]></Name>
-				<Type><![CDATA[int]]></Type>
-			</ConfigurationField>
-			<ConfigurationCode><![CDATA[root.runMode = runmode;
+			<ConfigurationCode><![CDATA[// Sim Parameters
+root.runmode = runmode;
+root.fleetsize = fleetsize;
 root.seed = seed;
-root.fleetSize = fleetsize;
+root.RL_dispatch = dispatch;
+root.RL_routing_ma = routing_ma;
+root.RL_dispatching_ma = dispatching_ma;
+root.RL_routing_interval = routing_interval;
+root.RL_dispatching_interval = dispatching_interval;
+root.RL_coordinates = coordinates;
+root.RL_with_collisions = with_collisions;
+root.RL_block_timeout = block_timeout;
+root.RL_remove_all_blocked = remove_all_blocked;
+
+// AGV Parameters
+root.RL_reward_target_distance = reward_target_distance;
+root.RL_reward_reached_target = reward_reached_target;
+root.RL_reward_wrong_target = reward_wrong_target;
+root.RL_reward_removed_for_block = reward_removed_for_block;
+root.RL_reward_invalid = reward_invalid;
+root.RL_obs_include_nodes_in_reach = obs_include_nodes_in_reach;
+root.RL_obs_include_agv_target = obs_include_agv_target;
+root.RL_obs_include_part_info = obs_include_part_info;
+
+// Station Parameters
+root.RL_reward_declined_in_station = reward_declined_in_station;
+root.RL_reward_accepted_in_station = reward_accepted_in_station;
+root.RL_reward_geo_operation = reward_geo_operation;
+root.RL_reward_rework_operation = reward_rework_operation;
+root.RL_reward_respot_operation = reward_respot_operation;
+root.RL_reward_part_completed = reward_part_completed;
 root.station_availability = station_availability;
 root.station_mttr = station_mttr;
-root.station_ioQuote = station_ioQuote;
-root.RL_reward_declinedInStation = reward_declinedInStation;
-root.RL_reward_acceptedInStation = reward_acceptedInStation;
-root.RL_reward_geoOperation = reward_geoOperation;
-root.RL_reward_partCompleted = reward_partCompleted;
-root.RL_reward_reachedTarget = reward_reachedTarget;
-root.RL_reward_removedForBlock = reward_removedForBlock;
-root.RL_reward_blocking = reward_blocking;
-root.RL_reward_respotOperation = reward_respotOperation;
-root.RL_reward_reworkOperation = reward_reworkOperation;
-root.RL_reward_targetDistance = reward_targetDistance;
-root.RL_reward_separateAgv = reward_separateAgv;
-root.RL_reward_invalid = reward_invalid;
-root.RL_obs_includeNodesInReach = obs_includeNodesInReach;
-root.RL_obs_coordinates = obs_coordinates;
-root.RL_obsrout_includePartInfo = obsrout_includePartInfo;
-root.RL_obsdisp_includeAgvTarget = obsdisp_includeAgvTarget;
-root.RL_pypelinePath = pypelinePath;
-root.RL_pypelineName = pypelineName;
-root.RL_routingInterval = routinginterval;
-root.RL_dispatchingInterval = dispatchinginterval;
-root.RL_dispatchingOnArrival = dispatchingOnArrival;
-root.RL_routingOnNode = routingOnNode;
-root.RL_withCollisions = withCollisions;
-root.RL_blockTimeout = blockTimeout;
-root.seed = seed;]]></ConfigurationCode>
+root.station_io_quote = station_io_quote;
+
+]]></ConfigurationCode>
 		</ReinforcementLearningExperiment>
 	</Experiments>
 	<ModelResources>

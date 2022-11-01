@@ -5,63 +5,11 @@ import torch
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.utils.typing import ModelConfigDict
 from ray.rllib.models import ModelCatalog
+from .custom_blocks import Embedder, PositionEncoder
 
 
 def register_attention_model():
     ModelCatalog.register_custom_model("attention_model", AttentionPolicy)
-
-
-class PositionEncoder(nn.Module):
-    def __init__(
-        self, pos_cols, original_dim, embed_size, resolution=100, mask_valid=None
-    ) -> None:
-        super().__init__()
-        self.original_dim = original_dim
-        self.embedding = nn.Embedding(resolution, embed_size)
-        self.pos_cols = pos_cols
-        self.resolution = resolution
-        self.embed_size = embed_size
-
-    def forward(self, x: torch.Tensor):
-        if len(x.shape) == 2:
-            x = x.view(x.shape[0], x.shape[1] // self.original_dim, self.original_dim)
-        blocks = []
-        last_col = None
-        for col in self.pos_cols:
-            if last_col is None:
-                blocks.append(x[:, :, : col + 2])
-            else:
-                blocks.append(x[:, :, last_col + 2 : col + 2])
-            last_col = col
-            to_encode = x[:, :, col : col + 2]
-            to_encode = (to_encode * (self.resolution - 1)).int()
-            encoded = self.embedding(to_encode).flatten(2)
-            blocks.append(encoded)
-        blocks.append(x[:, :, col + 2 :])
-        out = torch.concat(blocks, 2)
-        return out
-
-    def out_features(self):
-        return self.original_dim + len(self.pos_cols) * (self.embed_size) * 2
-
-
-class Embedder(nn.Module):
-    def __init__(self, embed_dim, original_dim, activation) -> None:
-        super().__init__()
-        self.original_dim = original_dim
-        self.embedd = nn.Sequential(
-            nn.Linear(original_dim, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim),
-            activation(),
-        )
-
-    def forward(self, x):
-        if len(x.shape) == 2:
-            x = x.view(x.shape[0], x.shape[1] // self.original_dim, self.original_dim)
-        return self.embedd(x)
 
 
 class AttentionBlock(nn.Module):
@@ -119,11 +67,13 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         model_config: ModelConfigDict,
         name: str,
         fleetsize: int = 10,
-        n_stations: int = 0,
+        n_stations: int = 5,
         embed_dim=64,
         n_heads=8,
         depth=4,
         with_action_mask=True,
+        with_agvs=True,
+        with_stations=True,
         activation=nn.ReLU,
     ):
         nn.Module.__init__(self)
@@ -158,7 +108,7 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         self.attention_blocks = nn.ModuleList(
             [
                 AttentionBlock(
-                    embed_dim, n_heads, fleetsize + n_stations, activation, alt=True
+                    embed_dim, n_heads, fleetsize + n_stations, activation, alt=False
                 )
                 for _ in range(depth)
             ]
@@ -167,7 +117,7 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         self.attention_blocks_val = nn.ModuleList(
             [
                 AttentionBlock(
-                    embed_dim, n_heads, fleetsize + n_stations, activation, alt=True
+                    embed_dim, n_heads, fleetsize + n_stations, activation, alt=False
                 )
                 for _ in range(depth)
             ]

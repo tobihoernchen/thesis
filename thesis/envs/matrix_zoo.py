@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from alpyne.client.abstract import BaseAlpyneEnv
 from alpyne.client.alpyne_client import AlpyneClient
 from alpyne.data.spaces import Configuration, Observation, Action
@@ -9,11 +10,6 @@ import numpy as np
 from .randdispatcher import RandDispatcher
 from ..utils.build_config import build_config
 from .base_alpyne_zoo import BaseAlpyneZoo
-
-counter = [0]
-global_client = [
-    None,
-]
 
 
 class MatrixMA(BaseAlpyneZoo):
@@ -29,6 +25,9 @@ class MatrixMA(BaseAlpyneZoo):
     counter: reference to a List<int>, first entry is used as port/seed and the incremented
     """
 
+    counter = 0
+    global_client = None
+
     def __init__(
         self,
         model_path: str = None,
@@ -38,23 +37,25 @@ class MatrixMA(BaseAlpyneZoo):
         config_args: dict = dict(),
         max_steps: int = None,
         max_seconds: int = None,
-        verbose=False,
+        routing_ma=True,
+        dispatching_ma=True,
+        team_rewards=0,
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
 
         self.max_steps = max_steps
         self.max_seconds = max_seconds
-        self.verbose = verbose
-
         self.stepcounter = 0
-        self.context = None
-
-        self.possible_agents = self.get_agents()
-        self.action_masks = {agent: None for agent in self.possible_agents}
 
         self.metadata = dict(is_parallelizable=True)
         self.statistics = None
+        self.context = None
+
+        self.possible_agents = self.get_agents()
+        self.routing_ma = routing_ma
+        self.dispatching_ma = dispatching_ma
+        self.team_rewards = team_rewards
 
         self.shuffle()
 
@@ -63,34 +64,33 @@ class MatrixMA(BaseAlpyneZoo):
         self.model_path = model_path
         self.startport = startport
         if "worker_index" in config_args.keys():
-            self.startport += 4 * config_args["worker_index"]
+            self.startport += 10 * config_args["worker_index"]
 
         self.config = self.get_config(config_args)
 
-        self._cumulative_rewards = {agent: 0 for agent in self.possible_agents}
         super().__init__(None, self.possible_agents)
 
+    @abstractmethod
     def get_agents(self):
-        return [str(agent) for agent in range(self.fleetsize)]
+        raise NotImplementedError
+
+    @abstractmethod
+    def _get_observation_space(self, agent) -> spaces.Space:
+        """Describe the dimensions and bounds of the observation"""
+        raise NotImplementedError
+
+    @abstractmethod
+    def _get_action_space(self, agent) -> spaces.Space:
+        raise NotImplementedError
 
     def get_config(self, config_args):
         conf = build_config(config_args, self.fleetsize)
-        conf.reward_separateAgv = True
-        conf.routingOnNode = True
-        conf.obs_includeNodesInReach = True
+        conf.dispatch = True
+        conf.routing_ma = True
+        conf.dispatch_ma = True
+        conf.obs_include_nodes_in_reach = True
         conf.runmode = 1
         return conf
-
-    def start(self):
-        if global_client[0] is None:
-            port = self.startport + int(counter[0])
-            counter[0] = counter[0] + 1  # increment to change port for all envs created
-            global_client[0] = AlpyneClient(self.model_path, port=port, verbose=False)
-
-        self.client = global_client[0]
-        self.run = self.client.create_reinforcement_learning(self.config)
-        self.started = True
-        super().start(self.run)
 
     def shuffle(self):
         self.shufflerule = random.sample(
@@ -98,12 +98,25 @@ class MatrixMA(BaseAlpyneZoo):
         )
 
     def seed(self, seed: int = None):
-        if self.verbose:
-            print(f"seeded with {seed}")
         if seed is not None:
             self.config.seed = seed
         else:
-            self.config.seed = random.randint(0, 1000)
+            self.config.seed = random.randint(0, 10000)
+
+    def start(self):
+        if self.__class__.global_client is None:
+            port = self.startport + int(self.__class__.counter)
+            self.__class__.counter = (
+                self.__class__.counter + 1
+            )  # increment to change port for all envs created
+            self.__class__.global_client = AlpyneClient(
+                self.model_path, port=port, verbose=False
+            )
+
+        self.client = self.__class__.global_client
+        self.run = self.client.create_reinforcement_learning(self.config)
+        self.started = True
+        super().start(self.run)
 
     def reset(
         self,
@@ -112,8 +125,6 @@ class MatrixMA(BaseAlpyneZoo):
         return_info: bool = False,
         options: Optional[dict] = None,
     ) -> "BaseAlpyneZoo.PyObservationType":
-        if self.verbose:
-            print(f"reset")
         if not self.started:
             self.start()
         self.shuffle()
@@ -124,59 +135,28 @@ class MatrixMA(BaseAlpyneZoo):
     def step(
         self, action: "BaseAlpyneZoo.PyActionType"
     ) -> Tuple["BaseAlpyneZoo.PyObservationType", float, bool, Optional[dict]]:
-        if self.verbose:
-            print(f"step with {action}")
         self.stepcounter += 1
-
         if self.stepcounter % 100 == 0:
             self.shuffle()
 
         return super().step(action)
 
-    def last(self, observe=True) -> "BaseAlpyneZoo.PyObservationType":
-        if self.verbose:
-            print(f"last called. done {self.dones}")
-        return super().last(observe)
-
-    def _get_observation_space(self, agent) -> spaces.Space:
-        """Describe the dimensions and bounds of the observation"""
-        if self.observations[agent] is None:
-            self.reset()
-        obs_sample = self.observe(agent)
-        shape_agvs = tuple(obs_sample["agvs"].shape)
-        shape_stations = tuple(obs_sample["stations"].shape)
-        return spaces.Dict(
-            {
-                "agvs": spaces.Box(low=0, high=1, shape=shape_agvs),
-                "stations": spaces.Box(low=0, high=1, shape=shape_stations),
-                "action_mask": spaces.Box(low=0, high=1, shape=(5,)),
-            }
-        )
-
-    def _get_action_space(self, agent) -> spaces.Space:
-        return spaces.Discrete(5)
-
-    def last(self, observe=True) -> "BaseAlpyneZoo.PyObservationType":
-        value = super().last(observe)
-        self.rewards[self.agent_selection] = 0
-        return value
-
-    def _save_observation(self, observation: Observation):
-        agent = str(int(observation.caller))
-        self.agent_selection = agent
-        self.rewards[self.agent_selection] = +observation.rew[0]
-
-        # team rewards
-        for agent in self.agents:
-            self.rewards[agent] += observation.rew[0] / 50
-
+    def _catch_nontraining(self, observation: Observation) -> Observation:
         if "statTitles" in observation.names():
             self.statistics = {
                 title: value
                 for title, value in zip(observation.statTitles, observation.statValues)
             }
+        return observation
 
-        self._cumulative_rewards[self.agent_selection] += observation.rew[0]
+    def _save_observation(self, observation: Observation):
+        self.agent_selection = agent = str(int(observation.caller))
+        self.rewards[self.agent_selection] = observation.rew
+
+        # team rewards
+        for agent in self.agents:
+            self.rewards[agent] += observation.rew[0] * self.team_rewards
+
         obs_agent = torch.Tensor(observation.obs)
         [self._save_for_agent(obs_agent, str(i), i) for i in range(self.fleetsize)]
 

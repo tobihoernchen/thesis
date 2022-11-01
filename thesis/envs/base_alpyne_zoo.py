@@ -11,6 +11,45 @@ from alpyne.data.spaces import Observation, Action, Configuration
 from pettingzoo import AECEnv
 
 
+class ZooAgentBehavior:
+    def __init__(self) -> None:
+        pass
+
+    def is_for_learning(self, alpyne_obs) -> bool:
+        return True
+
+    @abstractmethod
+    def get_action(self, alpyne_obs):
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_observation_space(self) -> spaces.Space:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def get_action_space(self) -> spaces.Space:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def convert_to_action(
+        self, action: "BaseAlpyneZoo.PyActionType", agent: str
+    ) -> Action:
+        raise NotImplementedError()
+
+    @abstractmethod
+    def convert_from_observation(self, alpyne_obs) -> Action:
+        raise NotImplementedError()
+
+
+class ZooAgent:
+    def __init__(
+        self, name: str, behavior: ZooAgentBehavior, does_training: bool = True
+    ) -> None:
+        self.name = name
+        self.behavior = behavior
+        self.does_training = does_training
+
+
 class BaseAlpyneZoo(AECEnv):
     """
     An abstract PettingZoo environment.
@@ -26,7 +65,7 @@ class BaseAlpyneZoo(AECEnv):
         Dict[str, Union[np.ndarray, int, float, tuple, dict]],
     ]
 
-    def __init__(self, sim: ModelRun, agents: List[str]):
+    def __init__(self, sim: ModelRun, agents: List[ZooAgent]):
         """
         Construct a new environment for the provided sim.
 
@@ -38,118 +77,15 @@ class BaseAlpyneZoo(AECEnv):
         :param sim: a created - but not yet started - instance of your model
         :raise ValueError: if the run has been started
         """
-
-        self.agents = list(agents)
         self.agents_original = agents
-        # instantiated with first reset call
-        self.dones = {agent: False for agent in self.agents}
-        self.infos = {agent: dict() for agent in self.agents}
-        self.rewards = {agent: 0 for agent in self.agents}
-        self.observations = {agent: None for agent in self.agents}
+        self._initialize_cache()
+
         self.agent_selection = None
         self.observable = False
 
-        self.observation_spaces = {
-            agent: self._get_observation_space(agent) for agent in self.agents
-        }
-        self.action_spaces = {
-            agent: self._get_action_space(agent) for agent in self.agents
-        }
-
-    def start(self, sim: ModelRun):
-        # complain if the sim was already started
-        if sim.id:
-            raise ValueError("The provided model run should not have been started!")
-
-        self.sim = sim.run()  # submit new run
-        self.sim.wait_for_completion()  # wait until start is finished setting up
-
-    def observation_space(self, agent: str) -> spaces.Space:
-        """Describe the dimensions and bounds of the observation for the agent
-
-        :param agent: The agent's name"""
-        return self.observation_spaces[agent]
-
-    def action_space(self, agent) -> spaces.Space:
-        """Describe the dimensions and bounds of the action for the agent
-
-        :param agent: The agent's name"""
-        return self.action_spaces[agent]
-
-    def remove_agent(self, agent):
-        self.agents.remove(agent)
-
-    def add_agent(self, agent):
-        if not agent in self.agents:
-            self.agents.append(agent)
-            self.dones[agent] = False
-            self.infos[agent] = dict()
-            self.rewards[agent] = 0
-            self.observations[agent] = None
-
     @abstractmethod
-    def _get_observation_space(self, agent: str) -> spaces.Space:
-        """Describe the dimensions and bounds of the observation for the agent
-
-        :param agent: The agent's name"""
-        raise NotImplementedError()
-
-    @abstractmethod
-    def _get_action_space(self, agent) -> spaces.Space:
-        """Describe the dimensions and bounds of the action for the agent
-
-        :param agent: The agent's name"""
-        raise NotImplementedError()
-
-    @abstractmethod
-    def _convert_to_action(
-        self, action: "BaseAlpyneZoo.PyActionType", agent: str
-    ) -> Action:
-        """Convert the action sent as part of the Gym interface to an Alpyne Action object
-
-        :param agent: The agent's name"""
-        raise NotImplementedError()
-
-    @abstractmethod
-    def _save_observation(self, observation: Observation):
-        """From the observation, update:
-        -self.agent_selection,
-        -self.dones
-        -self.observations
-        -self.rewards
-        -self.infos.
-        HAS TO REMOVE AGENTS ONCE THEY HAVE FINISHED
-        :param observation: Alpyne Observation from ModelRun.get_observation()
-        """
-        raise NotImplementedError()
-
-    def observe(self, agent: str) -> "BaseAlpyneZoo.PyObservationType":
-        """Return the observation that agent currently can make."""
-        if not self.observable:
-            self.collect()
-        return self.observations[agent]
-
-    def _terminal_alternative(self, observation: Observation) -> bool:
-        """Optional method to add *extra* terminating conditions"""
-        return False
-
-    def _catch_nontraining(self, observation: Observation) -> Observation:
-        """Optional method to catch information return from the ModelRun that is irrelevant for Training"""
-        return observation
-
-    def step(
-        self, action: "BaseAlpyneZoo.PyActionType"
-    ) -> Tuple["BaseAlpyneZoo.PyObservationType", float, bool, Optional[dict]]:
-        """
-        A method required as part of the pettingzoo interface to run one step of the sim.
-        Take an action in the sim and advance the sim to the start of the next step.
-
-        :param action: The action to send to the sim (in the type expressed by your action space)
-        """
-        alpyne_action = self._convert_to_action(action, self.agent_selection)
-        self.sim.take_action(alpyne_action)
-        self.collect()
-        self.observable = True
+    def _agent_selection_fn(self, alpyne_obs):
+        raise NotImplementedError
 
     def reset(
         self,
@@ -171,17 +107,28 @@ class BaseAlpyneZoo(AECEnv):
                     if option in config.names():
                         config.__setattr__(option, options[option])
         self.agents.clear()
-        if agents is None:
-            self.agents.extend(self.agents_original)
-        else:
-            self.agents.extend(agents)
-        self.dones = {agent: False for agent in self.agents}
+        self._initialize_cache()
 
         self.sim.reset(config)
         self.observable = False
-        self.collect()
+        self._collect()
         if return_info:
             return self.observe(self.agent_selection)
+
+    def step(
+        self, action: "BaseAlpyneZoo.PyActionType"
+    ) -> Tuple["BaseAlpyneZoo.PyObservationType", float, bool, Optional[dict]]:
+        """
+        A method required as part of the pettingzoo interface to run one step of the sim.
+        Take an action in the sim and advance the sim to the start of the next step.
+
+        :param action: The action to send to the sim (in the type expressed by your action space)
+        """
+        alpyne_action = self.agent_behaviors[self.agent_selection].convert_to_action(
+            action, self.agent_selection
+        )
+        self.sim.take_action(alpyne_action)
+        self._collect()
 
     def last(self, observe=True) -> "BaseAlpyneZoo.PyObservationType":
         """
@@ -190,41 +137,85 @@ class BaseAlpyneZoo(AECEnv):
         :return: Observation, reward, done and info for the agent that will act next
         """
         if not self.observable:
-            self.collect()
+            self._collect()
         obs = self.observations[self.agent_selection] if observe else None
         reward = self.rewards[self.agent_selection]
         done = self.dones[self.agent_selection]
         info = self.infos[self.agent_selection]
-        if all(self.dones.values()):
+        if all([self.dones[agent] for agent in self.agents]):
             # All terminate at once
             self.agents.clear()
         return obs, reward, done, info
 
-    def collect(self):
-        self.sim.wait_for_completion()
-        alpyne_obs = self._catch_nontraining(self.sim.get_observation())
-        self._save_observation(alpyne_obs)
+    def observe(self, agent: str) -> "BaseAlpyneZoo.PyObservationType":
+        """Return the observation that agent currently can make."""
+        if not self.observable:
+            self._collect()
+        return self.observations[agent]
+
+    def observation_space(self, agent: str) -> spaces.Space:
+        return self.agent_behaviors[agent].get_observation_space()
+
+    def action_space(self, agent) -> spaces.Space:
+        return self.agent_behaviors[agent].get_action_space()
+
+    def remove_agent(self, agent):
+        self.agents.remove(agent)
+
+    def add_agent(self, agent: ZooAgent):
+        if not agent.name in self.agents:
+            self.agents.append(agent.name)
+            self.dones[agent.name] = False
+            self.infos[agent.name] = dict()
+            self.rewards[agent.name] = 0
+            self.observations[agent.name] = None
+            self.agent_behaviors[agent.name] = agent.behavior
+
+    def _collect(self):
+        while True:
+            self.sim.wait_for_completion()
+            alpyne_obs = self.sim.get_observation()
+            agent = self._agent_selection_fn(alpyne_obs)
+            if self.agent_behaviors[agent].is_for_learning(alpyne_obs):
+                self._save_observation(
+                    alpyne_obs,
+                    agent,
+                    *self.agent_behaviors[agent].convert_from_observation(alpyne_obs)
+                )
+                break
+            else:
+                action = self.agent_behaviors[agent].get_action(alpyne_obs)
+                self.sim.take_action(action)
+
         if self.sim.is_terminal() or self._terminal_alternative(alpyne_obs):
             [self.dones.update({agent: True}) for agent in self.agents]
         self.observable = True
 
-    def render(self, mode="human") -> Optional[Union[np.ndarray, str]]:
-        """
-        A method required as part of the pettingzoo interface to convert the current sim to a useful format
-        (e.g., for console printing or animation).
+    def _save_observation(self, agent, alpyne_obs, obs, reward, done, info):
+        self.agent_selection = agent
+        self.observations[agent] = obs
+        self.rewards[agent] = reward
+        self.dones[agent] = done
+        self.infos[agent] = info
 
-        You may override this method to add on your own custom logic. To see how this is done, see the advanced
-        usage of the documentation.
-        TODO aadd specific reference in doc to render overriding
+    def _terminal_alternative(self, observation: Observation) -> bool:
+        """Optional method to add *extra* terminating conditions"""
+        return False
 
-        :param mode: the rendering type
-        :return: varies based on the mode type
-        """
-        if mode != "human":
-            raise ValueError("Mode not supported: " + mode)
+    def _initialize_cache(self, agents: List[ZooAgent] = None):
+        if agents is None:
+            agents = self.agents_original
+        self.agents = [agent.name for agent in agents if agent.does_training]
+        self.dones = {agent: False for agent in self.agents}
+        self.infos = {agent: dict() for agent in self.agents}
+        self.rewards = {agent: 0 for agent in self.agents}
+        self.observations = {agent: None for agent in self.agents}
+        self.agent_behaviors = {agent.name: agent.behavior for agent in agents}
 
-        # lazy implementation; simple printing
-        print(
-            f"Last status: {self.sim.last_state[0]} | Debug: {self.sim.last_state[1]}"
-        )
-        return
+    def _start(self, sim: ModelRun):
+        # complain if the sim was already started
+        if sim.id:
+            raise ValueError("The provided model run should not have been started!")
+
+        self.sim = sim.run()  # submit new run
+        self.sim.wait_for_completion()  # wait until start is finished setting up

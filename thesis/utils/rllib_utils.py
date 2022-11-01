@@ -14,27 +14,17 @@ from ray.tune.logger import UnifiedLogger
 
 from thesis.policies.simplified_attention_module import register_attention_model
 from thesis.policies.just_lin import register_lin_model
-from thesis.envs.matrix_routing_zoo import MatrixRoutingMA
-from thesis.envs.matrix_dispatching_zoo import MatrixDispatchingMA
-from thesis.envs.matrix_dispatching_zoo_death import MatrixDispatchingMA_Death
-from thesis.envs.matrix_zoo import MatrixMA
+from thesis.envs.matrix import Matrix
 from thesis.utils.callbacks import CustomCallback
 
 
-def setup_ray(path="../..", env="Routing"):
+def setup_ray(path="../.."):
     torch.manual_seed(42)
     random.seed(42)
     numpy.random.seed(42)
     os.environ["PYTHONPATH"] = path
     ray.shutdown()
-    if env == "Routing":
-        setup_matrix_routing_for_ray()
-    if env == "Complete":
-        setup_matrix_complete_for_ray()
-    if env == "Dispatching":
-        setup_matrix_dispatching_for_ray()
-    if env == "Death":
-        setup_matrix_death_for_ray()
+    setup_matrix_dispatching_for_ray()
     register_attention_model()
     register_lin_model()
     ray.init(ignore_reinit_error=True, include_dashboard=True)
@@ -43,27 +33,30 @@ def setup_ray(path="../..", env="Routing"):
 def rllib_ppo_config(
     fleetsize,
     max_fleetsize,
-    config_args,
+    sim_config,
+    pseudo_dispatcher,
+    routing_agent_death=False,
+    dispatching_agent_death=False,
     n_envs=4,
     n_stations=5,
-    dispatching=False,
-    with_dispatcher=False,
     lin_model=False,
     startport=51150,
 ):
     config = ppo.DEFAULT_CONFIG.copy()
     env_args = dict(
-        dispatcher="stat" if with_dispatcher else None,
-        max_seconds=3600,
+        startport=startport,
         fleetsize=fleetsize,
         max_fleetsize=max_fleetsize,
-        config_args=config_args,
-        startport=startport,
+        sim_config=sim_config,
+        max_seconds=3600,
+        pseudo_dispatcher=pseudo_dispatcher,
+        routing_agent_death=routing_agent_death,
+        dispatching_agent_death=dispatching_agent_death,
     )
 
     agvconfig = dict(
         fleetsize=max_fleetsize,
-        embed_dim=32,
+        embed_dim=16,
         n_stations=n_stations,
         depth=6,
         with_action_mask=True,
@@ -79,38 +72,20 @@ def rllib_ppo_config(
         with_agvs=True,
     )
 
-    if dispatching:
-        policies = {
-            "agv": PolicySpec(
-                config={
-                    "model": dict(custom_model_config=agvconfig),
-                }
-            ),
-            "agv1": PolicySpec(
-                config={
-                    "model": dict(custom_model_config=agvconfig),
-                }
-            ),
-            "dispatcher": PolicySpec(
-                config={
-                    "model": dict(custom_model_config=dispconfig),
-                    "gamma": 0.8,
-                    "lambda": 0.8,
-                }
-            ),
-            "dispatcher1": PolicySpec(
-                config={
-                    "model": dict(custom_model_config=dispconfig),
-                    "gamma": 0.8,
-                    "lambda": 0.8,
-                }
-            ),
-        }
-
-    else:
-        policies = {
-            "agv": PolicySpec(config={"model": dict(custom_model_config=agvconfig)})
-        }
+    policies = {
+        "agv": PolicySpec(
+            config={
+                "model": dict(custom_model_config=agvconfig),
+            }
+        ),
+        "dispatcher": PolicySpec(
+            config={
+                "model": dict(custom_model_config=dispconfig),
+                "gamma": 0.8,
+                "lambda": 0.8,
+            }
+        ),
+    }
 
     config["framework"] = "torch"
     config["callbacks"] = lambda: CustomCallback()
@@ -119,13 +94,13 @@ def rllib_ppo_config(
     config["num_workers"] = 0
     config["num_envs_per_worker"] = n_envs
     config["train_batch_size"] = 2000 * 5
-    config["sgd_minibatch_size"] = 2000
+    config["sgd_minibatch_size"] = 500
     config["entropy_coeff"] = 0.01
     config["gamma"] = 0.98
     config["lambda"] = 0.95
     config["kl_coeff"] = 0
     config["lr"] = 3e-5
-    config["lr_schedule"] = [[0, 3e-4], [1000000, 3e-5]]
+    config["lr_schedule"] = [[0, 3e-3], [5000000, 3e-5]]
     config["vf_loss_coeff"] = 0.5
     config["clip_param"] = 0.2
 
@@ -135,14 +110,9 @@ def rllib_ppo_config(
     config["env_config"] = env_args
 
     def pmfn(agent_id, episode, worker, **kwargs):
-        alias = worker.env.env.current_alias
-        if agent_id.endswith("Dispatching"):
-            # if agent_id.startswith(str(alias[0])):
-            #     return "dispatcher1"
+        if int(agent_id) >= 1000:
             return "dispatcher"
         else:
-            # if agent_id.startswith(str(alias[1])):
-            #     return "agv1"
             return "agv"
 
     config["multiagent"] = {
@@ -157,44 +127,16 @@ def rllib_ppo_config(
 
     config["model"].update(
         custom_model="attention_model" if not lin_model else "lin_model",
+        custom_model_config=dict(n_stations=5),
         vf_share_layers=True,
     )
 
     return config
 
 
-def setup_matrix_routing_for_ray(verbose=False):
-    env_fn = lambda config: MatrixRoutingMA(
-        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
-        verbose=verbose,
-        **config
-    )
-    register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
-
-
-def setup_matrix_dispatching_for_ray(verbose=False):
-    env_fn = lambda config: MatrixDispatchingMA(
-        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
-        verbose=verbose,
-        **config
-    )
-    register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
-
-
-def setup_matrix_death_for_ray(verbose=False):
-    env_fn = lambda config: MatrixDispatchingMA_Death(
-        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
-        verbose=verbose,
-        **config
-    )
-    register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
-
-
-def setup_matrix_complete_for_ray(verbose=False):
-    env_fn = lambda config: MatrixMA(
-        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
-        verbose=verbose,
-        **config
+def setup_matrix_dispatching_for_ray():
+    env_fn = lambda config: Matrix(
+        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix_.zip", **config
     )
     register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
 
