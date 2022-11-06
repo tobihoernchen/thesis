@@ -119,9 +119,10 @@ class TrainingBehavior(ContextualAgent):
         for i, agv in enumerate(obs["agvs"]):
             result["agvs"][str(i)] = d = {}
             d["in_system"] = agv[0]
-            d["last_node"] = agv[1:3]
-            d["next_node"] = agv[3:5]
-            hwm = 5
+            d["moving"] = agv[1]
+            d["last_node"] = agv[2:4]
+            d["next_node"] = agv[4:6]
+            hwm = 6
             if not self.dispatching:
                 d["target_node"] = agv[hwm : hwm + 2]
                 hwm = hwm + 2

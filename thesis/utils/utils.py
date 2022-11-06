@@ -15,7 +15,7 @@ from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
 
 # from thesis.policies.simplified_attention_module import register_attention_model
-from thesis.policies.just_lin import register_lin_model
+from thesis.policies.ma_lin_net import register_lin_model
 from thesis.envs.matrix import Matrix
 from thesis.utils.callbacks import CustomCallback
 
@@ -149,7 +149,7 @@ def get_config(
 
 def setup_minimatrix_for_ray():
     env_fn = lambda config: Matrix(
-        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
+        model_path="../../envs/MiniMatrix.zip",
         max_seconds=60 * 60,
         **config,
     )
@@ -158,7 +158,7 @@ def setup_minimatrix_for_ray():
 
 def setup_matrix_for_ray():
     env_fn = lambda config: Matrix(
-        model_path="D://Master/Masterarbeit/thesis/envs/Matrix_.zip",
+        model_path="../../envs/MiniMatrix.zip",
         max_seconds=60 * 60,
         **config,
     )

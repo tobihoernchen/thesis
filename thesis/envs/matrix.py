@@ -82,7 +82,7 @@ class Matrix(BaseAlpyneZoo):
         if self.routing_ma:
             agents.extend(
                 [
-                    ZooAgent(str(i), MultiAgent(self.max_fleetsize, 7))
+                    ZooAgent(str(i), MultiAgent(self.max_fleetsize, 8))
                     for i in range(self.fleetsize)
                 ]
             )
@@ -93,7 +93,7 @@ class Matrix(BaseAlpyneZoo):
                     str(i): str(i) for i in range(self.fleetsize)
                 }
         else:
-            agents.append(ZooAgent("2000", SingleAgent(self.max_fleetsize, 7)))
+            agents.append(ZooAgent("2000", SingleAgent(self.max_fleetsize, 8)))
         if self.dispatch:
             if self.pseudo_dispatcher:
                 if self.dispatching_ma:
@@ -115,7 +115,7 @@ class Matrix(BaseAlpyneZoo):
                                 str(i),
                                 MultiAgent(
                                     self.max_fleetsize,
-                                    5 if not self.config.obs_include_agv_target else 7,
+                                    6 if not self.config.obs_include_agv_target else 8,
                                     True,
                                 ),
                             )
@@ -134,9 +134,9 @@ class Matrix(BaseAlpyneZoo):
                     agents.append(
                         ZooAgent(
                             "2001",
-                            MultiAgent(
+                            SingleAgent(
                                 self.max_fleetsize,
-                                5 if not self.config.obs_include_agv_target else 7,
+                                6 if not self.config.obs_include_agv_target else 8,
                                 True,
                             ),
                         )
@@ -213,7 +213,7 @@ class Matrix(BaseAlpyneZoo):
             original_name = self.routing_aliases_rev[agent]
             self.routing_aliases[original_name] = name
             self.routing_aliases_rev[name] = original_name  # bidirectional
-            self.add_agent(ZooAgent(name, MultiAgent(self.max_fleetsize, 7)))
+            self.add_agent(ZooAgent(name, MultiAgent(self.max_fleetsize, 8)))
             self.routing_hwm += 1
         elif int(agent) >= 1000 and self.dispatching_agent_death and not_in_system:
             self.remove_agent(agent)
@@ -226,7 +226,7 @@ class Matrix(BaseAlpyneZoo):
                     name,
                     MultiAgent(
                         self.max_fleetsize,
-                        5 if not self.config.obs_include_agv_target else 7,
+                        6 if not self.config.obs_include_agv_target else 8,
                         True,
                     ),
                 )

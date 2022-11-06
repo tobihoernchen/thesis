@@ -228,7 +228,7 @@ for(int i = 0; i<fleetsize; i++)
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[String]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA["minimatrix_rllib_dispatching"]]></Code>
+							<Code><![CDATA["matrix"]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -822,7 +822,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[false]]></Code>
+							<Code><![CDATA[true]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1664015112964</Id>
@@ -1083,7 +1083,7 @@ String actstr = py.runResults(
 	+ "," 
 	+ context
 	+ ")").getFeedback(String.class);
-	//traceln(actstr);
+traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
 String intstr = "";
 for(int i = 0; i<actstr.length(); i++)
@@ -1091,7 +1091,7 @@ for(int i = 0; i<actstr.length(); i++)
 	Character chr = actstr.charAt(i);
 	if(Character.isDigit(chr))
 		intstr += chr;
-	if(chr == ',')
+	if(chr == ' ')
 	{
 		int in = Integer.parseInt(intstr);
 		intstr = "";
@@ -1118,8 +1118,8 @@ for(int i = actstr.length()-1; i>0; i--)
 		break;
 	} //fleetsize < 10!!!
 }
-//traceln(act);
-//traceln(receiver);
+traceln(act);
+traceln(receiver);
 if(receiver == 2000)
 	controller.action_agvs(act.toArray(new Integer[0]));
 else if(receiver == 2001)
@@ -4626,6 +4626,21 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 						<Type><![CDATA[int]]></Type>        
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1667756757874</Id>
+					<Name><![CDATA[moving]]></Name>
+					<X>180</X><Y>110</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 			</Variables>
 			<StatechartElements>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
@@ -4770,6 +4785,7 @@ requestPending = false;]]></EntryAction>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[lastNode = currentNode;
+moving = true;
 moveTo(nextNode);
 if(contents().size() == 1)
 	contents().get(0).moveTo(nextNode);
@@ -4936,6 +4952,7 @@ if(contents().size() == 1)
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656057083242" Target="1656057274069" Trigger="message">
 						<Action><![CDATA[setXY(.0, .0);
+moving = false;
 if(contents().size() == 1)
 	contents().get(0).setXY(.0, .0);]]></Action>
 						<Timeout Class="CodeUnitValue">
@@ -5130,7 +5147,8 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1655919201546" Trigger="timeout">
-						<Action><![CDATA[requestPending = true;]]></Action>
+						<Action><![CDATA[requestPending = true;
+moving = false;]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[main.RL_routing_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -5162,6 +5180,7 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656057083242" Target="1656071070696" Trigger="message">
 						<Action><![CDATA[setXY(.0, .0);
+moving = false;
 if(contents().size() == 1)
 	contents().get(0).setXY(.0, .0);
 main.controller.agvHandleBlock(this, null);]]></Action>
@@ -5267,6 +5286,7 @@ if((int)msg[1] > 0)
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1656163405042" Trigger="message">
+						<Action><![CDATA[moving = false;]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -5560,11 +5580,12 @@ boolean include_target = !main.RL_dispatch
 	
 
 double inSys = inState(inSystem) ? 1.0 : 0.0;
+double mov = moving ? 1.0 : 0.0;
 double[] lastNode_obs = main.node2obs(lastNode);
 double[] nextNode_obs = main.node2obs(nextNode);
 int nObsNode = lastNode_obs.length;
 
-int obs_len = 	1 + 2*nObsNode;
+int obs_len = 	2 + 2*nObsNode;
 if(include_part)
 	obs_len += maxPartObsSize;
 if(include_target)
@@ -5574,13 +5595,14 @@ if(main.RL_obs_include_nodes_in_reach)
 	
 double obs[] = new double[obs_len];
 obs[0] = inSys;
+obs[1] = mov;
 for(int i = 0; i<nObsNode; i++)
-	obs[i + 1] = lastNode_obs[i];
+	obs[i + 2] = lastNode_obs[i];
 for(int i = 0; i<nObsNode; i++)
-	obs[i + 1 + nObsNode] = nextNode_obs[i];
+	obs[i + 2 + nObsNode] = nextNode_obs[i];
 
 
-int obs_hwm = 1 + 2 * nObsNode;
+int obs_hwm = 2 + 2 * nObsNode;
 if(include_target)
 {
 	double[] targetNode_obs = main.node2obs(targetNode);
@@ -6793,6 +6815,7 @@ return obs;]]></Body>
 					<Body><![CDATA[double[][] obs = new double
 	[registeredAgvs.size() + registeredStations.size()]
 	[obs_size_dispatching];
+	traceln("dispobs!");
 for(int i = 0; i<registeredAgvs.size();i++)
 {
 	Agv agv = (Agv)registeredAgvs.get(i)[0];
