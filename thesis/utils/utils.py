@@ -1,325 +1,188 @@
-import time
-import json
-import numpy as np
-import time
+import os
+import tempfile
+from datetime import datetime
+import torch
 import random
+import numpy.random
+import json
+import time
+
+import ray
+from ray.rllib.policy.policy import PolicySpec
+from ray.rllib.agents import ppo, dqn
+from ray.rllib.env import PettingZooEnv
+from ray.tune.registry import register_env
+from ray.tune.logger import UnifiedLogger
+
+# from thesis.policies.simplified_attention_module import register_attention_model
+from thesis.policies.just_lin import register_lin_model
+from thesis.envs.matrix import Matrix
+from thesis.utils.callbacks import CustomCallback
 
 
-def save_hparams(
-    fleetsize=None,
-    max_fleetsize=None,
-    env_args={},
-    algo_args={},
-    fe_args={},
-    net_arch=[],
-    dir="Default",
-    run_name="",
-    **kwargs,
+def setup_ray(path="../.."):
+    torch.manual_seed(42)
+    random.seed(42)
+    numpy.random.seed(42)
+    os.environ["PYTHONPATH"] = path
+    ray.shutdown()
+    setup_minimatrix_for_ray()
+    setup_matrix_for_ray()
+    # register_attention_model()
+    register_lin_model()
+    ray.init(ignore_reinit_error=True, include_dashboard=True)
+
+
+def config_ma_policies(
+    agv_model, train_agv=True, dispatcher_model=None, train_dispatcher=True
 ):
-    hparams = dict(
-        fleetsize=fleetsize,
-        max_fleetsize=max_fleetsize,
-        env_args=env_args,
-        algo_args=algo_args,
-        fe_args=fe_args,
-        net_arch=net_arch,
-    )
-    models_dir = f"../../models/{dir}"  # ../../
-    run_name = (
-        run_name + f"{fleetsize}-{max_fleetsize}-{time.strftime('%d_%m-%H_%M_%S')}"
-    )
-    with open(f"{models_dir}/{run_name}.json", "w") as outfile:
-        json.dump(hparams, outfile, indent=3)
-        return models_dir, run_name
+    config = dict()
 
+    policies = dict()
+    policies["agv"] = PolicySpec(config=agv_model)
+    if dispatcher_model is not None:
+        policies["dispatcher"] = PolicySpec(config=dispatcher_model)
 
-def manual_routing(next, target, possibles=None):
-    if possibles is None:
-        possibles = [
-            True,
-        ] * 4
+    policies_to_train = []
+    if train_agv:
+        policies_to_train.append("agv")
+    if dispatcher_model is not None and train_dispatcher:
+        policies_to_train.append("dispatcher")
 
-    if np.sqrt(np.square(target[0] - next[0]) + np.square(target[1] - next[1])) < 0.001:
-        return 0
-
-    expected = [
-        (next[0] - 0.1, next[1]),
-        (next[0], next[1] - 0.1),
-        (next[0] + 0.1, next[1]),
-        (next[0], next[1] + 0.1),
-    ]
-
-    distances = [
-        np.sqrt(np.square(target[0] - x) + np.square(target[1] - y))
-        for x, y in expected
-    ]
-    possible_distances = [
-        distance if possibles[action] else 1e8
-        for action, distance in enumerate(distances)
-    ]
-    return np.argmin(possible_distances) + 1
-    # action = None
-    # if dx > dy:
-    #     if next[0] > target[0]:
-    #         action = 1
-    #     if next[0] < target[0]:
-    #         action = 3
-    # if dx < dy:
-    #     if next[1] > target[1]:
-    #         action = 2
-    #     if next[1] < target[1]:
-    #         action = 4
-    # if action is not None and possibles[action - 1]:
-    #     return action
-    # elif action is not None:
-    #     return random.choice([i + 1 for i, b in enumerate(possibles) if b])
-    # else:
-    #     return 0
-
-
-class RewardCheck:
-    """WIP"""
-
-    def __init__(self, env, obs2action=None) -> None:
-        self.env = env
-        self.hist = dict(rewards = [])
-        if "agent_selection" in env.__dict__.keys():
-            self.zoo = True
-            self.gym = False
+    def pmfn(agent_id, episode, worker, **kwargs):
+        if int(agent_id) >= 1000 and int(agent_id) != 2000:
+            return "dispatcher"
         else:
-            self.zoo = False
-            self.gym = True
-        if obs2action is not None and not isinstance(obs2action, str):
-            self.obs2action = obs2action
-        elif obs2action == "target":
-            self.obs2action = (
-                lambda obs, agent: self.get_action_target(obs, agent)
-                if not agent.endswith("Dispatching")
-                else self.get_action_disp(obs, agent)
-            )
-        elif obs2action == "build":
-            self.obs2action = (
-                lambda obs, agent: self.get_action_build(obs, agent)
-                if not agent.endswith("Dispatching")
-                else self.get_action_disp(obs, agent)
-            )
-        else:
-            self.obs2action = lambda obs, agent: (
-                self.get_action_rand(obs, agent)
-                if not agent.endswith("Dispatching")
-                else self.get_action_disp(obs, agent)
-            )
+            return "agv"
 
-    def run(
-        self,
-        n_episodes=None,
-        agents=None,
-        reward_above=-100,
-        reward_below=100,
-        seed=None,
-    ):
-        self.times = []
-        counter = 0
-        self.reward_above = reward_above
-        self.reward_below = reward_below
-        self.check_for = (
-            agents
-            if isinstance(agents, list)
-            else [
-                agents,
-            ]
-        )
-        while counter < n_episodes or n_episodes is None:
-            self.env.reset(seed=seed)
-            self.actions = {agent: 0 for agent in self.env.possible_agents}
-            self.extras = {agent: None for agent in self.env.possible_agents}
-            self.targets = {agent: None for agent in self.env.possible_agents}
-            self.total_rew = 0
-            if self.gym:
-                self.state = [0] * 20, 0, 0, 0
-            if self.zoo:
-                self.state = {
-                    agent: [[0] * 20, 0, 0, 0] for agent in self.env.possible_agents
-                }
-            self.steps = 0
-            self.extra = ""
-            if self.zoo:
-                for agent in self.env.agent_iter():
-                    last = self.env.last()
-                    self.hist["rewards"].append(last[1])
-                    self.state[agent] = self.check(
-                        self.state[agent],
-                        self.actions[agent],
-                        agent,
-                        last,
-                        self.extras[agent],
-                    )
-                    action, extra = self.obs2action(last[0], agent)
-                    self.actions[agent] = action
-                    self.extras[agent] = extra
-                    before = time.time()
-                    self.env.step(action)
-                    self.times.append(time.time() - before)
+    config["multiagent"] = {
+        "policies": policies,
+        "policy_mapping_fn": pmfn,
+        "policies_to_train": policies_to_train,
+        "count_steps_by": "agent_steps",
+    }
+    return config
 
-                    self.total_rew += self.state[agent][1]
-                    self.steps += 1
-            if self.gym:
-                done = False
-                obs = reward = done = info = None
-                agent = "default"
-                while not done:
-                    self.action, self.extra = self.obs2action(
-                        obs, reward, done, info, agent
-                    )
-                    obs, reward, done, info = self.check(
-                        self.state,
-                        self.action,
-                        agent,
-                        self.env.step(self.action),
-                        self.extra,
-                    )
-                    self.steps += 1
-            counter += 1
-            print("+" * 20)
-            print(f"Total Reward: {self.total_rew}")
-            print(
-                f"Mean Step Time: {np.mean(self.times)}s ; Max: {max(self.times)}s ; Min: {min(self.times)}s"
-            )
 
-    def check(self, old_state, action, agent, new_state, extra=None):
+def config_ppo_training(batch_size=5000, sgd_batch_size=None):
+    config = {}
+    config["train_batch_size"] = batch_size
+    config["sgd_minibatch_size"] = 5000 if sgd_batch_size is None else sgd_batch_size
+    config["entropy_coeff"] = 0.01
+    config["gamma"] = 0.98
+    config["lambda"] = 0.95
+    config["kl_coeff"] = 0
+    config["lr"] = 3e-5
+    config["lr_schedule"] = [[0, 3e-3], [5000000, 3e-5]]
+    config["vf_loss_coeff"] = 1
+    config["clip_param"] = 0.2
+    return config
 
-        obs_o, reward_o, done_o, info_o = old_state
-        obs_n, reward_n, done_n, info_n = new_state
-        if isinstance(obs_o, dict):
-            obs_o = obs_o["agvs"]
-        obs_n = obs_n["agvs"]
 
-        if self.check_for[0] is None or agent in self.check_for:
-            if reward_n > self.reward_above or reward_n < self.reward_below:
-                print(f"{self.steps}---{agent}" + "-" * 20)
-                print(f"OLD: {obs_o[:2]} \t done:{done_o}")
-                print(f"OLD: curr: {obs_o[2:4]}\t next:{obs_o[4:6]}\t tar:{obs_o[6:8]}")
-                print(f"ACTION: {action}")
-                print(f"NEW: {obs_n[:2]} \t done:{done_n}")
-                print(f"NEW: curr: {obs_n[2:4]}\t next:{obs_n[4:6]}\t tar:{obs_n[6:8]}")
-                print(f"REWARD: {reward_n}")
-                if extra is not None:
-                    print(extra)
+def add_to_config(config, to_add: dict):
+    for k, v in to_add.items():
+        config[k] = v
 
-        # if action == 1:
-        #     assert obs_n[2] >= obs_n[4], (obs_n[2], obs_n[4])
-        # if action == 4:
-        #     assert obs_n[5] >= obs_n[3], (obs_n[5], obs_n[3])
-        # if action == 3:
-        #     assert obs_n[4] >= obs_n[2], (obs_n[4], obs_n[2])
-        # if action == 2:
-        #     assert obs_n[3] >= obs_n[5], (obs_n[3], obs_n[5])
-        if np.all(np.isclose(obs_n[4:6], obs_n[6:8], 0.01)):
-            pass
-            # assert reward_n > 0.7
-        if reward_n > 0.7:
-            pass
-            # assert np.all(np.isclose(obs_n[5:7], obs_n[7:9], 0.01))
-        return obs_n, reward_n, done_n, info_n
 
-    def get_action_target(self, observation, agent):
-        if isinstance(observation, dict):
-            observation = observation["agvs"]
-        possibles = [
-            observation[x] != 0 and observation[y] != 0
-            for x, y in zip(range(8, 16, 2), range(9, 16, 2))
-        ]
-        next = observation[4:6]
-        target = observation[6:8]
-        action = manual_routing(next, target, possibles)
-        return action, None
+def get_config(
+    env_args,
+    agv_model,
+    train_agv=True,
+    dispatcher_model=None,
+    train_dispatcher=True,
+    batch_size=5000,
+    type="ppo",
+    n_envs=4,
+    env="minimatrix",
+    run_class="default",
+):
+    if type == "ppo":
+        config = ppo.DEFAULT_CONFIG.copy()
+        add_to_config(config, config_ppo_training(batch_size))
 
-    stations = dict(
-        geo1=(0.32954545454545453, 0.428),
-        geo2=(0.32954545454545453, 0.808),
-        hsn=(0.5727272727272728, 0.62),
-        wps=(0.7909090909090909, 0.62),
-        rework=(0.9727272727272728, 0.62),
-        park=(0.9727272727272728, 1.0),
+    config["framework"] = "torch"
+    config["callbacks"] = lambda: CustomCallback()
+    config["batch_mode"] = "truncate_episodes"  # "complete_episodes"
+
+    config["num_gpus"] = 1
+    config["num_workers"] = 0
+    config["num_envs_per_worker"] = n_envs
+
+    add_to_config(
+        config,
+        config_ma_policies(
+            agv_model=agv_model,
+            train_agv=train_agv,
+            dispatcher_model=dispatcher_model,
+            train_dispatcher=train_dispatcher,
+        ),
     )
 
-    def get_action_build(self, obs, agent):
-        obs = obs["agvs"]
-        possibles = [
-            obs[x] != 0 and obs[y] != 0
-            for x, y in zip(range(8, 16, 2), range(9, 16, 2))
-        ]
-        var1 = obs[16] == 1
-        var2 = obs[17] == 1
-        geo01 = obs[18] == 1
-        geo12 = obs[19] == 1
-        geo2d = obs[20] == 1
-        d = obs[21] == 1
-        if var1:
-            hwm = 24
-        else:
-            hwm = 26
-        respotsDone = [obs[i] == 1 for i in range(22, hwm, 2)]
-        respotsNio = [obs[i] == 1 for i in range(23, hwm, 2)]
-        if any(respotsNio):
-            self.targets[agent] = "rework"
-        elif not any([geo01, geo12, geo2d, d]):
-            self.targets[agent] = "geo1"
-        elif not any(respotsDone):
-            self.targets[agent] = "wps"
-        elif not all(respotsDone):
-            self.targets[agent] = "hsn"
-        else:
-            self.targets[agent] = "geo2"
-        action = manual_routing(
-            obs[4:6], list(self.stations[self.targets[agent]]), possibles
-        )
-        if action > 0:
-            assert possibles[action - 1]
-        return (
-            action,
-            f"POSSIBLE: {possibles} \t GOAL: {self.targets[agent]}-{list(self.stations[self.targets[agent]])} \t PART:{obs[16:26]}",
+    config["env"] = env
+    config["env_config"] = env_args
+
+    models_dir = f"../../models/{run_class}"
+    logs_dir = f"../../logs/{run_class}"
+    run_name = f"{env_args['fleetsize']}_{env_args['max_fleetsize']}_{time.strftime('%Y-%m-%d_%H-%M-%S')}"
+    if not os.path.exists(f"{models_dir}/{run_name}"):
+        os.makedirs(f"{models_dir}/{run_name}")
+    with open(f"{models_dir}/{run_name}/config.json", "w") as outfile:
+        json.dump(
+            dict(
+                env_args=env_args,
+                agv_model=agv_model,
+                train_agv=train_agv,
+                dispatcher_model=dispatcher_model,
+                train_dispatcher=train_dispatcher,
+                type=type,
+                batch_size=batch_size,
+                n_envs=n_envs,
+                env=env,
+                run_class=run_class,
+            ),
+            outfile,
+            indent=3,
         )
 
-    def check_possible(self, others_nexts, others_lasts, possibles, my_next):
-        returns = [
-            0,
-        ]
-        for i, possible in enumerate(possibles):
-            is_possible = not possible == (0.0, 0.0)
-            for others_next, others_last in zip(others_nexts, others_lasts):
-                if possible == others_last and my_next == others_next:
-                    possible = False
-            if is_possible:
-                returns.append(i + 1)
-        return returns
+    return config, custom_log_creator(logs_dir, run_name), f"{models_dir}/{run_name}"
 
-    def get_action_rand(self, obs, agent):
-        obs = obs["agvs"]
-        others_lasts = [(obs[i], obs[i + 1]) for i in range(26, len(obs), 24)]
-        others_nexts = [(obs[i], obs[i + 1]) for i in range(28, len(obs), 24)]
-        possibles = [(obs[i], obs[i + 1]) for i in range(6, 14, 2)]
-        possibles = self.check_possible(
-            others_nexts, others_lasts, possibles, (obs[4], obs[5])
-        )
-        if len(possibles) > 1:
-            return random.choice(possibles[1:]), str(possibles) + str(obs[26:30])
-        else:
-            return 0
 
-    station_nodes = dict(
-        geo1=1,
-        geo2=0,
-        hsn=2,
-        wps=3,
-        rework=4,
-        park=5,
+def setup_minimatrix_for_ray():
+    env_fn = lambda config: Matrix(
+        model_path="D://Master/Masterarbeit/thesis/envs/MiniMatrix.zip",
+        max_seconds=60 * 60,
+        **config,
+    )
+    register_env("minimatrix", lambda config: PettingZooEnv(env_fn(config)))
+
+
+def setup_matrix_for_ray():
+    env_fn = lambda config: Matrix(
+        model_path="D://Master/Masterarbeit/thesis/envs/Matrix_.zip",
+        max_seconds=60 * 60,
+        **config,
+    )
+    register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
+
+
+def custom_log_creator(custom_path, logdir_prefix):
+    def logger_creator(config):
+
+        if not os.path.exists(custom_path):
+            os.makedirs(custom_path)
+        logdir = tempfile.mkdtemp(prefix=logdir_prefix, dir=custom_path)
+        return UnifiedLogger(config, logdir, loggers=None)
+
+    return logger_creator
+
+
+def save(trainer, policy_name: str, path: str):
+    torch.save(
+        trainer.workers.local_worker().get_policy(policy_name).model.state_dict(), path
     )
 
-    def get_action_disp(self, observation, agent):
-        agent_to_dispatch = agent.split("_")[0]
-        target = self.targets[agent_to_dispatch]
-        if target is None:
-            return random.randint(0, 5), None
-        else:
-            return self.station_nodes[target], target
+
+def load(trainer, policy_name, path):
+    trainer.workers.local_worker().get_policy(policy_name).model.load_state_dict(
+        torch.load(path)
+    )

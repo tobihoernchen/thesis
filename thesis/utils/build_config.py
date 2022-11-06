@@ -62,7 +62,7 @@ def build_config(
         reward_invalid=float(
             0 if not "reward_invalid" in config_args else config_args["reward_invalid"]
         ),
-        obs_include_nodes_in_reach=False
+        obs_include_nodes_in_reach=True
         if not "obs_include_nodes_in_reach" in config_args
         else config_args["obs_include_nodes_in_reach"],
         obs_include_agv_target=False

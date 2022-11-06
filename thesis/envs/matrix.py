@@ -3,6 +3,7 @@ from alpyne.client.alpyne_client import AlpyneClient
 from .base_alpyne_zoo import ZooAgent, BaseAlpyneZoo
 from .behaviors import MultiAgent, SingleAgent, RandomStationDispatcher
 from ..utils.build_config import build_config
+from PIL import ImageDraw, Image
 
 
 class Matrix(BaseAlpyneZoo):
@@ -81,7 +82,7 @@ class Matrix(BaseAlpyneZoo):
         if self.routing_ma:
             agents.extend(
                 [
-                    ZooAgent(str(i), MultiAgent(self.max_fleetsize, 5))
+                    ZooAgent(str(i), MultiAgent(self.max_fleetsize, 7))
                     for i in range(self.fleetsize)
                 ]
             )
@@ -92,7 +93,7 @@ class Matrix(BaseAlpyneZoo):
                     str(i): str(i) for i in range(self.fleetsize)
                 }
         else:
-            agents.append(ZooAgent("2000", SingleAgent(self.max_fleetsize, 5)))
+            agents.append(ZooAgent("2000", SingleAgent(self.max_fleetsize, 7)))
         if self.dispatch:
             if self.pseudo_dispatcher:
                 if self.dispatching_ma:
@@ -110,7 +111,14 @@ class Matrix(BaseAlpyneZoo):
                 if self.dispatching_ma:
                     agents.extend(
                         [
-                            ZooAgent(str(i), MultiAgent(self.max_fleetsize, 5, True))
+                            ZooAgent(
+                                str(i),
+                                MultiAgent(
+                                    self.max_fleetsize,
+                                    5 if not self.config.obs_include_agv_target else 7,
+                                    True,
+                                ),
+                            )
                             for i in range(1000, 1000 + self.fleetsize)
                         ]
                     )
@@ -124,7 +132,14 @@ class Matrix(BaseAlpyneZoo):
                         }
                 else:
                     agents.append(
-                        ZooAgent("2001", MultiAgent(self.max_fleetsize, 5, True))
+                        ZooAgent(
+                            "2001",
+                            MultiAgent(
+                                self.max_fleetsize,
+                                5 if not self.config.obs_include_agv_target else 7,
+                                True,
+                            ),
+                        )
                     )
         return agents
 
@@ -166,6 +181,23 @@ class Matrix(BaseAlpyneZoo):
             self._start()
         self.stepcounter = 0
         self.seed(seed=seed)
+        if self.routing_ma and self.routing_agent_death:
+            self.routing_hwm = self.fleetsize
+            self.routing_aliases = {str(i): str(i) for i in range(self.fleetsize)}
+            self.routing_aliases_rev = {str(i): str(i) for i in range(self.fleetsize)}
+        if (
+            self.dispatch
+            and not self.pseudo_dispatcher
+            and self.dispatching_ma
+            and self.dispatching_agent_death
+        ):
+            self.dispatching_hwm = self.fleetsize + 1000
+            self.dispatching_aliases = {
+                str(i): str(i) for i in range(1000, 1000 + self.fleetsize)
+            }
+            self.dispatching_aliases_rev = {
+                str(i): str(i) for i in range(1000, 1000 + self.fleetsize)
+            }
         return super().reset(self.config, seed, return_info, options)
 
     def _save_observation(self, alpyne_obs, agent, obs, reward, done, info):
@@ -181,7 +213,7 @@ class Matrix(BaseAlpyneZoo):
             original_name = self.routing_aliases_rev[agent]
             self.routing_aliases[original_name] = name
             self.routing_aliases_rev[name] = original_name  # bidirectional
-            self.add_agent(ZooAgent(name, MultiAgent(self.max_fleetsize, 5)))
+            self.add_agent(ZooAgent(name, MultiAgent(self.max_fleetsize, 7)))
             self.routing_hwm += 1
         elif int(agent) >= 1000 and self.dispatching_agent_death and not_in_system:
             self.remove_agent(agent)
@@ -189,7 +221,16 @@ class Matrix(BaseAlpyneZoo):
             original_name = self.dispatching_aliases_rev[agent]
             self.dispatching_aliases[original_name] = name
             self.dispatching_aliases_rev[name] = original_name  # bidirectional
-            self.add_agent(ZooAgent(name, MultiAgent(self.max_fleetsize, 5, True)))
+            self.add_agent(
+                ZooAgent(
+                    name,
+                    MultiAgent(
+                        self.max_fleetsize,
+                        5 if not self.config.obs_include_agv_target else 7,
+                        True,
+                    ),
+                )
+            )
             self.dispatching_hwm += 1
         return super()._save_observation(agent, alpyne_obs, obs, reward, done, info)
 
@@ -208,3 +249,37 @@ class Matrix(BaseAlpyneZoo):
 
     def close(self):
         self.sim.stop()
+
+    def render(self, dict_mode=False):
+        obs, _, _, _ = self.last()
+        obs_dict = self.agent_behaviors[self.agent_selection]._state_dict(obs)
+        if dict_mode:
+            return obs_dict
+        x_max = 400
+        y_max = 200
+        r = 5
+        im = Image.new("RGB", (x_max + 10, y_max + 10))
+        draw = ImageDraw.Draw(im)
+        color_agv = (255, 0, 0)
+        color_stat = (0, 50, 0)
+        color_main = (0, 0, 255)
+        for station in obs_dict["stations"].values():
+            x = station["position"][0] * x_max
+            y = station["position"][1] * y_max
+            draw.ellipse((x - 2 * r, y - 2 * r, x + 2 * r, y + 2 * r), fill=color_stat)
+        agvs = list(obs_dict["agvs"].items())
+        agvs.reverse()
+        for name, agv in agvs:
+            if agv["in_system"] == 1:
+                color = color_main if name == "0" else color_agv
+                xl = agv["last_node"][0] * x_max
+                yl = agv["last_node"][1] * y_max
+                xn = agv["next_node"][0] * x_max
+                yn = agv["next_node"][1] * y_max
+                draw.rectangle((xl + r, yl + r, xl - r, yl - r), fill=color)
+                draw.ellipse((xn - r, yn - r, xn + r, yn + r), fill=color)
+                draw.text((xl - r, yl - r), name)
+                draw.line((xl, yl, xn, yn), fill=color)
+        del draw
+
+        return im

@@ -4,7 +4,7 @@ import torch
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.utils.typing import ModelConfigDict
 from ray.rllib.models import ModelCatalog
-from .custom_blocks import PositionEncoder, Embedder
+from .custom_blocks import MatrixPositionEncoder
 
 
 def register_lin_model():
@@ -14,23 +14,21 @@ def register_lin_model():
 class LinFE(nn.Module):
     def __init__(
         self,
-        action_space_max: int,
         n_features,
         embed_dim=64,
         with_agvs=True,
         with_stations=True,
+        position_embedd_dim = 2,
         activation=nn.ReLU,
     ) -> None:
 
         super().__init__()
-        self.n_features = n_features
-        self.encode_main = PositionEncoder(list(range(2, 15, 2)), self.n_features, 2)
-        self.embedd_main = Embedder(
-            embed_dim, self.encode_main.out_features(), activation
-        )
+        self.encoder = MatrixPositionEncoder(position_embedd_dim)
 
         self.main_ff = nn.Sequential(
-            nn.Linear(embed_dim + action_space_max, 2 * embed_dim),
+            nn.Linear(n_features + position_embedd_dim * 7, 2 * embed_dim),
+            activation(),
+            nn.Linear(2 * embed_dim, 2 * embed_dim),
             activation(),
             nn.Linear(2 * embed_dim, 2 * embed_dim),
             activation(),
@@ -40,16 +38,10 @@ class LinFE(nn.Module):
 
         self.with_agvs = with_agvs
         if with_agvs:
-            self.encode_agvs = PositionEncoder(
-                list(range(2, 15, 2)), self.n_features, 2
-            )
-            self.embedd_agvs = Embedder(
-                embed_dim * 2,
-                self.encode_agvs.out_features() + self.encode_main.out_features(),
-                activation,
-            )
             self.lintention_agvs = nn.Sequential(
-                nn.Linear(2 * embed_dim, 4 * embed_dim),
+                nn.Linear(2 * n_features + position_embedd_dim * 14, 4 * embed_dim),
+                activation(),
+                nn.Linear(4 * embed_dim, 4 * embed_dim),
                 activation(),
                 nn.Linear(4 * embed_dim, 2 * embed_dim),
                 activation(),
@@ -59,20 +51,10 @@ class LinFE(nn.Module):
 
         self.with_stations = with_stations
         if with_stations:
-            self.encode_station = PositionEncoder(
-                [
-                    1,
-                ],
-                self.n_features,
-                2,
-            )
-            self.embedd_station = Embedder(
-                embed_dim * 2,
-                self.encode_station.out_features() + self.encode_main.out_features(),
-                activation,
-            )
             self.lintention_station = nn.Sequential(
-                nn.Linear(2 * embed_dim, 4 * embed_dim),
+                nn.Linear(2 * n_features + position_embedd_dim * 8, 4 * embed_dim),
+                activation(),
+                nn.Linear(4 * embed_dim, 4 * embed_dim),
                 activation(),
                 nn.Linear(4 * embed_dim, 2 * embed_dim),
                 activation(),
@@ -82,40 +64,32 @@ class LinFE(nn.Module):
 
     def forward(self, obs):
         features = []
-        main_data = self.encode_main(obs["agvs"][:, None, : self.n_features])
-        main_embedded = torch.concat(
-            [self.embedd_main(main_data), obs["last_action"][:, None, :]], 2
-        )
-        features_main = self.main_ff(main_embedded).squeeze(dim=1)
+        main_data = self.encoder(obs["agvs"][:, 1], range(1, 14, 2))[:, None, :]
+        features_main = self.main_ff(main_data).squeeze(dim=1)
         features.append(features_main)
 
         if self.with_agvs:
-            agvs_data = obs["agvs"][:, self.n_features :]
-            n_agvs = agvs_data.shape[1] // self.n_features
-            agvs_reshaped = self.encode_agvs(
-                agvs_data.reshape((agvs_data.shape[0], n_agvs, self.n_features))
-            )
-            main_repeated = main_data.repeat(1, n_agvs, 1)
-            agvs_embedded = self.embedd_agvs(
+            agvs_data = obs["agvs"][:, 1:]
+            agvs_reshaped = self.encoder(agvs_data, range(1, 14, 2))
+            main_repeated = main_data.repeat(1, obs["agvs"].shape[1] - 1, 1)
+            lintentioned_agvs = self.lintention_agvs(
                 torch.concat([main_repeated, agvs_reshaped], 2)
             )
-            lintentioned_agvs = self.lintention_agvs(agvs_embedded)
             features_agvs = lintentioned_agvs.max(dim=1)[0]
             features.append(features_agvs)
 
         if self.with_stations:
-            station_data = obs["stations"]
-            n_stations = station_data.shape[1] // self.n_features
-            stations_reshaped = self.encode_station(
-                station_data.reshape(
-                    (station_data.shape[0], n_stations, self.n_features)
-                )
+            station_data = obs["stat"]
+            stations_reshaped = self.encoder(
+                station_data,
+                [
+                    0,
+                ],
             )
-            main_repeated = main_data.repeat(1, n_stations, 1)
-            stations_embedded = self.embedd_station(
+            main_repeated = main_data.repeat(1, obs["stat"].shape[1], 1)
+            lintentioned_station = self.lintention_station(
                 torch.concat([main_repeated, stations_reshaped], 2)
             )
-            lintentioned_station = self.lintention_station(stations_embedded)
             features_stations = lintentioned_station.max(dim=1)[0]
             features.append(features_stations)
 
@@ -130,11 +104,7 @@ class LinPolicy(TorchModelV2, nn.Module):
         num_outputs: int,
         model_config: ModelConfigDict,
         name: str,
-        fleetsize: int = 10,
-        n_stations: int = 0,
         embed_dim=64,
-        n_heads=8,
-        depth=4,
         with_action_mask=True,
         with_agvs=True,
         with_stations=True,
@@ -143,24 +113,20 @@ class LinPolicy(TorchModelV2, nn.Module):
         nn.Module.__init__(self)
         action_space_max = action_space.nvec.max()
         TorchModelV2.__init__(
-            self, obs_space, action_space, action_space_max, model_config, name
+            self, obs_space, action_space, num_outputs, model_config, name
         )
         self.with_action_mask = with_action_mask
-        self.n_features = self.obs_space.original_space["agvs"].shape[0] // fleetsize
-        self.fleetsize = fleetsize
-        self.n_stations = n_stations
+        self.n_features = self.obs_space.original_space["agvs"].shape[1]
         self.embed_dim = embed_dim
         self.name = name
 
         self.action_fe = LinFE(
-            action_space_max=action_space_max,
             n_features=self.n_features,
             embed_dim=embed_dim,
             with_agvs=with_agvs,
             with_stations=with_stations,
         )
         self.value_fe = LinFE(
-            action_space_max=action_space_max,
             n_features=self.n_features,
             embed_dim=embed_dim,
             with_agvs=with_agvs,
@@ -192,9 +158,14 @@ class LinPolicy(TorchModelV2, nn.Module):
         features = self.action_fe(self.obs)
 
         actions = self.action_net(features)
+        action_tmp = torch.zeros(
+            obsdict["obs"]["action_mask"].shape,
+            device=actions.device,
+        )
+        action_tmp[:, 0, :] = actions
         if self.with_action_mask:
-            actions = actions + (obsdict["obs"]["action_mask"] - 1) * 1e8
-        return actions, []
+            action_tmp = action_tmp + (obsdict["obs"]["action_mask"] - 1) * 1e8
+        return action_tmp.flatten(1), []
 
     def value_function(self):
         features = self.value_fe(self.obs)

@@ -4413,7 +4413,7 @@ return str;]]></Body>
 			<Import><![CDATA[import org.graalvm.compiler.replacements.nodes.arithmetic.IntegerAddExactNode;]]></Import>
 			<StartupCode><![CDATA[color = randomColor();
 roller_deck_agv.setColor("face", color);
-placeOnRandomNode();
+placeOnRandomNode(null);
 register();
 DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 			<Generic>false</Generic>
@@ -4918,7 +4918,7 @@ if(contents().size() == 1)
 						<Point><X>0</X><Y>40</Y></Point>
 					</Points>
 					<Properties Target="1655919201546">
-					<Action><![CDATA[placeOnRandomNode();]]></Action>
+					<Action><![CDATA[placeOnRandomNode((PointNode)nextNode);]]></Action>
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
@@ -5394,6 +5394,10 @@ return null;]]></Body>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
+					<Parameter>
+						<Name><![CDATA[preferredNode]]></Name>
+						<Type><![CDATA[PointNode]]></Type>
+					</Parameter>
 					<Body><![CDATA[INetwork net = main.getNetworks()[0];
 int n_nodes = net.getNodeCount();
 double min_distance = 2.0;
@@ -5403,6 +5407,31 @@ for(Integer i = 0; i<n_nodes; i++)
 	node_indices[i] = i;
 	
 List<Integer> shuffleList = Arrays.asList(node_indices);
+
+if(preferredNode != null)
+{
+	boolean nodeIsFree = true;
+	for(Agv other : main.agvs)
+	{
+		double dist = getDistance(
+			other.getX(), other.getY(), 
+			preferredNode.getX(), preferredNode.getY());
+		dist = main.toLengthUnits(dist, main.unit);
+		if(dist < min_distance)
+			nodeIsFree = false;
+	}
+	if(nodeIsFree)
+	{
+		jumpTo(preferredNode);
+		lastNode = preferredNode;
+		currentNode = preferredNode;
+		nextNode = currentNode;
+		if(contents().size() == 1)
+			contents().get(0).jumpTo(preferredNode);
+		return;
+	}
+}
+
 
 for(int i = 0; i<n_nodes; i++)
 {
