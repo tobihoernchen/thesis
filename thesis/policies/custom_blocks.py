@@ -8,7 +8,7 @@ class PointEmbedding(nn.Module):
     creates an embedding based on 2D-points
     """
 
-    def __init__(self, max_len=100, embed_size=2) -> None:
+    def __init__(self, max_len=200, embed_size=2) -> None:
         super().__init__()
         self.hwm = nn.Parameter(torch.Tensor([0]), requires_grad=False)
         self.nodes = nn.Parameter(-torch.ones((max_len, 2)), requires_grad=False)
@@ -44,7 +44,7 @@ class MatrixPositionEncoder(nn.Module):
     Output: (*, x + len(pos_cols) * embed_size)
     """
 
-    def __init__(self, embed_size, resolution=100) -> None:
+    def __init__(self, embed_size, resolution=200) -> None:
         super().__init__()
         self.pointembedder = PointEmbedding(max_len=resolution, embed_size=embed_size)
 

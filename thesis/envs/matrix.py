@@ -276,6 +276,12 @@ class Matrix(BaseAlpyneZoo):
                 yl = agv["last_node"][1] * y_max
                 xn = agv["next_node"][0] * x_max
                 yn = agv["next_node"][1] * y_max
+                if "target_node" in agv.keys():
+                    xt = agv["target_node"][0] * x_max
+                    yt = agv["target_node"][1] * y_max
+                    draw.ellipse(
+                        (xt - r / 2, yt - r / 2, xt + r / 2, yt + r / 2), fill=color
+                    )
                 draw.rectangle((xl + r, yl + r, xl - r, yl - r), fill=color)
                 draw.ellipse((xn - r, yn - r, xn + r, yn + r), fill=color)
                 draw.text((xl - r, yl - r), name)

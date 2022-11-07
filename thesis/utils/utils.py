@@ -18,6 +18,7 @@ from ray.tune.logger import UnifiedLogger
 from thesis.policies.ma_lin_net import register_lin_model
 from thesis.envs.matrix import Matrix
 from thesis.utils.callbacks import CustomCallback
+from thesis.policies.ma_action_dist import register_ma_action_dist
 
 
 def setup_ray(path="../.."):
@@ -30,6 +31,7 @@ def setup_ray(path="../.."):
     setup_matrix_for_ray()
     # register_attention_model()
     register_lin_model()
+    register_ma_action_dist()
     ray.init(ignore_reinit_error=True, include_dashboard=True)
 
 
@@ -90,7 +92,7 @@ def get_config(
     train_agv=True,
     dispatcher_model=None,
     train_dispatcher=True,
-    batch_size=5000,
+    batch_size=2500,
     type="ppo",
     n_envs=4,
     env="minimatrix",
@@ -149,7 +151,7 @@ def get_config(
 
 def setup_minimatrix_for_ray():
     env_fn = lambda config: Matrix(
-        model_path="../../envs/MiniMatrix.zip",
+        model_path= "../../envs/MiniMatrix.zip",
         max_seconds=60 * 60,
         **config,
     )
@@ -158,7 +160,7 @@ def setup_minimatrix_for_ray():
 
 def setup_matrix_for_ray():
     env_fn = lambda config: Matrix(
-        model_path="../../envs/MiniMatrix.zip",
+        model_path="../../envs/Matrix.zip",
         max_seconds=60 * 60,
         **config,
     )

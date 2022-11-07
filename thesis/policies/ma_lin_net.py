@@ -64,7 +64,7 @@ class LinFE(nn.Module):
 
     def forward(self, obs):
         features = []
-        main_data = self.encoder(obs["agvs"][:, 1], range(2, 15, 2))[:, None, :]
+        main_data = self.encoder(obs["agvs"][:, 0], range(2, 15, 2))[:, None, :]
         features_main = self.main_ff(main_data).squeeze(dim=1)
         features.append(features_main)
 

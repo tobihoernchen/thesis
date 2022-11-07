@@ -5,6 +5,8 @@ from ..envs.matrix import Matrix
 from IPython.display import clear_output, display
 import plotly.express as px
 import pandas as pd
+import keyboard
+
 
 
 class RewardCheck:
@@ -16,18 +18,15 @@ class RewardCheck:
     def run(
         self,
         n_episodes=1,
-        focus_agents=None,
-        reward_above=-100,
-        reward_below=100,
         seed=None,
+        reset=True,
+        manual_agents=[],
     ):
         self.step_times = []
         episode_counter = 0
-        self.reward_above = reward_above
-        self.reward_below = reward_below
-        self.focus_agents = focus_agents
         while episode_counter < n_episodes:
-            self.env.reset(seed=seed)
+            if reset:
+                self.env.reset(seed=seed)
             self.total_reward = 0
             step_counter = 0
             for agent in self.env.agent_iter():
@@ -45,7 +44,40 @@ class RewardCheck:
                         self.env.sim.get_observation()
                     )
                 else:
-                    action = [random.randint(0, 5) for i in range(10)]
+                    if not agent in manual_agents:
+                        action = [random.randint(0, 5) for i in range(10)]
+                    else:
+                        clear_output()
+                        print(
+                            f"AGENT {agent} --- STEP {step_counter} --- REWARD {last[1]}"
+                        )
+                        display(render)
+                        action = [
+                            0,
+                        ]
+                        while True:
+                            if keyboard.is_pressed("left"):
+                                action = [
+                                    1,
+                                ]
+                                break
+                            elif keyboard.is_pressed("up"):
+                                action = [
+                                    2,
+                                ]
+                                break
+                            elif keyboard.is_pressed("right"):
+                                action = [
+                                    3,
+                                ]
+                                break
+                            elif keyboard.is_pressed("down"):
+                                action = [
+                                    4,
+                                ]
+                                break
+                            elif keyboard.is_pressed("enter"):
+                                break
                 self.history[agent]["action"].append(action)
                 before = time.time()
                 self.env.step(action)
