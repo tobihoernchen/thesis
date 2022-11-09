@@ -69,7 +69,7 @@ def config_ma_policies(
 def config_ppo_training(batch_size=5000, sgd_batch_size=None):
     config = {}
     config["train_batch_size"] = batch_size
-    config["sgd_minibatch_size"] = 5000 if sgd_batch_size is None else sgd_batch_size
+    config["sgd_minibatch_size"] = 500 if sgd_batch_size is None else sgd_batch_size
     config["entropy_coeff"] = 0.01
     config["gamma"] = 0.98
     config["lambda"] = 0.95
@@ -92,7 +92,7 @@ def get_config(
     train_agv=True,
     dispatcher_model=None,
     train_dispatcher=True,
-    batch_size=2500,
+    batch_size=5000,
     type="ppo",
     n_envs=4,
     env="minimatrix",
@@ -151,7 +151,7 @@ def get_config(
 
 def setup_minimatrix_for_ray():
     env_fn = lambda config: Matrix(
-        model_path= "../../envs/MiniMatrix.zip",
+        model_path="../../envs/MiniMatrix.zip",
         max_seconds=60 * 60,
         **config,
     )

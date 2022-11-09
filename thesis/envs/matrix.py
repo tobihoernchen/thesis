@@ -21,6 +21,7 @@ class Matrix(BaseAlpyneZoo):
         max_steps: int = None,
         max_seconds: int = None,
         pseudo_dispatcher=True,
+        pseudo_dispatcher_distance = None,
         routing_agent_death=False,
         dispatching_agent_death=False,
     ):
@@ -35,6 +36,7 @@ class Matrix(BaseAlpyneZoo):
         self.statistics = None
         self.dispatch = sim_config["dispatch"]
         self.pseudo_dispatcher = pseudo_dispatcher
+        self.pseudo_dispatcher_distance = pseudo_dispatcher_distance
         self.routing_ma = sim_config["routing_ma"]
         self.dispatching_ma = sim_config["dispatching_ma"]
         self.routing_agent_death = routing_agent_death
@@ -99,13 +101,13 @@ class Matrix(BaseAlpyneZoo):
                 if self.dispatching_ma:
                     agents.extend(
                         [
-                            ZooAgent(str(i), RandomStationDispatcher(1), False)
+                            ZooAgent(str(i), RandomStationDispatcher(1, self.pseudo_dispatcher_distance), False)
                             for i in range(1000, 1000 + self.fleetsize)
                         ]
                     )
                 else:
                     agents.append(
-                        ZooAgent("2001", RandomStationDispatcher(self.fleetsize), False)
+                        ZooAgent("2001", RandomStationDispatcher(self.fleetsize, self.pseudo_dispatcher_distance), False)
                     )
             else:
                 if self.dispatching_ma:

@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -5686,7 +5686,9 @@ return atan2fast(dy, dx);]]></Body>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(
+					<Body><![CDATA[
+
+if(
 	targetNode != null 
 	&& main.RL_reward_target_distance != 0 
 	&& PointNode.class.isInstance(targetNode)
@@ -5699,9 +5701,7 @@ return atan2fast(dy, dx);]]></Body>
 	double dy = abs(tnode.getY() - nnode.getY()) / main.maxY;
 	double fact = sqrt(sqr(dx) + sqr(dy));
 	
-	main.controller.addReward(fact * main.RL_reward_target_distance, this, false);
-}
-]]></Body>
+	main.controller.addReward(fact * main.RL_reward_target_distance, this, false);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -5758,9 +5758,10 @@ else
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[main.controller.addReward(main.RL_reward_removed_for_block, this, false);
-main.controller.getStatistic("block", 1.0, false);
-]]></Body>
+					<Body><![CDATA[
+
+main.controller.addReward(main.RL_reward_removed_for_block, this, false);
+main.controller.getStatistic("block", 1.0, false]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -5872,13 +5873,13 @@ if(currentNode != targetNode)
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(main.RL_dispatching_ma && main.RL_dispatch)
+					<Body><![CDATA[
+
+if(main.RL_dispatching_ma && main.RL_dispatch)
 {
 	main.controller.dispatch(this);
 	DispatchTimeout.restart(main.RL_dispatching_interval, SECOND);
-	main.controller.getStatistic("dispatch", 1.0, false);
-
-}]]></Body>
+	main.controller.getStatistic("dispatch", 1.0, false);]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>

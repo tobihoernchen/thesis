@@ -7,8 +7,8 @@ from ..utils.utils import get_config, setup_ray
 
 setup_ray()
 
-model_path = "../../models/Default/6_10_2022-11-06_15-42-30"
-checkpoint = 20
+model_path = "../../models/Default/2_30_2022-11-07_22-32-06"
+checkpoint = 100
 
 with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)
@@ -16,7 +16,7 @@ hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
 hparams["env_args"]["startport"] = 51160
 config, logger_creator, checkpoint_dir = get_config(**hparams)
-
+config["num_gpus"] = 0
 trainer = ppo.PPOTrainer(config, logger_creator=logger_creator)
 trainer.restore(
     model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}/checkpoint-{checkpoint}"

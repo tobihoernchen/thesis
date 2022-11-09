@@ -57,17 +57,37 @@ class ContextualAgent(ZooAgentBehavior):
 
 
 class RandomStationDispatcher(ContextualAgent):
-    def __init__(self, n_actions=1) -> None:
+    def __init__(self, n_actions=1, distance=None) -> None:
         super().__init__()
         self.n_actions = n_actions
+        self.distance = distance
 
     def is_for_learning(self, alpyne_obs: Observation) -> bool:
         super().is_for_learning(alpyne_obs)
         return False
 
+    def _distance(self, a, b):
+        return np.sqrt(np.square(a[0] - b[0]) + np.square(a[1] - b[1]))
+
     def get_action(self, alpyne_obs):
         assert super().stations is not None
-        actions = random.choices(list(self.stations.keys()), k=self.n_actions)
+        if self.distance is None:
+            close_stations = [list(self.stations.keys()) for _ in range(self.n_actions)]
+        else:
+            if alpyne_obs.caller == 2001:
+                agents = list(range(len(alpyne_obs.obs)))
+            else:
+                agents = [alpyne_obs.caller % 1000]
+            positions = [alpyne_obs.obs[agent][4:6] for agent in agents]
+            close_stations = [
+                [
+                    station_nr
+                    for station_nr, station_coord in self.stations.items()
+                    if self._distance(position, station_coord) < self.distance
+                ]
+                for position in positions
+            ]
+        actions = [random.choice(close_station_list) for close_station_list in close_stations]
         return self._make_action(actions, alpyne_obs.caller)
 
 
