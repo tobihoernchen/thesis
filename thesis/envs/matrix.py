@@ -8,7 +8,6 @@ from PIL import ImageDraw, Image
 
 class Matrix(BaseAlpyneZoo):
 
-    counter = 0
     global_client = None
 
     def __init__(
@@ -21,13 +20,14 @@ class Matrix(BaseAlpyneZoo):
         max_steps: int = None,
         max_seconds: int = None,
         pseudo_dispatcher=True,
-        pseudo_dispatcher_distance = None,
+        pseudo_dispatcher_distance=None,
         routing_agent_death=False,
+        death_on_target=False,
         dispatching_agent_death=False,
+        **config,
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
-
         self.max_steps = max_steps
         self.max_seconds = max_seconds
         self.stepcounter = 0
@@ -39,7 +39,9 @@ class Matrix(BaseAlpyneZoo):
         self.pseudo_dispatcher_distance = pseudo_dispatcher_distance
         self.routing_ma = sim_config["routing_ma"]
         self.dispatching_ma = sim_config["dispatching_ma"]
+        self.all_ma = self.routing_ma and (self.dispatching_ma or not self.dispatch)
         self.routing_agent_death = routing_agent_death
+        self.death_on_target = death_on_target
         self.dispatching_agent_death = dispatching_agent_death
         if routing_agent_death:
             self.routing_hwm = self.fleetsize
@@ -84,7 +86,15 @@ class Matrix(BaseAlpyneZoo):
         if self.routing_ma:
             agents.extend(
                 [
-                    ZooAgent(str(i), MultiAgent(self.max_fleetsize, 8))
+                    ZooAgent(
+                        str(i),
+                        MultiAgent(
+                            self.max_fleetsize,
+                            8,
+                            all_ma=self.all_ma,
+                            die_on_target=self.death_on_target,
+                        ),
+                    )
                     for i in range(self.fleetsize)
                 ]
             )
@@ -101,13 +111,25 @@ class Matrix(BaseAlpyneZoo):
                 if self.dispatching_ma:
                     agents.extend(
                         [
-                            ZooAgent(str(i), RandomStationDispatcher(1, self.pseudo_dispatcher_distance), False)
+                            ZooAgent(
+                                str(i),
+                                RandomStationDispatcher(
+                                    1, self.pseudo_dispatcher_distance
+                                ),
+                                False,
+                            )
                             for i in range(1000, 1000 + self.fleetsize)
                         ]
                     )
                 else:
                     agents.append(
-                        ZooAgent("2001", RandomStationDispatcher(self.fleetsize, self.pseudo_dispatcher_distance), False)
+                        ZooAgent(
+                            "2001",
+                            RandomStationDispatcher(
+                                self.fleetsize, self.pseudo_dispatcher_distance
+                            ),
+                            False,
+                        )
                     )
             else:
                 if self.dispatching_ma:
@@ -119,6 +141,7 @@ class Matrix(BaseAlpyneZoo):
                                     self.max_fleetsize,
                                     6 if not self.config.obs_include_agv_target else 8,
                                     True,
+                                    all_ma=self.all_ma,
                                 ),
                             )
                             for i in range(1000, 1000 + self.fleetsize)
@@ -158,16 +181,11 @@ class Matrix(BaseAlpyneZoo):
             self.config.seed = random.randint(0, 10000)
 
     def _start(self):
-        if self.__class__.global_client is None:
-            port = self.startport + int(self.__class__.counter)
-            self.__class__.counter = (
-                self.__class__.counter + 1
-            )  # increment to change port for all envs created
-            self.__class__.global_client = AlpyneClient(
-                self.model_path, port=port, verbose=False
-            )
+        if self.global_client is None:
+            port = self.startport
+            self.global_client = AlpyneClient(self.model_path, port=port, verbose=False)
 
-        self.client = self.__class__.global_client
+        self.client = self.global_client
         self.run = self.client.create_reinforcement_learning(self.config)
         self.started = True
         super()._start(self.run)
@@ -208,16 +226,28 @@ class Matrix(BaseAlpyneZoo):
                 title: value
                 for title, value in zip(alpyne_obs.statTitles, alpyne_obs.statValues)
             }
-        not_in_system = "in_system" in info.keys() and not info["in_system"]
-        if int(agent) < 1000 and self.routing_agent_death and not_in_system:
+        agent_died = ("in_system" in info.keys() and not info["in_system"]) or (
+            "at_target" in info.keys() and info["at_target"]
+        )
+        if int(agent) < 1000 and self.routing_agent_death and agent_died:
             self.remove_agent(agent)
             name = str(self.routing_hwm)
             original_name = self.routing_aliases_rev[agent]
             self.routing_aliases[original_name] = name
             self.routing_aliases_rev[name] = original_name  # bidirectional
-            self.add_agent(ZooAgent(name, MultiAgent(self.max_fleetsize, 8)))
+            self.add_agent(
+                ZooAgent(
+                    name,
+                    MultiAgent(
+                        self.max_fleetsize,
+                        8,
+                        all_ma=self.all_ma,
+                        die_on_target=self.death_on_target,
+                    ),
+                )
+            )
             self.routing_hwm += 1
-        elif int(agent) >= 1000 and self.dispatching_agent_death and not_in_system:
+        elif int(agent) >= 1000 and self.dispatching_agent_death and agent_died:
             self.remove_agent(agent)
             name = str(self.dispatching_hwm)
             original_name = self.dispatching_aliases_rev[agent]
@@ -230,6 +260,7 @@ class Matrix(BaseAlpyneZoo):
                         self.max_fleetsize,
                         6 if not self.config.obs_include_agv_target else 8,
                         True,
+                        all_ma=self.all_ma,
                     ),
                 )
             )

@@ -9,7 +9,8 @@ import time
 
 import ray
 from ray.rllib.policy.policy import PolicySpec
-from ray.rllib.agents import ppo, dqn
+from ray.rllib.agents import ppo, a3c, dqn
+from ray.rllib.agents.dqn import apex
 from ray.rllib.env import PettingZooEnv
 from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
@@ -21,14 +22,14 @@ from thesis.utils.callbacks import CustomCallback
 from thesis.policies.ma_action_dist import register_ma_action_dist
 
 
-def setup_ray(path="../.."):
+def setup_ray(path="../..", unidirectional=False):
     torch.manual_seed(42)
     random.seed(42)
     numpy.random.seed(42)
     os.environ["PYTHONPATH"] = path
     ray.shutdown()
-    setup_minimatrix_for_ray()
-    setup_matrix_for_ray()
+    setup_minimatrix_for_ray(path, unidirectional=unidirectional)
+    setup_matrix_for_ray(path, unidirectional=unidirectional)
     # register_attention_model()
     register_lin_model()
     register_ma_action_dist()
@@ -36,9 +37,17 @@ def setup_ray(path="../.."):
 
 
 def config_ma_policies(
-    agv_model, train_agv=True, dispatcher_model=None, train_dispatcher=True
+    agv_model,
+    train_agv=True,
+    dispatcher_model=None,
+    train_dispatcher=True,
+    all_ma=False,
 ):
     config = dict()
+
+    if all_ma:
+        agv_model["model"]["custom_model_config"]["discrete_action_space"] = True
+        dispatcher_model["model"]["custom_model_config"]["discrete_action_space"] = True
 
     policies = dict()
     policies["agv"] = PolicySpec(config=agv_model)
@@ -70,16 +79,52 @@ def config_ppo_training(batch_size=5000, sgd_batch_size=None):
     config = {}
     config["train_batch_size"] = batch_size
     config["sgd_minibatch_size"] = 500 if sgd_batch_size is None else sgd_batch_size
-    config["entropy_coeff"] = 0.01
-    config["gamma"] = 0.98
-    config["lambda"] = 0.95
-    config["kl_coeff"] = 0
-    config["lr"] = 3e-5
-    config["lr_schedule"] = [[0, 3e-3], [5000000, 3e-5]]
-    config["vf_loss_coeff"] = 1
-    config["clip_param"] = 0.2
+    # config["entropy_coeff"] = 0.01
+    # config["gamma"] = 0.98
+    # config["lambda"] = 0.95
+    # config["kl_coeff"] = 0
+    # config["lr"] = 3e-5
+    # config["lr_schedule"] = [[0, 3e-3], [5000000, 3e-5]]
+    # config["vf_loss_coeff"] = 1
+    # config["clip_param"] = 0.2
     return config
 
+
+def config_a3c_training(batch_size=5000):
+    config = {}
+    config["train_batch_size"] = batch_size
+    config["gamma"] = 0.98
+    config["lr"] = 3e-5
+    return config
+
+
+def config_dqn_training(batch_size=5000):
+    config = {}
+    config["train_batch_size"] = batch_size
+    config["gamma"] = 0.98
+    config["lr"] = 3e-5
+    # config["replay_buffer_config"] ={
+    #         "type": "MultiAgentPrioritizedReplayBuffer",
+    #         "capacity": 1000,
+    #         "prioritized_replay_alpha": 0.6,
+    #         "prioritized_replay_beta": 0.4,
+    #         "prioritized_replay_eps": 1e-6,
+    #         "replay_sequence_length": 1,
+    #         "worker_side_prioritization": False,
+    #     }
+    return config
+
+def config_rainbow_training(batch_size=5000):
+    config = {}
+    config["train_batch_size"] = batch_size
+    config["gamma"] = 0.98
+    config["n_step"] = 5
+    config["num_atoms"] = 5
+    config["noisy"] = True
+    config["v_min"] = -1
+    config["v_max"] = 1
+    config["lr"] = 3e-5
+    return config
 
 def add_to_config(config, to_add: dict):
     for k, v in to_add.items():
@@ -87,6 +132,7 @@ def add_to_config(config, to_add: dict):
 
 
 def get_config(
+    path,
     env_args,
     agv_model,
     train_agv=True,
@@ -101,6 +147,15 @@ def get_config(
     if type == "ppo":
         config = ppo.DEFAULT_CONFIG.copy()
         add_to_config(config, config_ppo_training(batch_size))
+    elif type == "a3c":
+        config = a3c.DEFAULT_CONFIG.copy()
+        add_to_config(config, config_a3c_training(batch_size))
+    elif type == "dqn":
+        config = dqn.DEFAULT_CONFIG.copy()
+        add_to_config(config, config_dqn_training(batch_size))
+    elif type == "rainbow":
+        config = dqn.DEFAULT_CONFIG.copy()
+        add_to_config(config, config_rainbow_training(batch_size))
 
     config["framework"] = "torch"
     config["callbacks"] = lambda: CustomCallback()
@@ -108,7 +163,14 @@ def get_config(
 
     config["num_gpus"] = 1
     config["num_workers"] = 0
+    config["lr"] = 1e-3
+    config["log_level"] = "ERROR"
     config["num_envs_per_worker"] = n_envs
+
+    all_ma = env_args["sim_config"]["routing_ma"] and (
+        env_args["sim_config"]["dispatching_ma"]
+        or not env_args["sim_config"]["dispatch"]
+    )
 
     add_to_config(
         config,
@@ -117,14 +179,15 @@ def get_config(
             train_agv=train_agv,
             dispatcher_model=dispatcher_model,
             train_dispatcher=train_dispatcher,
+            all_ma=all_ma,
         ),
     )
 
     config["env"] = env
     config["env_config"] = env_args
 
-    models_dir = f"../../models/{run_class}"
-    logs_dir = f"../../logs/{run_class}"
+    models_dir = f"{path}/models/{run_class}"
+    logs_dir = f"{path}/logs/{run_class}"
     run_name = f"{env_args['fleetsize']}_{env_args['max_fleetsize']}_{time.strftime('%Y-%m-%d_%H-%M-%S')}"
     if not os.path.exists(f"{models_dir}/{run_name}"):
         os.makedirs(f"{models_dir}/{run_name}")
@@ -149,18 +212,28 @@ def get_config(
     return config, custom_log_creator(logs_dir, run_name), f"{models_dir}/{run_name}"
 
 
-def setup_minimatrix_for_ray():
+def setup_minimatrix_for_ray(path, unidirectional=False):
+    path = path + (
+        "/envs/MiniMatrix.zip"
+        if not unidirectional
+        else "/envs/MiniMatrix_unidirectional.zip"
+    )
     env_fn = lambda config: Matrix(
-        model_path="../../envs/MiniMatrix.zip",
+        startport = 51150,
+        model_path=path,
         max_seconds=60 * 60,
         **config,
     )
     register_env("minimatrix", lambda config: PettingZooEnv(env_fn(config)))
 
 
-def setup_matrix_for_ray():
+def setup_matrix_for_ray(path, unidirectional=False):
+    path = path + (
+        "/envs/Matrix.zip" if not unidirectional else "/envs/Matrix_unidirectional.zip"
+    )
     env_fn = lambda config: Matrix(
-        model_path="../../envs/Matrix.zip",
+        startport = 51150,
+        model_path=path,
         max_seconds=60 * 60,
         **config,
     )

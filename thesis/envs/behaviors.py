@@ -3,6 +3,7 @@ from alpyne.data.spaces import Observation, Action
 import random
 from gym import spaces
 import numpy as np
+from collections import OrderedDict
 
 
 class ContextualAgent(ZooAgentBehavior):
@@ -25,9 +26,11 @@ class ContextualAgent(ZooAgentBehavior):
             # Node Info
             context = alpyne_obs.networkcontext
             nodecontext = [c for c in context if c[-1] == 0]
-            nodes = {i: tuple(n[:2]) for i, n in enumerate(nodecontext)}
-            nodes_reversed = {coords: i for i, coords in nodes.items()}
-            stations = {i: tuple(n[:2]) for i, n in enumerate(nodecontext) if n[2] == 1}
+            nodes = OrderedDict({i: tuple(n[:2]) for i, n in enumerate(nodecontext)})
+            nodes_reversed = OrderedDict({coords: i for i, coords in nodes.items()})
+            stations = OrderedDict(
+                {i: tuple(n[:2]) for i, n in enumerate(nodecontext) if n[2] == 1}
+            )
             ContextualAgent.nodes = nodes
             ContextualAgent.stations = stations
 
@@ -71,9 +74,8 @@ class RandomStationDispatcher(ContextualAgent):
 
     def get_action(self, alpyne_obs):
         assert super().stations is not None
-        if self.distance is None:
-            close_stations = [list(self.stations.keys()) for _ in range(self.n_actions)]
-        else:
+        stations = [list(self.stations.keys()) for _ in range(self.n_actions)]
+        if self.distance is not None:
             if alpyne_obs.caller == 2001:
                 agents = list(range(len(alpyne_obs.obs)))
             else:
@@ -87,7 +89,12 @@ class RandomStationDispatcher(ContextualAgent):
                 ]
                 for position in positions
             ]
-        actions = [random.choice(close_station_list) for close_station_list in close_stations]
+        actions = [
+            random.choice(close_stations[i])
+            if self.distance is not None and len(close_stations[i]) > 0
+            else random.choice(stations[i])
+            for i in range(self.n_actions)
+        ]
         return self._make_action(actions, alpyne_obs.caller)
 
 
@@ -113,9 +120,10 @@ class TrainingBehavior(ContextualAgent):
     observation_space = None
     action_space = None
 
-    def __init__(self, max_fleetsize) -> None:
+    def __init__(self, max_fleetsize, all_ma) -> None:
         super().__init__()
         self.max_fleetsize = max_fleetsize
+        self.ma = all_ma
 
     def is_for_learning(self, alpyne_obs: Observation) -> bool:
         super().is_for_learning(alpyne_obs)
@@ -131,19 +139,25 @@ class TrainingBehavior(ContextualAgent):
         self.action_max = max(self.n_stat, 5)
         self.obs_shape_len = max(rout_len, disp_len)
         # worst case spaces, because RLLIB can't take different space sizes per agent
-        TrainingBehavior.action_space = spaces.MultiDiscrete(
-            [
-                self.action_max,
-            ]
-            * self.max_fleetsize
+        if not self.ma:
+            TrainingBehavior.action_space = spaces.MultiDiscrete(
+                [
+                    self.action_max,
+                ]
+                * self.max_fleetsize
+            )
+        else:
+            TrainingBehavior.action_space = spaces.Discrete(self.action_max)
+
+        spacedict = OrderedDict()
+        spacedict["agvs"] = spaces.Box(0, 1, (self.max_fleetsize, self.obs_shape_len))
+        spacedict["stat"] = spaces.Box(0, 1, (self.n_stat, self.obs_shape_len))
+        spacedict["action_mask"] = (
+            spaces.Box(0, 1, (self.max_fleetsize, self.action_max))
+            if not self.ma
+            else spaces.Box(0, 1, (self.action_max,))
         )
-        TrainingBehavior.observation_space = spaces.Dict(
-            {
-                "agvs": spaces.Box(0, 1, (self.max_fleetsize, self.obs_shape_len)),
-                "stat": spaces.Box(0, 1, (self.n_stat, self.obs_shape_len)),
-                "action_mask": spaces.Box(0, 1, (self.max_fleetsize, self.action_max)),
-            }
-        )
+        TrainingBehavior.observation_space = spaces.Dict(spacedict)
 
     def get_observation_space(self):
         return self.observation_space
@@ -185,7 +199,7 @@ class SingleAgent(TrainingBehavior):
     def __init__(
         self, max_fleetsize, start_of_nodes_in_reach, dispatching=False
     ) -> None:
-        super().__init__(max_fleetsize)
+        super().__init__(max_fleetsize, all_ma=False)
         self.shufflerules = dict()
         self.dispatching = dispatching
         self.start_of_nodes_in_reach = start_of_nodes_in_reach
@@ -204,7 +218,7 @@ class SingleAgent(TrainingBehavior):
         obs_stat = np.zeros((self.n_stat, self.obs_shape_len))
         in_obs_stat = in_obs[self.n_agv :]
         obs_stat[: in_obs_stat.shape[0], : in_obs_stat.shape[1]] = in_obs_stat
-
+        assert not self.ma
         obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
         nodes_in_reach = obs_agvs[
             :, self.start_of_nodes_in_reach : self.start_of_nodes_in_reach + 8
@@ -214,11 +228,10 @@ class SingleAgent(TrainingBehavior):
         ) * 1
         obs_action_mask[:, 1:5] = nodes_in_reach
         obs_action_mask[:, 5:] = 0
-        obs = {
-            "agvs": obs_agvs,
-            "stat": obs_stat,
-            "action_mask": obs_action_mask,
-        }
+        obs = OrderedDict()
+        obs["agvs"] = obs_agvs
+        obs["stat"] = obs_stat
+        obs["action_mask"] = obs_action_mask
         return obs, reward, False, {}
 
     def convert_to_action(self, actions, agent):
@@ -238,12 +251,18 @@ class SingleAgent(TrainingBehavior):
 
 class MultiAgent(TrainingBehavior):
     def __init__(
-        self, max_fleetsize, start_of_nodes_in_reach, dispatching=False
+        self,
+        max_fleetsize,
+        start_of_nodes_in_reach,
+        dispatching=False,
+        all_ma=False,
+        die_on_target=False,
     ) -> None:
-        super().__init__(max_fleetsize)
+        super().__init__(max_fleetsize, all_ma)
         self.shufflerules = dict()
         self.dispatching = dispatching
         self.start_of_nodes_in_reach = start_of_nodes_in_reach
+        self.die_on_target = die_on_target
 
     def convert_from_observation(self, alpyne_obs):
         self.shufflerules[alpyne_obs.caller] = srule = random.sample(
@@ -265,22 +284,39 @@ class MultiAgent(TrainingBehavior):
         in_obs_stat = in_obs[self.n_agv :]
         obs_stat[: in_obs_stat.shape[0], : in_obs_stat.shape[1]] = in_obs_stat
 
-        obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
+        if self.ma:
+            obs_action_mask = np.ones((self.action_max))
+        else:
+            obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
         nodes_in_reach = obs_agvs[
             0, self.start_of_nodes_in_reach : self.start_of_nodes_in_reach + 8
         ]
         nodes_in_reach = (nodes_in_reach.reshape(4, 2) != 0).any(axis=1) * 1
-        obs_action_mask[0, 1:5] = nodes_in_reach
+        if self.ma:
+            obs_action_mask[1:5] = nodes_in_reach
+        else:
+            obs_action_mask[0, 1:5] = nodes_in_reach
 
-        obs = {
-            "agvs": obs_agvs,
-            "stat": obs_stat,
-            "action_mask": obs_action_mask,
-        }
-        return obs, reward, False, {"in_system": in_obs_caller[0] == 1}
+        obs = OrderedDict()
+        obs["agvs"] = obs_agvs
+        obs["stat"] = obs_stat
+        obs["action_mask"] = obs_action_mask
+        if self.dispatching or not self.die_on_target:
+            at_target = False
+        else:
+            at_target = alpyne_obs.rew >= 5
+        return (
+            obs,
+            reward,
+            False,
+            {"in_system": in_obs_caller[0] == 1, "at_target": at_target},
+        )
 
     def convert_to_action(self, actions, agent):
-        action = actions[0] if actions is not None else 0
+        if not isinstance(actions, list):
+            action = actions if actions is not None else 0
+        else:
+            action = actions[0] if actions is not None else 0
         if self.dispatching:
             action = (
                 list(self.stations.keys())[action]

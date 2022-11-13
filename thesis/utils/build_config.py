@@ -49,6 +49,9 @@ def build_config(
             if not "reward_reached_target" in config_args
             else config_args["reward_reached_target"]
         ),
+        reward_reached_target_by_time=False
+            if not "reward_reached_target_by_time" in config_args
+            else config_args["reward_reached_target_by_time"],
         reward_wrong_target=float(
             0
             if not "reward_wrong_target" in config_args
@@ -102,6 +105,7 @@ def build_config(
             if not "reward_part_completed" in config_args
             else config_args["reward_part_completed"]
         ),
+        station_separate=False if not "station_separate" in config_args else config_args["station_separate"],
         station_availability=float(
             1 if not "availability" in config_args else config_args["availability"]
         ),

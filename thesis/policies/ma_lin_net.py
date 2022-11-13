@@ -104,53 +104,72 @@ class MALinPolicy(TorchModelV2, nn.Module):
         num_outputs: int,
         model_config: ModelConfigDict,
         name: str,
-        embed_dim=64,
-        with_action_mask=True,
-        with_agvs=True,
-        with_stations=True,
-        activation=nn.ReLU,
+        **custom_model_args
     ):
         nn.Module.__init__(self)
-        action_space_max = action_space.nvec.max()
+        action_space_max = (
+            action_space.nvec.max()
+            if isinstance(action_space, gym.spaces.MultiDiscrete)
+            else None
+        )
         TorchModelV2.__init__(
             self, obs_space, action_space, num_outputs, model_config, name
         )
-        self.with_action_mask = with_action_mask
+        if len(custom_model_args) > 0:
+            custom_config = custom_model_args
+        else:
+            custom_config = model_config["custom_model_config"]
+        for key, default in dict(
+            embed_dim=64,
+            with_action_mask=True,
+            with_agvs=True,
+            with_stations=True,
+            activation=nn.ReLU,
+            discrete_action_space=False,
+        ).items():
+            setattr(
+                self,
+                key,
+                custom_config[key] if key in custom_config.keys() else default,
+            )
+
         self.n_features = self.obs_space.original_space["agvs"].shape[1]
-        self.embed_dim = embed_dim
         self.name = name
 
         self.action_fe = LinFE(
             n_features=self.n_features,
-            embed_dim=embed_dim,
-            with_agvs=with_agvs,
-            with_stations=with_stations,
+            embed_dim=self.embed_dim,
+            with_agvs=self.with_agvs,
+            with_stations=self.with_stations,
         )
         self.value_fe = LinFE(
             n_features=self.n_features,
-            embed_dim=embed_dim,
-            with_agvs=with_agvs,
-            with_stations=with_stations,
+            embed_dim=self.embed_dim,
+            with_agvs=self.with_agvs,
+            with_stations=self.with_stations,
         )
 
-        n_concats = 1 + with_agvs + with_stations
+        n_concats = 1 + self.with_agvs + self.with_stations
 
         self.action_net = nn.Sequential(
-            nn.Linear(embed_dim * n_concats, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim),
-            activation(),
-            nn.Linear(embed_dim, action_space_max),
+            nn.Linear(self.embed_dim * n_concats, self.embed_dim * 4),
+            self.activation(),
+            nn.Linear(self.embed_dim * 4, self.embed_dim),
+            self.activation(),
+            nn.Linear(
+                self.embed_dim,
+                action_space_max if action_space_max is not None else num_outputs,
+            ),
         )
 
         self.value_net = nn.Sequential(
-            nn.Linear(embed_dim * n_concats, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim),
-            activation(),
-            nn.Linear(embed_dim, 1),
+            nn.Linear(self.embed_dim * n_concats, self.embed_dim * 4),
+            self.activation(),
+            nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
+            self.activation(),
+            nn.Linear(self.embed_dim * 4, self.embed_dim),
+            self.activation(),
+            nn.Linear(self.embed_dim, 1),
         )
 
     def forward(self, obsdict, state, seq_lengths):
@@ -158,14 +177,17 @@ class MALinPolicy(TorchModelV2, nn.Module):
         features = self.action_fe(self.obs)
 
         actions = self.action_net(features)
-        action_tmp = torch.zeros(
-            obsdict["obs"]["action_mask"].shape,
-            device=actions.device,
-        )
-        action_tmp[:, 0, :] = actions
+        if self.discrete_action_space:
+            action_out = actions
+        else:
+            action_out = torch.zeros(
+                obsdict["obs"]["action_mask"].shape,
+                device=actions.device,
+            )
+            action_out[:, 0, :] = actions
         if self.with_action_mask:
-            action_tmp = action_tmp + (obsdict["obs"]["action_mask"] - 1) * 1e8
-        return action_tmp.flatten(1), []
+            action_out = action_out + (obsdict["obs"]["action_mask"] - 1) * 1e8
+        return action_out.flatten(1), []
 
     def value_function(self):
         features = self.value_fe(self.obs)
