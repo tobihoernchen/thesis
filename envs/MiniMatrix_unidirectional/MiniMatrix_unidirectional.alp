@@ -9975,6 +9975,7 @@ statValues = new double[root.controller.statValues.size()];
 for(int i = 0; i<statValues.length; i++)
 	statValues[i] = root.controller.statValues.get(i);
 
+
 if(root.firstRLcall)
 {
 	networkcontext = root.getNetworkContext();
@@ -9984,12 +9985,16 @@ if(root.firstRLcall)
 		"disp_len", 
 		"n_stat",
 		"n_agv",
+		"maxX",
+		"maxY"
 	};
 	statValues = new double[]{
 		(double)root.controller.obs_size_routing,
 		(double)root.controller.obs_size_dispatching,
 		(double)root.controller.registeredStations.size(),
 		(double)root.controller.registeredAgvs.size(),
+		(double)root.maxX,
+		(double)root.maxY
 	};
 }
 else

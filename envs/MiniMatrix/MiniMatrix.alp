@@ -9987,12 +9987,16 @@ if(root.firstRLcall)
 		"disp_len", 
 		"n_stat",
 		"n_agv",
+		"maxX",
+		"maxY"
 	};
 	statValues = new double[]{
 		(double)root.controller.obs_size_routing,
 		(double)root.controller.obs_size_dispatching,
 		(double)root.controller.registeredStations.size(),
 		(double)root.controller.registeredAgvs.size(),
+		(double)root.maxX,
+		(double)root.maxY
 	};
 }
 else

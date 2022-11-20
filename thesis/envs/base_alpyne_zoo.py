@@ -19,7 +19,7 @@ class ZooAgentBehavior:
         return True
 
     @abstractmethod
-    def get_action(self, alpyne_obs):
+    def get_action(self, alpyne_obs, time):
         raise NotImplementedError()
 
     @abstractmethod
@@ -65,7 +65,7 @@ class BaseAlpyneZoo(AECEnv):
         Dict[str, Union[np.ndarray, int, float, tuple, dict]],
     ]
 
-    def __init__(self, sim: ModelRun, agents: List[ZooAgent]):
+    def __init__(self):
         """
         Construct a new environment for the provided sim.
 
@@ -77,7 +77,6 @@ class BaseAlpyneZoo(AECEnv):
         :param sim: a created - but not yet started - instance of your model
         :raise ValueError: if the run has been started
         """
-        self.agents_original = agents
         self._initialize_cache()
 
         self.agent_selection = None
@@ -85,6 +84,10 @@ class BaseAlpyneZoo(AECEnv):
 
     @abstractmethod
     def _agent_selection_fn(self, alpyne_obs):
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_agents(self) -> List[ZooAgent]:
         raise NotImplementedError
 
     def reset(
@@ -184,7 +187,9 @@ class BaseAlpyneZoo(AECEnv):
                 )
                 break
             else:
-                action = self.agent_behaviors[agent].get_action(alpyne_obs)
+                action = self.agent_behaviors[agent].get_action(
+                    alpyne_obs, time=self.run.get_state()[1]["model_time"]
+                )
                 self.sim.take_action(action)
 
         if self.sim.is_terminal() or self._terminal_alternative(alpyne_obs):
@@ -204,7 +209,7 @@ class BaseAlpyneZoo(AECEnv):
 
     def _initialize_cache(self, agents: List[ZooAgent] = None):
         if agents is None:
-            agents = self.agents_original
+            agents = self.get_agents()
         self.agents = [agent.name for agent in agents if agent.does_training]
         self.dones = {agent: False for agent in self.agents}
         self.infos = {agent: dict() for agent in self.agents}

@@ -9,7 +9,7 @@ from typing import Union, Tuple, Dict, Optional, NoReturn
 
 class AgvSlipCourse(BaseAlpyneEnv):
     def __init__(self, model_path, max_steps):
-        self.client = AlpyneClient(model_path)
+        self.client = AlpyneClient(model_path, port=51153)
         config = Configuration(inSlipChance=0.3)
         self.run = self.client.create_reinforcement_learning(config)
         super(AgvSlipCourse, self).__init__(self.run)

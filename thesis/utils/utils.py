@@ -22,14 +22,14 @@ from thesis.utils.callbacks import CustomCallback
 from thesis.policies.ma_action_dist import register_ma_action_dist
 
 
-def setup_ray(path="../..", unidirectional=False):
+def setup_ray(path="../..", unidirectional=False, port = None):
     torch.manual_seed(42)
     random.seed(42)
     numpy.random.seed(42)
     os.environ["PYTHONPATH"] = path
     ray.shutdown()
-    setup_minimatrix_for_ray(path, unidirectional=unidirectional)
-    setup_matrix_for_ray(path, unidirectional=unidirectional)
+    setup_minimatrix_for_ray(path, unidirectional=unidirectional, port = port)
+    setup_matrix_for_ray(path, unidirectional=unidirectional, port = port)
     # register_attention_model()
     register_lin_model()
     register_ma_action_dist()
@@ -114,6 +114,7 @@ def config_dqn_training(batch_size=5000):
     #     }
     return config
 
+
 def config_rainbow_training(batch_size=5000):
     config = {}
     config["train_batch_size"] = batch_size
@@ -125,6 +126,7 @@ def config_rainbow_training(batch_size=5000):
     config["v_max"] = 1
     config["lr"] = 3e-5
     return config
+
 
 def add_to_config(config, to_add: dict):
     for k, v in to_add.items():
@@ -140,7 +142,7 @@ def get_config(
     train_dispatcher=True,
     batch_size=5000,
     type="ppo",
-    n_envs=4,
+    n_envs=1,
     env="minimatrix",
     run_class="default",
 ):
@@ -212,14 +214,14 @@ def get_config(
     return config, custom_log_creator(logs_dir, run_name), f"{models_dir}/{run_name}"
 
 
-def setup_minimatrix_for_ray(path, unidirectional=False):
+def setup_minimatrix_for_ray(path, unidirectional=False, port=None):
     path = path + (
         "/envs/MiniMatrix.zip"
         if not unidirectional
         else "/envs/MiniMatrix_unidirectional.zip"
     )
     env_fn = lambda config: Matrix(
-        startport = 51150,
+        startport=51150 + config.worker_index if port is None else port,
         model_path=path,
         max_seconds=60 * 60,
         **config,
@@ -227,12 +229,12 @@ def setup_minimatrix_for_ray(path, unidirectional=False):
     register_env("minimatrix", lambda config: PettingZooEnv(env_fn(config)))
 
 
-def setup_matrix_for_ray(path, unidirectional=False):
+def setup_matrix_for_ray(path, unidirectional=False, port=None):
     path = path + (
         "/envs/Matrix.zip" if not unidirectional else "/envs/Matrix_unidirectional.zip"
     )
     env_fn = lambda config: Matrix(
-        startport = 51150,
+        startport=51150 + config.worker_index if port is None else port,
         model_path=path,
         max_seconds=60 * 60,
         **config,
