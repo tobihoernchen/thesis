@@ -75,8 +75,10 @@ class LinFE(nn.Module):
             lintentioned_agvs = self.lintention_agvs(
                 torch.concat([main_repeated, agvs_reshaped], 2)
             )
-            features_agvs = lintentioned_agvs.max(dim=1)[0]
-            features.append(features_agvs)
+            features_agvs_max = lintentioned_agvs.max(dim=1)[0] 
+            features_agvs_mean = lintentioned_agvs.mean(dim=1)
+            features.append(features_agvs_mean)
+            features.append(features_agvs_max)
 
         if self.with_stations:
             station_data = obs["stat"]
@@ -90,8 +92,10 @@ class LinFE(nn.Module):
             lintentioned_station = self.lintention_station(
                 torch.concat([main_repeated, stations_reshaped], 2)
             )
-            features_stations = lintentioned_station.max(dim=1)[0]
-            features.append(features_stations)
+            features_stations_max = lintentioned_station.max(dim=1)[0]
+            features_stations_mean = lintentioned_station.mean(dim=1)
+            features.append(features_stations_max)
+            features.append(features_stations_mean)
 
         return torch.concat(features, 1)
 
@@ -149,7 +153,7 @@ class MALinPolicy(TorchModelV2, nn.Module):
             with_stations=self.with_stations,
         )
 
-        n_concats = 1 + self.with_agvs + self.with_stations
+        n_concats = 1 + 2* self.with_agvs +  2 * self.with_stations
 
         self.action_net = nn.Sequential(
             nn.Linear(self.embed_dim * n_concats, self.embed_dim * 4),

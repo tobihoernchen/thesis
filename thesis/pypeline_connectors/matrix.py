@@ -1,7 +1,7 @@
 import json
 import torch
 
-import ray.rllib.agents.ppo as ppo
+import ray.rllib.algorithms.ppo as ppo
 from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
@@ -14,7 +14,6 @@ with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)
 hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
-hparams["env_args"]["pseudo_dispatcher"] = True
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 0
 trainer = ppo.PPOTrainer(config, logger_creator=logger_creator)
@@ -45,7 +44,7 @@ def get_action(observation, caller, n_nodes, context, time):
         )
         action = trainer.get_policy(
             config["multiagent"]["policy_mapping_fn"](agent, None, None)
-        ).compute_single_action(env.last()[0], explore=False)[0]
+        ).compute_single_action(env.last()[0], explore=True)[0]
         return env.agent_behaviors[env.agent_selection].convert_to_action(
             action, caller
         )

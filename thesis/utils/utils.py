@@ -9,30 +9,31 @@ import time
 
 import ray
 from ray.rllib.policy.policy import PolicySpec
-from ray.rllib.agents import ppo, a3c, dqn
-from ray.rllib.agents.dqn import apex
+from ray.rllib.algorithms import ppo, a3c, dqn, apex_dqn
 from ray.rllib.env import PettingZooEnv
 from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
 
 # from thesis.policies.simplified_attention_module import register_attention_model
 from thesis.policies.ma_lin_net import register_lin_model
+from thesis.policies.ma_gnn_routing import register_gnn_model
 from thesis.envs.matrix import Matrix
 from thesis.utils.callbacks import CustomCallback
 from thesis.policies.ma_action_dist import register_ma_action_dist
 
 
-def setup_ray(path="../..", unidirectional=False, port = None):
+def setup_ray(path="../..", unidirectional=False, port=None):
     torch.manual_seed(42)
     random.seed(42)
     numpy.random.seed(42)
     os.environ["PYTHONPATH"] = path
     ray.shutdown()
-    setup_minimatrix_for_ray(path, unidirectional=unidirectional, port = port)
-    setup_matrix_for_ray(path, unidirectional=unidirectional, port = port)
+    setup_minimatrix_for_ray(path, unidirectional=unidirectional, port=port)
+    setup_matrix_for_ray(path, unidirectional=unidirectional, port=port)
     # register_attention_model()
     register_lin_model()
     register_ma_action_dist()
+    register_gnn_model()
     ray.init(ignore_reinit_error=True, include_dashboard=True)
 
 
@@ -164,7 +165,7 @@ def get_config(
     config["batch_mode"] = "truncate_episodes"  # "complete_episodes"
 
     config["num_gpus"] = 1
-    config["num_workers"] = 0
+    config["num_workers"] = 4
     config["lr"] = 1e-3
     config["log_level"] = "ERROR"
     config["num_envs_per_worker"] = n_envs

@@ -366,9 +366,8 @@ class Arc:
         self.i = i
         self.start = inode1
         self.end = inode2
-        self.length = (
-            np.sqrt(np.sum(np.square(np.multiply(np.subtract(node1, node2), maxima))))
-            * 1.2
+        self.length = np.sqrt(
+            np.sum(np.square(np.multiply(np.subtract(node1, node2), maxima)))
         )
         self.travel_time = self.length
         self.geo_conflicts = []
@@ -538,9 +537,9 @@ class CollisionFreeRoutingHive(HiveContext):
                 label.end = last_start
                 label.start = last_start = label.end - label.arc.length
                 path.append([self.nodes[label.arc.end], label.start])
-                label.arc.add_block_window(label.start, label.end, who)
+                label.arc.add_block_window(label.start - 2, label.end + 2, who)
                 for arc in label.arc.geo_conflicts:
-                    arc.add_block_window(label.start, label.end, who)
+                    arc.add_block_window(label.start - 2, label.end + 2, who)
                 label = label.predecessor
             path.reverse()
             return path

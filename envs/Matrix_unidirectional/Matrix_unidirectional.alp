@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -1151,6 +1151,8 @@ String actstr = py.runResults(
 	+ nodeCount
 	+ "," 
 	+ context
+	+ "," 
+	+ time()
 	+ ")").getFeedback(String.class);
 traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
