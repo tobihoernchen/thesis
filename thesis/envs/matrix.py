@@ -8,9 +8,11 @@ from .behaviors import (
     HiveContext,
     CollisionFreeRouting,
     CollisionFreeRoutingHive,
+    Dummy,
 )
 from ..utils.build_config import build_config
 from PIL import ImageDraw, Image
+import gym.spaces
 
 
 class Matrix(BaseAlpyneZoo):
@@ -72,9 +74,12 @@ class Matrix(BaseAlpyneZoo):
                 [str(i) for i in range(self.fleetsize + 1000, 2000)]
             )
         super().__init__()
-        self.reset()
+        if not self.pseudo_dispatcher or not self.pseudo_routing:
+            self.reset()
 
     def _agent_selection_fn(self, alpyne_obs):
+        if self.pseudo_routing and self.pseudo_dispatcher and self._terminal_alternative(alpyne_obs):
+            return "dummy"
         if alpyne_obs.caller < 1000 and self.routing_agent_death:
             return self.routing_aliases[str(alpyne_obs.caller)]
         elif alpyne_obs.caller >= 1000 and self.dispatching_agent_death:
@@ -84,9 +89,9 @@ class Matrix(BaseAlpyneZoo):
 
     def step(self, action):
         self.stepcounter += 1
-        if int(self.agent_selection) < 1000 and self.routing_agent_death:
+        if self.agent_selection != "dummy" and int(self.agent_selection) < 1000 and self.routing_agent_death:
             self.agent_selection = self.routing_aliases_rev[self.agent_selection]
-        elif int(self.agent_selection) >= 1000 and self.dispatching_agent_death:
+        elif self.agent_selection != "dummy" and int(self.agent_selection) >= 1000 and self.dispatching_agent_death:
             self.agent_selection = self.dispatching_aliases_rev[self.agent_selection]
         return super().step(action)
 
@@ -95,6 +100,8 @@ class Matrix(BaseAlpyneZoo):
         self.agent_hive = (
             HiveContext() if not self.pseudo_routing else CollisionFreeRoutingHive()
         )
+        if self.pseudo_routing and self.pseudo_dispatcher:
+            agents.append(ZooAgent("dummy", Dummy(self.agent_hive,self.max_fleetsize, 8, all_ma=self.all_ma,)))
         if self.pseudo_routing:
             if self.routing_ma:
                 agents.extend(
@@ -112,7 +119,7 @@ class Matrix(BaseAlpyneZoo):
                         str(i): str(i) for i in range(self.fleetsize)
                     }
             else:
-                agents.append(ZooAgent("2000", CollisionFreeRouting(self.agent_hive), False))
+                raise ValueError("pseudo routing only available for multiagent")
         else:
             if self.routing_ma:
                 agents.extend(
@@ -260,7 +267,19 @@ class Matrix(BaseAlpyneZoo):
             self.dispatching_aliases_rev = {
                 str(i): str(i) for i in range(1000, 1000 + self.fleetsize)
             }
+        # if self.pseudo_dispatcher and self.pseudo_routing:
+        #     return_val = super().reset(self.config, seed, return_info, options, dont_collect = True)
+        #     self.agents.append("dummy")
+        #     self.observable = True
+        #     return self.observation_space("dummy").sample(), 0, False, {}
+        # else:
         return super().reset(self.config, seed, return_info, options)
+
+    def action_space(self, agent) -> gym.spaces.Space:
+        return super().action_space(agent)
+
+    def observation_space(self, agent: str) -> gym.spaces.Space:
+        return super().observation_space(agent)
 
     def _save_observation(self, alpyne_obs, agent, obs, reward, done, info):
         if "statTitles" in alpyne_obs.names():
@@ -272,7 +291,8 @@ class Matrix(BaseAlpyneZoo):
             "at_target" in info.keys() and info["at_target"]
         )
         if (
-            int(agent) < 1000
+            agent != "dummy"
+            and int(agent) < 1000
             and self.routing_agent_death
             and agent_died
             and agent in self.agents
@@ -296,7 +316,8 @@ class Matrix(BaseAlpyneZoo):
             )
             self.routing_hwm += 1
         elif (
-            int(agent) >= 1000
+            agent != "dummy"
+            and int(agent) >= 1000
             and self.dispatching_agent_death
             and agent_died
             and agent in self.agents
@@ -319,7 +340,7 @@ class Matrix(BaseAlpyneZoo):
                 )
             )
             self.dispatching_hwm += 1
-        return super()._save_observation(agent, alpyne_obs, obs, reward, done, info)
+        return super()._save_observation(alpyne_obs, agent, obs, reward, done, info)
 
     def _terminal_alternative(self, observation) -> bool:
         """Optional method to add *extra* terminating conditions"""

@@ -18,10 +18,11 @@ class RewardCheck:
     def run(
         self,
         n_episodes=1,
-        seed=None,
+        seed=42,
         reset=True,
         manual_agents=[],
     ):
+        random.seed(seed)
         self.step_times = []
         episode_counter = 0
         while episode_counter < n_episodes:
@@ -78,6 +79,7 @@ class RewardCheck:
                                 break
                             elif keyboard.is_pressed("enter"):
                                 break
+                        time.sleep(0.5)
                 self.history[agent]["action"].append(action)
                 before = time.time()
                 self.env.step(action)
@@ -89,6 +91,7 @@ class RewardCheck:
             print(
                 f"Mean Step Time: {np.mean(self.step_times)}s ; Max: {max(self.step_times)}s ; Min: {min(self.step_times)}s"
             )
+            print(self.env.statistics)
 
     def get_reward_situations(
         self,

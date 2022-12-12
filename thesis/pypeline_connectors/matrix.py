@@ -1,13 +1,11 @@
 import json
-import torch
-
 import ray.rllib.algorithms.ppo as ppo
 from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
 setup_ray(port=51160)
 
-model_path = "../../models/comparison/10_30_2022-11-20_17-04-37"
+model_path = "../../models/trained_for_pypeline/all_pseudo_mini"
 checkpoint = 0
 path = "D:/Master/Masterarbeit/thesis"
 with open(model_path + "/config.json") as json_file:
@@ -16,9 +14,9 @@ hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 0
-trainer = ppo.PPOTrainer(config, logger_creator=logger_creator)
+trainer = ppo.PPO(config, logger_creator=logger_creator)
 trainer.restore(
-    model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}/checkpoint-{checkpoint}"
+    model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}"
 )
 
 env = trainer.workers.local_worker().env.env
@@ -31,12 +29,17 @@ def get_config(id: str):
     return "NOT FOUND"
 
 
-def get_action(observation, caller, n_nodes, context, time):
+def get_action(observation, caller, n_nodes, context, maxX, maxY, time):
+
+    statTitles = [] if context is None else ["maxX", "maxY"]
+    statValues = [] if context is None else [maxX, maxY]
     alpyne_obs = Observation(
-        obs=observation, caller=caller, n_nodes=n_nodes, networkcontext=context, rew=[0]
+        obs=observation, caller=caller, n_nodes=n_nodes, networkcontext=context, rew=[0], statTitles = statTitles, statValues = statValues
     )
     agent = env._agent_selection_fn(alpyne_obs)
+    print(alpyne_obs)
     if env.agent_behaviors[agent].is_for_learning(alpyne_obs):
+        print("wrong")
         env._save_observation(
             alpyne_obs,
             agent,

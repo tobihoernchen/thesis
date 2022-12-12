@@ -1,64 +1,105 @@
-from turtle import forward
 import gym.spaces
 from torch import nn
 import torch
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.utils.typing import ModelConfigDict
 from ray.rllib.models import ModelCatalog
-from .custom_blocks import Embedder, PositionEncoder
+from .custom_blocks import MatrixPositionEncoder, TransformerDecoderBlock, TransformerEncoderBlock
 
 
-def register_attention_model():
-    ModelCatalog.register_custom_model("attention_model", AttentionPolicy)
+def register_attn_model():
+    ModelCatalog.register_custom_model("attn_model", MAAttnPolicy)
 
 
-class AttentionBlock(nn.Module):
+class AttnFE(nn.Module):
     def __init__(
-        self, embed_dim, n_heads, n_agents, activation=nn.ReLU, alt=False
+        self,
+        obs_space,
+        embed_dim=64,
+        with_agvs=True,
+        with_stations=True,
+        position_embedd_dim=2,
+        n_heads=4,
+        depth=4,
+        activation=nn.ReLU,
     ) -> None:
+
         super().__init__()
-        self.alt = alt
-        self.attention = nn.MultiheadAttention(
-            embed_dim=embed_dim, num_heads=n_heads, batch_first=True
+        n_features = obs_space["agvs"].shape[1]
+        self.with_agvs = with_agvs
+        self.with_stations = with_stations
+        n_agents = 0
+        if with_agvs:
+            n_agents += obs_space["agvs"].shape[0] - 1
+        if with_stations:
+            n_agents += obs_space["stat"].shape[0]
+        assert (
+            with_stations or with_agvs
+        ), "Either with_stations or with_agvs has to bet true"
+        self.encoder = MatrixPositionEncoder(position_embedd_dim)
+
+        self.embedd_main = self.get_embedder(
+            n_features + position_embedd_dim * 7, embed_dim, activation
         )
-        self.norm1a = nn.LayerNorm((n_agents, embed_dim))
-        self.norm1b = nn.LayerNorm((n_agents, embed_dim))
-        self.norm1c = nn.LayerNorm((n_agents, embed_dim))
-        self.feedforward = nn.Sequential(
-            nn.Linear(embed_dim, 4 * embed_dim),
+        if self.with_agvs:
+            self.embedd_agvs = self.get_embedder(
+                n_features + position_embedd_dim * 7, embed_dim, activation
+            )
+        if self.with_stations:
+            self.embedd_station = self.get_embedder(
+                n_features + position_embedd_dim, embed_dim, activation
+            )
+
+        self.encoder_blocks = nn.ModuleList(
+            [
+                TransformerEncoderBlock(
+                    embed_dim, n_heads, n_agents, activation
+                )
+                for _ in range(depth)
+            ]
+        )
+
+        self.decoder_blocks = nn.ModuleList(
+            [
+                TransformerDecoderBlock(
+                    embed_dim, n_heads, 1, activation
+                )
+                for _ in range(depth)
+            ]
+        )
+
+    def get_embedder(self, n_features, embed_dim, activation):
+        return nn.Sequential(
+            nn.Linear(n_features, embed_dim * 2),
             activation(),
-            nn.Linear(4 * embed_dim, embed_dim),
+            nn.Linear(embed_dim * 2, embed_dim),
             activation(),
         )
-        self.norm2 = nn.LayerNorm((n_agents, embed_dim))
 
-    def forward(self, q, k, v):
-        if self.alt:
-            return self.forward_alt(q, k, v)
-        return self.forward_norm(q, k, v)
+    def forward(self, obs):
+        main_data = self.encoder(obs["agvs"][:, 0], range(2, 15, 2))[:, None, :]
+        features_main = self.embedd_main(main_data)
 
-    def forward_norm(self, q, k, v):
-        attended = self.attention(q, k, v, need_weights=False)[0]
-        x = q + attended
-        normed1 = self.norm1a(x)
-        fedforward = self.feedforward(normed1)
-        x = fedforward + x
-        normed2 = self.norm2(x)
-        return normed2
+        objects = []
+        if self.with_agvs:
+            agvs_data = self.encoder(obs["agvs"][:, 1:], range(2, 15, 2))
+            features_agvs = self.embedd_agvs(agvs_data)
+            objects.append(features_agvs)
 
-    def forward_alt(self, q, k, v):
-        normed1a = self.norm1a(q)
-        normed1b = self.norm1b(k)
-        normed1c = self.norm1c(v)
-        attended = self.attention(normed1a, normed1b, normed1c, need_weights=False)[0]
-        x = q + attended
-        normed2 = self.norm2(x)
-        fedforward = self.feedforward(normed2)
-        x = x + fedforward
-        return x
+        if self.with_stations:
+            station_data = self.encoder(obs["agvs"][:, 1:], [0])
+            features_stations = self.embedd_station(station_data)
+            objects.append(features_stations)
+
+        all_objects = torch.concat(objects, 1)
+        for block in self.encoder_blocks:
+            all_objects = block(all_objects)
+        for block in self.decoder_blocks:
+            features_main = block(all_objects, features_main)
+        return features_main.flatten(1)
 
 
-class AttentionPolicy(TorchModelV2, nn.Module):
+class MAAttnPolicy(TorchModelV2, nn.Module):
     def __init__(
         self,
         obs_space: gym.spaces.Space,
@@ -66,120 +107,81 @@ class AttentionPolicy(TorchModelV2, nn.Module):
         num_outputs: int,
         model_config: ModelConfigDict,
         name: str,
-        fleetsize: int = 10,
-        n_stations: int = 5,
-        embed_dim=64,
-        n_heads=8,
-        depth=4,
-        with_action_mask=True,
-        with_agvs=True,
-        with_stations=True,
-        activation=nn.ReLU,
+        **custom_model_args
     ):
         nn.Module.__init__(self)
+        self.discrete_action_space = isinstance(action_space, gym.spaces.Discrete)
+        action_space_max = (
+            action_space.nvec.max()
+            if not self.discrete_action_space
+            else None
+        )
         TorchModelV2.__init__(
-            self, obs_space, action_space, action_space.n, model_config, name
+            self, obs_space, action_space, num_outputs, model_config, name
         )
-        self.with_action_mask = with_action_mask
-        self.n_features = self.obs_space.original_space["agvs"].shape[0] // fleetsize
-        self.fleetsize = fleetsize
-        self.n_stations = n_stations
+        if len(custom_model_args) > 0:
+            custom_config = custom_model_args
+        else:
+            custom_config = model_config["custom_model_config"]
+        for key, default in dict(
+            embed_dim=64,
+            with_action_mask=True,
+            with_agvs=True,
+            with_stations=True,
+            activation=nn.ReLU,
+        ).items():
+            setattr(
+                self,
+                key,
+                custom_config[key] if key in custom_config.keys() else default,
+            )
 
-        self.encode_main = PositionEncoder(list(range(2, 15, 2)), self.n_features, 2)
-        self.encode_agvs = PositionEncoder(list(range(2, 15, 2)), self.n_features, 2)
-        self.encode_station = PositionEncoder(
-            [
-                1,
-            ],
-            self.n_features,
-            2,
-        )
+        self.name = name
 
-        self.embedd_main = Embedder(
-            embed_dim, self.encode_main.out_features(), activation
-        )
-        self.embedd_agvs = Embedder(
-            embed_dim, self.encode_main.out_features() * 2, activation
-        )
-        self.embedd_station = Embedder(
-            embed_dim, self.encode_station.out_features(), activation
-        )
-
-        self.attention_blocks = nn.ModuleList(
-            [
-                AttentionBlock(
-                    embed_dim, n_heads, fleetsize + n_stations, activation, alt=False
-                )
-                for _ in range(depth)
-            ]
-        )
-
-        self.attention_blocks_val = nn.ModuleList(
-            [
-                AttentionBlock(
-                    embed_dim, n_heads, fleetsize + n_stations, activation, alt=False
-                )
-                for _ in range(depth)
-            ]
+        self.fe = AttnFE(
+            obs_space=obs_space.original_space,
+            embed_dim=self.embed_dim,
+            with_agvs=self.with_agvs,
+            with_stations=self.with_stations,
         )
 
         self.action_net = nn.Sequential(
-            nn.Linear(embed_dim, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim),
-            activation(),
-            nn.Linear(embed_dim, action_space.n),
+            nn.Linear(self.embed_dim, self.embed_dim * 4),
+            self.activation(),
+            nn.Linear(self.embed_dim * 4, self.embed_dim),
+            self.activation(),
+            nn.Linear(
+                self.embed_dim,
+                action_space_max if action_space_max is not None else num_outputs,
+            ),
         )
 
         self.value_net = nn.Sequential(
-            nn.Linear(embed_dim, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim * 4),
-            activation(),
-            nn.Linear(embed_dim * 4, embed_dim),
-            activation(),
-            nn.Linear(embed_dim, 1),
+            nn.Linear(self.embed_dim, self.embed_dim * 4),
+            self.activation(),
+            nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
+            self.activation(),
+            nn.Linear(self.embed_dim * 4, self.embed_dim),
+            self.activation(),
+            nn.Linear(self.embed_dim, 1),
         )
 
     def forward(self, obsdict, state, seq_lengths):
-        main_data = obsdict["obs"]["agvs"][:, : self.n_features]
-        agvs_data = obsdict["obs"]["agvs"]  # [:, self.n_features :]
-        station_data = obsdict["obs"]["stations"]
+        self.obs = obsdict["obs"]
+        self.features = self.fe(self.obs)
 
-        main_data = self.encode_main(main_data)
-        agvs_data = self.encode_agvs(agvs_data)
-        station_data = self.encode_station(station_data)
-
-        main_embedded = self.embedd_main(main_data)
-        n_other_agvs = agvs_data.shape[1]
-        main_repeated = main_data.repeat(1, n_other_agvs, 1)
-        agvs_reshaped = (
-            agvs_data  # .view(agvs_data.shape[0], n_other_agvs, self.n_features)
-        )
-        agvs_embedded = self.embedd_agvs(
-            torch.concat([main_repeated, agvs_reshaped], 2)  # .flatten(1)
-        )
-        stations_embedded = self.embedd_station(station_data)
-
-        self.queries = torch.concat([agvs_embedded, stations_embedded], 1)
-        self.values = main_embedded.repeat(1, self.queries.shape[1], 1)
-        values = self.values
-        for block in self.attention_blocks:
-            values = block(self.queries, values, values)
-
-        features = values.max(dim=1)[0]
-
-        actions = self.action_net(features)
-
+        actions = self.action_net(self.features)
+        if self.discrete_action_space:
+            action_out = actions
+        else:
+            action_out = torch.zeros(
+                obsdict["obs"]["action_mask"].shape,
+                device=actions.device,
+            )
+            action_out[:, 0, :] = actions
         if self.with_action_mask:
-            actions = actions + (obsdict["obs"]["action_mask"] - 1) * 1e8
-
-        return actions, []
+            action_out = action_out + (obsdict["obs"]["action_mask"] - 1) * 1e8
+        return action_out.flatten(1), []
 
     def value_function(self):
-        values = self.values
-        for block in self.attention_blocks_val:
-            values = block(self.queries, values, values)
-
-        features = values.max(dim=1)[0]
-        return self.value_net(features).flatten()
+        return self.value_net(self.features).flatten()

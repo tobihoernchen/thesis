@@ -4,9 +4,9 @@ from torch import nn
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.models import ModelCatalog
 import torch
-from .custom_blocks import MatrixGraph, MiniMatrixGraph
+from .custom_blocks import MatrixGraph, MiniMatrixGraph, MatrixPositionEncoder
 from torch_geometric.data import Data, Batch
-from torch_geometric.nn import Sequential, GCNConv
+from torch_geometric.nn import Sequential, GATConv, BatchNorm
 
 
 def register_gnn_model():
@@ -26,85 +26,126 @@ class GNNFeatureExtractor(nn.Module):
     ) -> None:
         super().__init__()
         self.with_stations = with_stations
-        self.bits_to_add = nn.Parameter(
-            torch.Tensor(
-                [(1, 0)]
-                + [(0, 0) for i in range(obs_space["agvs"].shape[0] - 1)]
-                + (
-                    [(0, 1) for i in range(obs_space["stat"].shape[0])]
-                    if with_stations
-                    else []
-                )
-            )
-        )
-        self.register_parameter("bits", self.bits_to_add)
         if type == "matrix":
             self.basegraph = MatrixGraph()
         elif type == "minimatrix":
             self.basegraph = MiniMatrixGraph()
 
-        self.embedd = nn.Sequential(
-            nn.Linear(n_features + 2, embed_dim * 2),
-            activation(),
-            nn.Linear(embed_dim * 2, embed_dim),
-            activation(),
+        self.paths = nn.Parameter(self.basegraph.paths.T[None, :], requires_grad=False)
+        self.register_parameter("paths", self.paths)
+        self.encoder = MatrixPositionEncoder(2)
+        self.pathencoder = MatrixPositionEncoder(4)
+
+        self.embedd_main = self.get_embedder(
+            n_features + 2 + 7 * 2,
+            int(embed_dim / 2),
+            len(self.basegraph.nodes),
+            activation,
+        )
+        self.embedd_agv = self.get_embedder(
+            n_features + 2 + 7 * 2,
+            int(embed_dim / 2),
+            len(self.basegraph.nodes),
+            activation,
+        )
+        self.embedd_station = self.get_embedder(
+            n_features + 2 + 2,
+            int(embed_dim / 2),
+            len(self.basegraph.nodes),
+            activation,
+        )
+
+        self.embedd_paths = self.get_embedder(
+            2 * embed_dim + 4, embed_dim, self.paths.shape[1], activation, d2=False
         )
 
         node_convs = []
         for i in range(n_convolutions):
             node_convs.extend(
                 [
-                    (GCNConv(embed_dim, embed_dim), "x, edge_index -> x"),
-                    nn.ReLU(inplace=True),
+                    (
+                        GATConv(embed_dim, embed_dim, edge_dim=embed_dim),
+                        "x, edge_index, edge_attr -> x",
+                    ),
+                    BatchNorm(embed_dim),
                 ]
             )
-        self.node_convolutions = Sequential("x, edge_index", node_convs)
+        self.node_convolutions = Sequential("x, edge_index, edge_attr", node_convs)
+
+    def get_embedder(self, n_features, embed_dim, n_objects, activation, d2=True):
+        return nn.Sequential(
+            nn.Linear(n_features, embed_dim * 2),
+            nn.BatchNorm2d(n_objects) if d2 else nn.BatchNorm1d(n_objects),
+            activation(),
+            nn.Linear(embed_dim * 2, embed_dim),
+            nn.BatchNorm2d(n_objects) if d2 else nn.BatchNorm1d(n_objects),
+            activation(),
+        )
+
+    def obs_node_expansion(self, obs, nodes):
+        return torch.concat(
+            [
+                obs.repeat((1, nodes.shape[1], 1, 1)),
+                nodes.repeat((obs.shape[0], 1, obs.shape[2], 1)),
+            ],
+            dim=-1,
+        )
 
     def forward(self, x):
-        obs = (
-            x["agvs"]
-            if not self.with_stations
-            else torch.concat([x["agvs"], x["stat"]], 1)
-        )
-        obs_with_bits = torch.concat(
-            [obs, self.bits_to_add.repeat(obs.shape[0], 1, 1)], 2
-        )
-        obs_embedded = self.embedd(obs_with_bits)
+        obs_main = self.encoder(x["agvs"][:, None, :1], range(2, 15, 2))
+        obs_agvs = self.encoder(x["agvs"][:, None, 1:], range(2, 15, 2))
+        if self.with_stations:
+            obs_stations = self.encoder(x["stat"][:, None], [0])
         in_reach_indices = self.basegraph.get_node_indices(
-            x["agvs"][:, 0, 8:16].reshape(-1, 4, 2)
+            obs_main[:, :, :, 8:16].reshape(-1, 4, 2)
         )
-        target_indices = self.basegraph.get_node_indices(
-            x["agvs"][:, 0, 6:8].reshape(-1, 2)
+        nodes = self.basegraph.nodes[None, :, None, :]
+        main_expanded = self.obs_node_expansion(obs_main, nodes)
+        agvs_expanded = self.obs_node_expansion(obs_agvs, nodes)
+        if self.with_stations:
+            stations_expanded = self.obs_node_expansion(obs_stations, nodes)
+
+        main_embedded = self.embedd_main(main_expanded)
+        agvs_embedded = self.embedd_agv(agvs_expanded)
+        if self.with_stations:
+            stations_embedded = self.embedd_station(stations_expanded)
+
+        node_info_raw = torch.concat(
+            [main_embedded, agvs_embedded]
+            + ([stations_embedded] if self.with_stations else []),
+            dim=2,
         )
-        node_coordinates = (
-            torch.concat([x["agvs"][..., 4:6], x["stat"][..., :2]])
-            if self.with_stations
-            else x["agvs"][..., 4:6]
+
+        node_info = torch.concat(
+            [node_info_raw.mean(dim=2), node_info_raw.max(dim=2)[0]], dim=2
         )
-        node_indices = (
-            self.basegraph.get_node_indices(node_coordinates)
-            .repeat_interleave(obs_embedded.shape[-1], -1)
-            .reshape(obs_embedded.shape[:1] + (1,) + obs_embedded.shape[1:])
-        ).to(dtype=torch.int64)
-        nodewise = (
-            torch.zeros(
-                obs_embedded.shape[0],
-                len(self.basegraph.nodes) + 1,
-                obs_embedded.shape[1],
-                obs_embedded.shape[2],
-                device=node_indices.device,
+        path_info_raw = torch.gather(
+            node_info.repeat(1, 1, 2),
+            1,
+            self.paths.repeat(node_info.shape[0], 1, 1).repeat_interleave(
+                node_info.shape[2], dim=2
+            ),
+        )
+        path_info = self.embedd_paths(
+            torch.concat(
+                [
+                    path_info_raw,
+                    self.pathencoder(self.paths, [0])[:,:,2:].repeat(node_info.shape[0], 1, 1),
+                ],
+                dim=2,
             )
-            .scatter_(1, node_indices, obs_embedded.unsqueeze(1))
-            .sum(2)
-        )[:, :-1]
-        for batch, target in enumerate(target_indices):
-            if target < nodewise.shape[1] - 1:
-                nodewise[batch, target] = 1
-        in_geo_format = Batch.from_data_list(
-            [Data(x=x, edge_index=self.basegraph.paths) for x in nodewise]
         )
-        convoluted = self.node_convolutions(in_geo_format.x, in_geo_format.edge_index)
-        convoluted_by_batch = convoluted.reshape(nodewise.shape)
+
+        in_geo_format = Batch.from_data_list(
+            [
+                Data(x=x, edge_index=self.basegraph.paths, edge_attr=attr)
+                for x, attr in zip(node_info, path_info)
+            ]
+        )
+        convoluted = self.node_convolutions(
+            in_geo_format.x, in_geo_format.edge_index, in_geo_format.edge_attr
+        )
+        convoluted_by_batch = convoluted.reshape(node_info.shape)
         filtered_in_reach = torch.gather(
             convoluted_by_batch,
             1,
@@ -124,9 +165,10 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         **custom_model_args
     ):
         nn.Module.__init__(self)
+        self.discrete_action_space = isinstance(action_space, gym.spaces.Discrete)
         action_space_max = (
             action_space.nvec.max()
-            if isinstance(action_space, gym.spaces.MultiDiscrete)
+            if not self.discrete_action_space
             else None
         )
         TorchModelV2.__init__(
@@ -141,7 +183,6 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             with_action_mask=True,
             with_stations=True,
             activation=nn.ReLU,
-            discrete_action_space=False,
             n_convolutions=6,
             env_type="matrix",
         ).items():
@@ -154,15 +195,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         self.n_features = self.obs_space.original_space["agvs"].shape[1]
         self.name = name
 
-        self.action_fe = GNNFeatureExtractor(
-            self.env_type,
-            obs_space=obs_space.original_space,
-            n_features=self.n_features,
-            embed_dim=self.embed_dim,
-            with_stations=self.with_stations,
-            n_convolutions=self.n_convolutions,
-        )
-        self.value_fe = GNNFeatureExtractor(
+        self.fe = GNNFeatureExtractor(
             self.env_type,
             obs_space=obs_space.original_space,
             n_features=self.n_features,
@@ -194,9 +227,9 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
 
     def forward(self, obsdict, state, seq_lengths):
         self.obs = obsdict["obs"]
-        features = self.action_fe(self.obs)
+        self.features = self.fe(self.obs)
 
-        actions = self.action_net(features)
+        actions = self.action_net(self.features)
         if self.discrete_action_space:
             action_out = actions
         else:
@@ -210,5 +243,4 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         return action_out.flatten(1), []
 
     def value_function(self):
-        features = self.value_fe(self.obs)
-        return self.value_net(features).flatten()
+        return self.value_net(self.features).flatten()

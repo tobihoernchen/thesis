@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -1130,6 +1130,12 @@ String actstr = py.runResults(
 	+ nodeCount
 	+ "," 
 	+ context
+	+ ","
+	+ maxX
+	+ ","
+	+ maxY
+	+ "," 
+	+ time()
 	+ ")").getFeedback(String.class);
 traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
@@ -1292,7 +1298,7 @@ for(int i = 0; i<n_paths; i++)
 	double[] obst = node2obs(t);
 	for(int j = 0; j<n_nodeObs; j++)
 		context[i][j + n_nodeObs] = obst[j];
-	context[i][2*n_nodeObs] = path.isBidirectional()? 1.0 : 0.0;
+	context[i][2*n_nodeObs] = p.isBidirectional()? 1.0 : 0.0;
 }
 
 for(int i = 0; i<n_nodes; i++)
@@ -2065,7 +2071,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[pythonExecPath]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis\\python.exe"]]></Code>
+								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis3_9\\python.exe"]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>

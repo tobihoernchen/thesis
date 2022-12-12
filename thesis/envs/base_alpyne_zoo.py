@@ -97,6 +97,7 @@ class BaseAlpyneZoo(AECEnv):
         return_info: bool = False,
         options: Optional[dict] = None,
         agents=None,
+        dont_collect = False,
     ) -> "BaseAlpyneZoo.PyObservationType":
         """
         A method required as part of the pettingzoo interface to revert the sim to the start.
@@ -114,9 +115,10 @@ class BaseAlpyneZoo(AECEnv):
 
         self.sim.reset(config)
         self.observable = False
-        self._collect()
-        if return_info:
-            return self.observe(self.agent_selection)
+        if not dont_collect:
+            self._collect()
+            if return_info:
+                return self.observe(self.agent_selection)
 
     def step(
         self, action: "BaseAlpyneZoo.PyActionType"
@@ -196,7 +198,7 @@ class BaseAlpyneZoo(AECEnv):
             [self.dones.update({agent: True}) for agent in self.agents]
         self.observable = True
 
-    def _save_observation(self, agent, alpyne_obs, obs, reward, done, info):
+    def _save_observation(self, alpyne_obs, agent, obs, reward, done, info):
         self.agent_selection = agent
         self.observations[agent] = obs
         self.rewards[agent] = reward

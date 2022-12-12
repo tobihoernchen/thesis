@@ -14,7 +14,7 @@ def register_lin_model():
 class LinFE(nn.Module):
     def __init__(
         self,
-        n_features,
+        obs_space,
         embed_dim=64,
         with_agvs=True,
         with_stations=True,
@@ -24,6 +24,7 @@ class LinFE(nn.Module):
 
         super().__init__()
         self.encoder = MatrixPositionEncoder(position_embedd_dim)
+        n_features = obs_space["agvs"].shape[1]
 
         self.main_ff = nn.Sequential(
             nn.Linear(n_features + position_embedd_dim * 7, 2 * embed_dim),
@@ -111,9 +112,10 @@ class MALinPolicy(TorchModelV2, nn.Module):
         **custom_model_args
     ):
         nn.Module.__init__(self)
+        self.discrete_action_space = isinstance(action_space, gym.spaces.Discrete)
         action_space_max = (
             action_space.nvec.max()
-            if isinstance(action_space, gym.spaces.MultiDiscrete)
+            if not self.discrete_action_space
             else None
         )
         TorchModelV2.__init__(
@@ -129,7 +131,6 @@ class MALinPolicy(TorchModelV2, nn.Module):
             with_agvs=True,
             with_stations=True,
             activation=nn.ReLU,
-            discrete_action_space=False,
         ).items():
             setattr(
                 self,
@@ -137,17 +138,10 @@ class MALinPolicy(TorchModelV2, nn.Module):
                 custom_config[key] if key in custom_config.keys() else default,
             )
 
-        self.n_features = self.obs_space.original_space["agvs"].shape[1]
         self.name = name
 
-        self.action_fe = LinFE(
-            n_features=self.n_features,
-            embed_dim=self.embed_dim,
-            with_agvs=self.with_agvs,
-            with_stations=self.with_stations,
-        )
-        self.value_fe = LinFE(
-            n_features=self.n_features,
+        self.fe = LinFE(
+            obs_space=obs_space.original_space,
             embed_dim=self.embed_dim,
             with_agvs=self.with_agvs,
             with_stations=self.with_stations,
@@ -178,9 +172,9 @@ class MALinPolicy(TorchModelV2, nn.Module):
 
     def forward(self, obsdict, state, seq_lengths):
         self.obs = obsdict["obs"]
-        features = self.action_fe(self.obs)
+        self.features = self.fe(self.obs)
 
-        actions = self.action_net(features)
+        actions = self.action_net(self.features)
         if self.discrete_action_space:
             action_out = actions
         else:
@@ -194,5 +188,4 @@ class MALinPolicy(TorchModelV2, nn.Module):
         return action_out.flatten(1), []
 
     def value_function(self):
-        features = self.value_fe(self.obs)
-        return self.value_net(features).flatten()
+        return self.value_net(self.features).flatten()

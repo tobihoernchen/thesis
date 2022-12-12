@@ -5,6 +5,7 @@ from gym import spaces
 import numpy as np
 from collections import OrderedDict
 from typing import List
+import matplotlib.pyplot as plt
 
 
 class HiveContext:
@@ -17,6 +18,12 @@ class HiveContext:
     def set_statistics(self, stat_dict):
         self.statistics = stat_dict
 
+    def draw(self):
+        for inode1, inode2 in self.paths:
+            node1 = self.nodes[inode1]
+            node2 = self.nodes[inode2]
+            plt.arrow(node1[0], -node1[1], node2[0]-node1[0], node1[1]-node2[1], length_includes_head = True, head_width = 0.008)
+        plt.show()
 
 class ContextualAgent(ZooAgentBehavior):
     def __init__(self, hive: HiveContext) -> None:
@@ -53,7 +60,7 @@ class ContextualAgent(ZooAgentBehavior):
             self.hive.stations = stations
             self.hive.paths = paths
 
-        if "statTitles" in alpyne_obs.names() and "rout_len" in alpyne_obs.statTitles:
+        if "statTitles" in alpyne_obs.names() and "maxX" in alpyne_obs.statTitles:
             self.hive.set_statistics(
                 {
                     title: value
@@ -62,6 +69,7 @@ class ContextualAgent(ZooAgentBehavior):
                     )
                 }
             )
+
 
     def _make_action(self, actions, receiver):
         return Action(
@@ -96,8 +104,15 @@ class RandomStationDispatcher(ContextualAgent):
         return np.sqrt(np.square(a[0] - b[0]) + np.square(a[1] - b[1]))
 
     def get_action(self, alpyne_obs, time):
-        assert self.hive.stations is not None
-        stations = [list(self.hive.stations.keys()) for _ in range(self.n_actions)]
+        assert self.hive.stations is not None, "Hive did not yet receive any context data."
+        if alpyne_obs.caller == 2001:
+            station_list = self.hive.stations
+        else:
+            agent_position = tuple(alpyne_obs.obs[alpyne_obs.caller % 1000][4:6])
+            station_list = {
+                k: v for k, v in self.hive.stations.items() if v != agent_position
+            }
+        stations = [list(station_list.keys()) for _ in range(self.n_actions)]
         if self.distance is not None:
             if alpyne_obs.caller == 2001:
                 agents = list(range(len(alpyne_obs.obs)))
@@ -107,7 +122,7 @@ class RandomStationDispatcher(ContextualAgent):
             close_stations = [
                 [
                     station_nr
-                    for station_nr, station_coord in self.hive.stations.items()
+                    for station_nr, station_coord in station_list.items()
                     if self._distance(position, station_coord) < self.distance
                 ]
                 for position in positions
@@ -127,6 +142,7 @@ class OnlyStandBehavior(ContextualAgent):
         self.n_actions = n_actions
 
     def is_for_learning(self, alpyne_obs: Observation) -> bool:
+        super().is_for_learning(alpyne_obs)
         return False
 
     def get_action(self, alpyne_obs, time):
@@ -139,226 +155,6 @@ class OnlyStandBehavior(ContextualAgent):
         )
 
 
-class TrainingBehavior(ContextualAgent):
-    observation_space = None
-    action_space = None
-
-    def __init__(self, hive: HiveContext, max_fleetsize, all_ma) -> None:
-        super().__init__(hive)
-        self.max_fleetsize = max_fleetsize
-        self.ma = all_ma
-
-    def is_for_learning(self, alpyne_obs: Observation) -> bool:
-        super().is_for_learning(alpyne_obs)
-        if not hasattr(self, "n_agv"):
-            self._gen_spaces()
-        return True
-
-    def _gen_spaces(self):
-        self.n_agv = int(self.hive.statistics["n_agv"])
-        self.n_stat = int(self.hive.statistics["n_stat"])
-        rout_len = int(self.hive.statistics["rout_len"])
-        disp_len = int(self.hive.statistics["disp_len"])
-        self.action_max = max(self.n_stat, 5)
-        self.obs_shape_len = max(rout_len, disp_len)
-        # worst case spaces, because RLLIB can't take different space sizes per agent
-        if not self.ma:
-            TrainingBehavior.action_space = spaces.MultiDiscrete(
-                [
-                    self.action_max,
-                ]
-                * self.max_fleetsize
-            )
-        else:
-            TrainingBehavior.action_space = spaces.Discrete(self.action_max)
-
-        spacedict = OrderedDict()
-        spacedict["agvs"] = spaces.Box(0, 1, (self.max_fleetsize, self.obs_shape_len))
-        spacedict["stat"] = spaces.Box(0, 1, (self.n_stat, self.obs_shape_len))
-        spacedict["action_mask"] = (
-            spaces.Box(0, 1, (self.max_fleetsize, self.action_max))
-            if not self.ma
-            else spaces.Box(0, 1, (self.action_max,))
-        )
-        TrainingBehavior.observation_space = spaces.Dict(spacedict)
-
-    def get_observation_space(self):
-        return self.observation_space
-
-    def get_action_space(self) -> spaces.Space:
-        return self.action_space
-
-    def _state_dict(self, obs):
-        include_nodes_in_reach = True
-        result = dict(agvs={}, stations={})
-        for i, agv in enumerate(obs["agvs"]):
-            result["agvs"][str(i)] = d = {}
-            d["in_system"] = agv[0]
-            d["moving"] = agv[1]
-            d["last_node"] = agv[2:4]
-            d["next_node"] = agv[4:6]
-            hwm = 6
-            if not self.dispatching:
-                d["target_node"] = agv[hwm : hwm + 2]
-                hwm = hwm + 2
-            if include_nodes_in_reach:
-                d["nodes_in_reach"] = [
-                    agv[hwm : hwm + 2],
-                    agv[hwm + 2 : hwm + 4],
-                    agv[hwm + 4 : hwm + 6],
-                    agv[hwm + 6 : hwm + 8],
-                ]
-                hwm = hwm + 8
-            if not self.dispatching:
-                d["part_info"] = agv[hwm:]
-        for i, station in enumerate(obs["stat"]):
-            result["stations"]["station" + str(i)] = d = {}
-            d["position"] = station[:2]
-            d["state_vec"] = station[2:]
-        return result
-
-
-class SingleAgent(TrainingBehavior):
-    def __init__(
-        self,
-        hive: HiveContext,
-        max_fleetsize,
-        start_of_nodes_in_reach,
-        dispatching=False,
-    ) -> None:
-        super().__init__(hive, max_fleetsize, all_ma=False)
-        self.shufflerules = dict()
-        self.dispatching = dispatching
-        self.start_of_nodes_in_reach = start_of_nodes_in_reach
-
-    def convert_from_observation(self, alpyne_obs):
-        self.shufflerules[alpyne_obs.caller] = srule = random.sample(
-            range(self.max_fleetsize), self.n_agv
-        )
-        reward = alpyne_obs.rew
-        in_obs = np.array(alpyne_obs.obs)
-
-        obs_agvs = np.zeros((self.max_fleetsize, self.obs_shape_len))
-        in_obs_agvs = in_obs[: self.n_agv]
-        obs_agvs[srule, : in_obs_agvs.shape[1]] = in_obs_agvs
-
-        obs_stat = np.zeros((self.n_stat, self.obs_shape_len))
-        in_obs_stat = in_obs[self.n_agv :]
-        obs_stat[: in_obs_stat.shape[0], : in_obs_stat.shape[1]] = in_obs_stat
-        assert not self.ma
-        obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
-        nodes_in_reach = obs_agvs[
-            :, self.start_of_nodes_in_reach : self.start_of_nodes_in_reach + 8
-        ]
-        nodes_in_reach = (nodes_in_reach.reshape(self.max_fleetsize, 4, 2) != 0).any(
-            axis=2
-        ) * 1
-        obs_action_mask[:, 1:5] = nodes_in_reach
-        obs_action_mask[:, 5:] = 0
-        obs = OrderedDict()
-        obs["agvs"] = obs_agvs
-        obs["stat"] = obs_stat
-        obs["action_mask"] = obs_action_mask
-        return obs, reward, False, {}
-
-    def convert_to_action(self, actions, agent):
-        if self.dispatching:
-            actions = [
-                list(self.hive.stations.keys())[action]
-                if action < len(self.hive.stations)
-                else list(self.hive.stations.keys())[0]
-                for action in actions
-            ]
-        else:
-            actions = [action if action < 5 else 0 for action in actions]
-        srule = self.shufflerules[int(agent)]
-        reshuffled = [actions[val] for val in srule]
-        return self._make_action(reshuffled, int(agent))
-
-
-class MultiAgent(TrainingBehavior):
-    def __init__(
-        self,
-        hive: HiveContext,
-        max_fleetsize,
-        start_of_nodes_in_reach,
-        dispatching=False,
-        all_ma=False,
-        die_on_target=False,
-    ) -> None:
-        super().__init__(hive, max_fleetsize, all_ma)
-        self.shufflerules = dict()
-        self.dispatching = dispatching
-        self.start_of_nodes_in_reach = start_of_nodes_in_reach
-        self.die_on_target = die_on_target
-
-    def convert_from_observation(self, alpyne_obs):
-        self.shufflerules[alpyne_obs.caller] = srule = random.sample(
-            range(1, self.max_fleetsize), self.n_agv - 1
-        )
-        reward = alpyne_obs.rew
-        in_obs = np.array(alpyne_obs.obs)
-
-        obs_agvs = np.zeros((self.max_fleetsize, self.obs_shape_len))
-        caller = alpyne_obs.caller % 1000
-        other = list(range(self.n_agv))
-        other.remove(caller)
-        in_obs_caller = in_obs[caller]
-        in_obs_agvs = in_obs[other]
-        obs_agvs[0, : in_obs_agvs.shape[1]] = in_obs_caller
-        obs_agvs[srule, : in_obs_agvs.shape[1]] = in_obs_agvs
-
-        obs_stat = np.zeros((self.n_stat, self.obs_shape_len))
-        in_obs_stat = in_obs[self.n_agv :]
-        obs_stat[: in_obs_stat.shape[0], : in_obs_stat.shape[1]] = in_obs_stat
-
-        if self.ma:
-            obs_action_mask = np.ones((self.action_max))
-        else:
-            obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
-        nodes_in_reach = obs_agvs[
-            0, self.start_of_nodes_in_reach : self.start_of_nodes_in_reach + 8
-        ]
-        nodes_in_reach = (nodes_in_reach.reshape(4, 2) != 0).any(axis=1) * 1
-        if self.ma:
-            obs_action_mask[1:5] = nodes_in_reach
-        else:
-            obs_action_mask[0, 1:5] = nodes_in_reach
-
-        obs = OrderedDict()
-        obs["agvs"] = obs_agvs
-        obs["stat"] = obs_stat
-        obs["action_mask"] = obs_action_mask
-        if self.dispatching or not self.die_on_target:
-            at_target = False
-        else:
-            at_target = alpyne_obs.rew >= 5
-        return (
-            obs,
-            reward,
-            False,
-            {"in_system": in_obs_caller[0] == 1, "at_target": at_target},
-        )
-
-    def convert_to_action(self, actions, agent):
-        if not isinstance(actions, list):
-            action = actions if actions is not None else 0
-        else:
-            action = actions[0] if actions is not None else 0
-        if self.dispatching:
-            action = (
-                list(self.hive.stations.keys())[action]
-                if action < len(self.hive.stations)
-                else list(self.hive.stations.keys())[0]
-            )
-        else:
-            action = action if action < 5 else 0
-        return self._make_action(
-            [
-                action,
-            ],
-            int(agent),
-        )
 
 
 class Arc:
@@ -503,7 +299,7 @@ class CollisionFreeRoutingHive(HiveContext):
         while len(H) > 0:
             H.sort(key=lambda l: l.distance)
             label = H[0]
-            if label.arc.start == target_node:
+            if label.arc.start == target_node and label.predecessor != None:
                 break
             for window in label.arc.free_time_windows:
                 possible_arrival_start = (
@@ -583,3 +379,230 @@ class CollisionFreeRouting(ContextualAgent):
             return self._make_action([action], caller)
         else:
             return self._make_action([0], caller)
+
+
+class TrainingBehavior(ContextualAgent):
+    observation_space = None
+    action_space = None
+
+    def __init__(self, hive: HiveContext, max_fleetsize, all_ma) -> None:
+        super().__init__(hive)
+        self.max_fleetsize = max_fleetsize
+        self.ma = all_ma
+
+    def is_for_learning(self, alpyne_obs: Observation) -> bool:
+        super().is_for_learning(alpyne_obs)
+        if not hasattr(self, "n_agv"):
+            self._gen_spaces()
+        return True
+
+    def _gen_spaces(self):
+        self.n_agv = int(self.hive.statistics["n_agv"])
+        self.n_stat = int(self.hive.statistics["n_stat"])
+        rout_len = int(self.hive.statistics["rout_len"])
+        disp_len = int(self.hive.statistics["disp_len"])
+        self.action_max = max(self.n_stat, 5)
+        self.obs_shape_len = max(rout_len, disp_len)
+        # worst case spaces, because RLLIB can't take different space sizes per agent
+        if not self.ma:
+            TrainingBehavior.action_space = spaces.MultiDiscrete(
+                [
+                    self.action_max,
+                ]
+                * self.max_fleetsize
+            )
+        else:
+            TrainingBehavior.action_space = spaces.Discrete(self.action_max)
+
+        spacedict = OrderedDict()
+        spacedict["agvs"] = spaces.Box(0, 1, (self.max_fleetsize, self.obs_shape_len))
+        spacedict["stat"] = spaces.Box(0, 1, (self.n_stat, self.obs_shape_len))
+        spacedict["action_mask"] = (
+            spaces.Box(0, 1, (self.max_fleetsize, self.action_max))
+            if not self.ma
+            else spaces.Box(0, 1, (self.action_max,))
+        )
+        TrainingBehavior.observation_space = spaces.Dict(spacedict)
+
+    def get_observation_space(self):
+        return self.observation_space
+
+    def get_action_space(self) -> spaces.Space:
+        return self.action_space
+
+    def _state_dict(self, obs):
+        include_nodes_in_reach = True
+        result = dict(agvs={}, stations={})
+        for i, agv in enumerate(obs["agvs"]):
+            result["agvs"][str(i)] = d = {}
+            d["in_system"] = agv[0]
+            d["moving"] = agv[1]
+            d["last_node"] = agv[2:4]
+            d["next_node"] = agv[4:6]
+            hwm = 6
+            if not self.dispatching:
+                d["target_node"] = agv[hwm : hwm + 2]
+                hwm = hwm + 2
+            if include_nodes_in_reach:
+                d["nodes_in_reach"] = [
+                    agv[hwm : hwm + 2],
+                    agv[hwm + 2 : hwm + 4],
+                    agv[hwm + 4 : hwm + 6],
+                    agv[hwm + 6 : hwm + 8],
+                ]
+                hwm = hwm + 8
+            if not self.dispatching:
+                d["part_info"] = agv[hwm:]
+        for i, station in enumerate(obs["stat"]):
+            result["stations"]["station" + str(i)] = d = {}
+            d["position"] = station[:2]
+            d["state_vec"] = station[2:]
+        return result
+
+
+class SingleAgent(TrainingBehavior):
+    def __init__(
+        self,
+        hive: HiveContext,
+        max_fleetsize,
+        start_of_nodes_in_reach,
+        dispatching=False,
+    ) -> None:
+        super().__init__(hive, max_fleetsize, all_ma=False)
+        self.shufflerules = dict()
+        self.dispatching = dispatching
+        self.start_of_nodes_in_reach = start_of_nodes_in_reach
+
+    def convert_from_observation(self, alpyne_obs):
+        self.shufflerules[alpyne_obs.caller] = srule = random.sample(
+            range(self.max_fleetsize), self.n_agv
+        )
+        reward = alpyne_obs.rew
+        in_obs = np.array(alpyne_obs.obs)
+
+        obs_agvs = np.zeros((self.max_fleetsize, self.obs_shape_len))
+        in_obs_agvs = in_obs[: self.n_agv]
+        obs_agvs[srule, : in_obs_agvs.shape[1]] = in_obs_agvs
+
+        obs_stat = np.zeros((self.n_stat, self.obs_shape_len))
+        in_obs_stat = in_obs[self.n_agv :]
+        obs_stat[: in_obs_stat.shape[0], : in_obs_stat.shape[1]] = in_obs_stat
+        assert not self.ma
+        obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
+        nodes_in_reach = obs_agvs[
+            :, self.start_of_nodes_in_reach : self.start_of_nodes_in_reach + 8
+        ]
+        nodes_in_reach = (nodes_in_reach.reshape(self.max_fleetsize, 4, 2) != 0).any(
+            axis=2
+        ) * 1
+        obs_action_mask[:, 1:5] = nodes_in_reach
+        obs_action_mask[:, 5:] = 0
+        obs = OrderedDict()
+        obs["agvs"] = obs_agvs
+        obs["stat"] = obs_stat
+        obs["action_mask"] = obs_action_mask
+        return obs, reward, False, {}
+
+    def convert_to_action(self, actions, agent):
+        if self.dispatching:
+            actions = [
+                list(self.hive.stations.keys())[action]
+                if action is not None and action < len(self.hive.stations)
+                else list(self.hive.stations.keys())[0]
+                for action in actions
+            ]
+        else:
+            actions = [action if action is not None and  action < 5 else 0 for action in actions] if actions is not None else [0 for _ in range(len(self.action_space.nvec))]
+        srule = self.shufflerules[int(agent)]
+        reshuffled = [actions[val] for val in srule]
+        return self._make_action(reshuffled, int(agent))
+
+
+class MultiAgent(TrainingBehavior):
+    def __init__(
+        self,
+        hive: HiveContext,
+        max_fleetsize,
+        start_of_nodes_in_reach,
+        dispatching=False,
+        all_ma=False,
+        die_on_target=False,
+    ) -> None:
+        super().__init__(hive, max_fleetsize, all_ma)
+        self.shufflerules = dict()
+        self.dispatching = dispatching
+        self.start_of_nodes_in_reach = start_of_nodes_in_reach
+        self.die_on_target = die_on_target
+
+    def convert_from_observation(self, alpyne_obs):
+        self.shufflerules[alpyne_obs.caller] = srule = random.sample(
+            range(1, self.max_fleetsize), self.n_agv - 1
+        )
+        reward = alpyne_obs.rew
+        in_obs = np.array(alpyne_obs.obs)
+
+        obs_agvs = np.zeros((self.max_fleetsize, self.obs_shape_len))
+        caller = alpyne_obs.caller % 1000
+        other = list(range(self.n_agv))
+        other.remove(caller)
+        in_obs_caller = in_obs[caller]
+        in_obs_agvs = in_obs[other]
+        obs_agvs[0, : in_obs_agvs.shape[1]] = in_obs_caller
+        obs_agvs[srule, : in_obs_agvs.shape[1]] = in_obs_agvs
+
+        obs_stat = np.zeros((self.n_stat, self.obs_shape_len))
+        in_obs_stat = in_obs[self.n_agv :]
+        obs_stat[: in_obs_stat.shape[0], : in_obs_stat.shape[1]] = in_obs_stat
+
+        if self.ma:
+            obs_action_mask = np.ones((self.action_max))
+        else:
+            obs_action_mask = np.ones((self.max_fleetsize, self.action_max))
+        nodes_in_reach = obs_agvs[
+            0, self.start_of_nodes_in_reach : self.start_of_nodes_in_reach + 8
+        ]
+        nodes_in_reach = (nodes_in_reach.reshape(4, 2) != 0).any(axis=1) * 1
+        if self.ma:
+            obs_action_mask[1:5] = nodes_in_reach
+        else:
+            obs_action_mask[0, 1:5] = nodes_in_reach
+
+        obs = OrderedDict()
+        obs["agvs"] = obs_agvs
+        obs["stat"] = obs_stat
+        obs["action_mask"] = obs_action_mask
+        if self.dispatching or not self.die_on_target:
+            at_target = False
+        else:
+            at_target = alpyne_obs.rew >= 5
+        return (
+            obs,
+            reward,
+            False,
+            {"in_system": in_obs_caller[0] == 1, "at_target": at_target},
+        )
+
+    def convert_to_action(self, actions, agent):
+        if not isinstance(actions, list):
+            action = actions if actions is not None else 0
+        else:
+            action = actions[0] if actions is not None else 0
+        if self.dispatching:
+            action = (
+                list(self.hive.stations.keys())[action]
+                if action < len(self.hive.stations)
+                else list(self.hive.stations.keys())[0]
+            )
+        else:
+            action = action if action < 5 else 0
+        return self._make_action(
+            [
+                action,
+            ],
+            int(agent),
+        )
+
+
+class Dummy(MultiAgent):
+    def convert_to_action(self, actions, agent):
+        return super().convert_to_action(0, 0)

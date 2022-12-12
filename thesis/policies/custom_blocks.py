@@ -3,6 +3,65 @@ import torch
 from collections import OrderedDict
 
 
+class TransformerEncoderBlock(nn.Module):
+    def __init__(self, embed_dim, n_heads, n_agents, activation=nn.ReLU) -> None:
+        super().__init__()
+        self.attention = nn.MultiheadAttention(
+            embed_dim=embed_dim, num_heads=n_heads, batch_first=True
+        )
+        self.norm1 = nn.LayerNorm((n_agents, embed_dim))
+        self.feedforward = nn.Sequential(
+            nn.Linear(embed_dim, 4 * embed_dim),
+            activation(),
+            nn.Linear(4 * embed_dim, embed_dim),
+            activation(),
+        )
+        self.norm2 = nn.LayerNorm((n_agents, embed_dim))
+
+    def forward(self, x):
+        attended = self.attention(x, x, x, need_weights=False)[0]
+        x = x + attended
+        normed1 = self.norm1(x)
+        fedforward = self.feedforward(normed1)
+        x = fedforward + x
+        normed2 = self.norm2(x)
+        return normed2
+
+
+class TransformerDecoderBlock(nn.Module):
+    def __init__(self, embed_dim, n_heads, n_agents, activation=nn.ReLU) -> None:
+        super().__init__()
+        self.self_attention = nn.MultiheadAttention(
+            embed_dim=embed_dim, num_heads=n_heads, batch_first=True
+        )
+        self.norm1 = nn.LayerNorm((n_agents, embed_dim))
+        self.attention = nn.MultiheadAttention(
+            embed_dim=embed_dim, num_heads=n_heads, batch_first=True
+        )
+        self.norm2 = nn.LayerNorm((n_agents, embed_dim))
+        self.feedforward = nn.Sequential(
+            nn.Linear(embed_dim, 4 * embed_dim),
+            activation(),
+            nn.Linear(4 * embed_dim, embed_dim),
+            activation(),
+        )
+        self.norm3 = nn.LayerNorm((n_agents, embed_dim))
+
+    def forward(self, inputs, outputs):
+        self_attended = self.self_attention(
+            outputs, outputs, outputs, need_weights=False
+        )[0]
+        x = outputs + self_attended
+        normed1 = self.norm1(x)
+        attended = self.attention(normed1, inputs, inputs, need_weights=False)[0]
+        x = attended + x
+        normed2 = self.norm2(x)
+        fedforward = self.feedforward(normed2)
+        x = fedforward + x
+        normed3 = self.norm3(x)
+        return normed3
+
+
 class Graph(nn.Module):
     def __init__(self) -> None:
         super().__init__()
@@ -64,7 +123,11 @@ class PointEmbedding(nn.Module):
 
     def forward(self, points: torch.Tensor) -> torch.Tensor:
         orig_dim = points.shape
-        points = points.reshape(orig_dim[:-1].numel(), 2).to(dtype=torch.float).detach()
+        points = (
+            points.reshape(orig_dim[:-1].numel(), 2)
+            .to(dtype=torch.float)
+            .round(decimals=4)
+        )
         points_rep = points[:, None, :].repeat(1, len(self.nodes), 1)
         while True:
             nodes_rep = self.nodes.repeat(len(points), 1, 1)
@@ -74,7 +137,9 @@ class PointEmbedding(nn.Module):
                 self._add_nodes(points[not_anyone].unique(dim=0))
             else:
                 break
-        indices = self.indices.repeat(len(points), 1)[choice].reshape(orig_dim[:-1])
+        indices = (
+            self.indices.repeat(len(points), 1)[choice].reshape(orig_dim[:-1]).detach()
+        )
         return self.embedding(indices).detach()
 
 
@@ -91,7 +156,7 @@ class MatrixPositionEncoder(nn.Module):
         pos_cols = torch.Tensor([[p, p + 1] for p in pos_cols]).to(dtype=torch.long)
         orig_dim = x.shape
         to_embed = x[..., pos_cols]
-        to_embed = to_embed.reshape(int(to_embed.numel() / 2), 2)
+        to_embed = to_embed.reshape(int(to_embed.numel() / 2), 2).detach()
         embedded = self.pointembedder(to_embed)
         back_in_shape = embedded.reshape(
             orig_dim[:-1] + (int(embedded.shape.numel() / orig_dim[:-1].numel()),)
