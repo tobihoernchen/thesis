@@ -4,11 +4,7 @@ import torch
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.utils.typing import ModelConfigDict
 from ray.rllib.models import ModelCatalog
-from .custom_blocks import (
-    MatrixPositionEncoder,
-    TransformerDecoderBlock,
-    TransformerEncoderBlock,
-)
+
 
 
 def register_plain_model():

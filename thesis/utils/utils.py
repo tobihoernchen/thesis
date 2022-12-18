@@ -36,7 +36,8 @@ class Experiment:
         self.trainer = None
         self.folder = folder
 
-    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100):
+    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42):
+        seed_all(seed)
         config, logger_creator, checkpoint_dir = get_config(
             path = path,
             batch_size=batch_size,

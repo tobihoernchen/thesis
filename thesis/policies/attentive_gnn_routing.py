@@ -8,10 +8,11 @@ from .custom_blocks import (
     MatrixGraph,
     MiniMatrixGraph,
     TransformerDecoderBlock,
-    MatrixPositionEncoder,
+    MatrixPositionEmbedder,
+    FourierFeatureEmbedder
 )
 from torch_geometric.data import Data, Batch
-from torch_geometric.nn import Sequential, GATConv, BatchNorm
+from torch_geometric.nn import Sequential, GATv2Conv, GraphNorm
 
 
 def register_attn_gnn_model():
@@ -25,8 +26,10 @@ class AGNNFeatureExtractor(nn.Module):
         obs_space,
         embed_dim,
         with_stations,
+        position_embedd_dim = 2,
+        ff_embedd_dim = 0,
         activation=nn.ReLU,
-        n_convolutions=6,
+        n_convolutions=2,
     ) -> None:
         super().__init__()
         self.with_stations = with_stations
@@ -36,14 +39,21 @@ class AGNNFeatureExtractor(nn.Module):
             self.basegraph = MatrixGraph()
         elif type == "minimatrix":
             self.basegraph = MiniMatrixGraph()
-        position_encoding_len = 2
-        self.encoder = MatrixPositionEncoder(position_encoding_len)
+        position_embedd_dim = 2
+        
+        self.with_pos_embedding =  position_embedd_dim > 0
+        self.with_ff_embedding =  ff_embedd_dim > 0
+        if self.with_pos_embedding:
+            self.pos_encoder = MatrixPositionEmbedder(position_embedd_dim)
+        if self.with_ff_embedding:
+            self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
+
         self.embed_dim = embed_dim
-        self.embedd_main = self.get_embedder(n_features, embed_dim, activation)
-        self.embedd_agv = self.get_embedder(n_features, embed_dim, activation)
-        self.embedd_station = self.get_embedder(n_features, embed_dim, activation)
-        self.embedd_node = self.get_embedder(2 + position_encoding_len, embed_dim, activation)
-        self.embedd_edge = self.get_embedder(4 + 2*position_encoding_len, embed_dim, activation)
+        self.embedd_main = self.get_embedder(n_features+ 7*position_embedd_dim + 7*2 * ff_embedd_dim, embed_dim, activation)
+        self.embedd_agv = self.get_embedder(n_features+ 7*position_embedd_dim + 7*2 * ff_embedd_dim, embed_dim, activation)
+        self.embedd_station = self.get_embedder(n_features+ position_embedd_dim + 2 * ff_embedd_dim, embed_dim, activation)
+        self.embedd_node = self.get_embedder(2 + position_embedd_dim + 2 * ff_embedd_dim, embed_dim, activation)
+        #self.embedd_edge = self.get_embedder(4 + 2*position_embedd_dim + 2*2*ff_embedd_dim, embed_dim, activation)
         self.edge_coords = nn.Parameter(
             torch.gather(
                 self.basegraph.nodes.repeat(1, 2),
@@ -59,25 +69,25 @@ class AGNNFeatureExtractor(nn.Module):
                 for _ in range(2)
             ]
         )
-        self.edge_attention = nn.ModuleList(
-            [
-                TransformerDecoderBlock(embed_dim, 4, len(self.edge_coords))
-                for _ in range(2)
-            ]
-        )
+        # self.edge_attention = nn.ModuleList(
+        #     [
+        #         TransformerDecoderBlock(embed_dim, 4, len(self.edge_coords))
+        #         for _ in range(2)
+        #     ]
+        # )
 
         node_convs = []
         for i in range(n_convolutions):
             node_convs.extend(
                 [
                     (
-                        GATConv(embed_dim, embed_dim, edge_dim=embed_dim),
-                        "x, edge_index, edge_attr -> x",
+                        GATv2Conv(embed_dim, embed_dim),#, edge_dim=embed_dim),
+                        "x, edge_index -> x"#, edge_attr -> x",
                     ),
-                    BatchNorm(embed_dim),
+                    GraphNorm(embed_dim),
                 ]
             )
-        self.node_convolutions = Sequential("x, edge_index, edge_attr", node_convs)
+        self.node_convolutions = Sequential("x, edge_index", node_convs)#, edge_attr
 
     def get_embedder(self, n_features, embed_dim, activation):
         return nn.Sequential(
@@ -87,11 +97,22 @@ class AGNNFeatureExtractor(nn.Module):
             activation(),
         )
 
+    def encode(self, obs, pos_cols):
+        if self.with_pos_embedding:
+            obs=self.pos_encoder(obs, pos_cols)
+        if self.with_ff_embedding:
+            obs=self.ff_encoder(obs, pos_cols)
+        return obs
+
     def forward(self, x):
         obs_main = x["agvs"][:, :1]
+        obs_main = self.encode(obs_main, range(2, 15, 2))
         obs_agvs = x["agvs"][:, 1:]
+        obs_agvs = self.encode(obs_agvs, range(2, 15, 2))
         if self.with_stations:
             obs_stations = x["stat"]
+            obs_stations = self.encode(obs_stations, [0])
+
         in_reach_indices = self.basegraph.get_node_indices(
             obs_main[:, :, 8:16].reshape(-1, 4, 2)
         )
@@ -105,23 +126,23 @@ class AGNNFeatureExtractor(nn.Module):
             + ([stations_embedded] if self.with_stations else []),
             dim=1,
         )
-        nodes_encoded = self.encoder(self.basegraph.nodes, [0])
+        nodes_encoded = self.encode(self.basegraph.nodes, [0])
         nodes_embedded = self.embedd_node(nodes_encoded).repeat(obs_main.shape[0], 1, 1)
-        edges_encoded = self.encoder(self.edge_coords, [0, 2])
-        edges_embedded = self.embedd_edge(edges_encoded).repeat(obs_main.shape[0], 1, 1)
+        # edges_encoded = self.encode(self.edge_coords, [0, 2])
+        # edges_embedded = self.embedd_edge(edges_encoded).repeat(obs_main.shape[0], 1, 1)
         for block in self.node_attention:
             nodes_embedded = block(objects_embedded, nodes_embedded)
-        for block in self.edge_attention:
-            edges_embedded = block(objects_embedded, edges_embedded)
+        # for block in self.edge_attention:
+        #     edges_embedded = block(objects_embedded, edges_embedded)
 
         in_geo_format = Batch.from_data_list(
             [
-                Data(x=x, edge_index=self.basegraph.paths, edge_attr=attr)
-                for x, attr in zip(nodes_embedded, edges_embedded)
+                Data(x=x, edge_index=self.basegraph.paths)#, edge_attr=attr)
+                for x in nodes_embedded#, attr in zip(nodes_embedded, edges_embedded)
             ]
         )
         convoluted = self.node_convolutions(
-            in_geo_format.x, in_geo_format.edge_index, in_geo_format.edge_attr
+            in_geo_format.x, in_geo_format.edge_index#, in_geo_format.edge_attr
         )
         convoluted_by_batch = convoluted.reshape(nodes_embedded.shape)
         filtered_in_reach = torch.gather(
@@ -164,6 +185,8 @@ class AGNNRoutingNet(TorchModelV2, nn.Module):
             embed_dim=64,
             with_action_mask=True,
             with_stations=True,
+            position_embedd_dim = 2,
+            ff_embedd_dim = 0,
             activation=nn.ReLU,
             n_convolutions=6,
             env_type="matrix",
@@ -181,6 +204,8 @@ class AGNNRoutingNet(TorchModelV2, nn.Module):
             obs_space=obs_space.original_space,
             embed_dim=self.embed_dim,
             with_stations=self.with_stations,
+            position_embedd_dim = self.position_embedd_dim,
+            ff_embedd_dim = self.ff_embedd_dim,
             n_convolutions=self.n_convolutions,
         )
 

@@ -143,7 +143,7 @@ class PointEmbedding(nn.Module):
         return self.embedding(indices).detach()
 
 
-class MatrixPositionEncoder(nn.Module):
+class MatrixPositionEmbedder(nn.Module):
     """Inputs: (*, x)
     Output: (*, x + len(pos_cols) * embed_size)
     """
@@ -156,12 +156,31 @@ class MatrixPositionEncoder(nn.Module):
         pos_cols = torch.Tensor([[p, p + 1] for p in pos_cols]).to(dtype=torch.long)
         orig_dim = x.shape
         to_embed = x[..., pos_cols]
-        to_embed = to_embed.reshape(int(to_embed.numel() / 2), 2).detach()
+        to_embed = to_embed.reshape(-1, 2).detach()
         embedded = self.pointembedder(to_embed)
-        back_in_shape = embedded.reshape(
-            orig_dim[:-1] + (int(embedded.shape.numel() / orig_dim[:-1].numel()),)
-        )
+        back_in_shape = embedded.reshape(orig_dim[:-1] + (-1,))
         return torch.concat([x, back_in_shape], dim=-1)
+
+
+class FourierFeatureEmbedder(nn.Module):
+
+    def __init__(self, size = 4, sigma = 20) -> None:
+        super().__init__()
+        self.b = nn.Parameter(torch.randn(4, 2) * sigma, requires_grad=False)
+        self.register_parameter("b", self.b)
+
+    def forward(self, x: torch.Tensor, pos_cols):
+        pos_cols = torch.Tensor([[p, p + 1] for p in pos_cols]).to(dtype=torch.long)
+        orig_dim = x.shape
+        to_embed = x[..., pos_cols]
+        to_embed = to_embed.reshape((-1, 2)).detach()
+        features = []
+        for b in self.b:
+            features.append(torch.sin(2*torch.pi*torch.tensordot(b, to_embed, dims=([0], [1]))).unsqueeze(1))
+            features.append(torch.cos(2*torch.pi*torch.tensordot(b, to_embed, dims=([0], [1]))).unsqueeze(1))
+        features_in_shape = torch.concat(features, dim=1).reshape(orig_dim[:-1] + (-1,))
+        return torch.concat([x, features_in_shape], dim = -1)
+
 
 
 class MatrixGraph(Graph):
