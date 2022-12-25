@@ -9,7 +9,7 @@ import time
 
 import ray
 from ray.rllib.policy.policy import PolicySpec
-from ray.rllib.algorithms import ppo, a3c, dqn, apex_dqn
+from ray.rllib.algorithms import ppo, a2c, dqn, apex_dqn
 from ray.rllib.env import PettingZooEnv
 from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
@@ -54,8 +54,8 @@ class Experiment:
         if algo=="ppo":
             self.trainer =  ppo.PPO(config, logger_creator=logger_creator)
         elif algo == "a3c":
-            self.trainer = a3c.A3C(config, logger_creator=logger_creator)
-        elif algo == "dqn":
+            self.trainer = a2c.A2C(config, logger_creator=logger_creator)
+        elif algo == "dqn" or algo == "rainbow":
             self.trainer = dqn.DQN(config, logger_creator=logger_creator)
         elif algo == "apex":
             self.trainer = apex_dqn.ApexDQN(config, logger_creator=logger_creator)
@@ -139,7 +139,7 @@ def config_ppo_training(batch_size=5000, sgd_batch_size=None):
     return config
 
 
-def config_a3c_training(batch_size=5000):
+def config_a2c_training(batch_size=5000):
     config = {}
     config["train_batch_size"] = batch_size
     config["gamma"] = 0.98
@@ -209,8 +209,8 @@ def get_config(
         config = ppo.DEFAULT_CONFIG.copy()
         add_to_config(config, config_ppo_training(batch_size))
     elif type == "a3c":
-        config = a3c.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_a3c_training(batch_size))
+        config = a2c.DEFAULT_CONFIG.copy()
+        add_to_config(config, config_a2c_training(batch_size))
     elif type == "dqn":
         config = dqn.DEFAULT_CONFIG.copy()
         add_to_config(config, config_dqn_training(batch_size))
