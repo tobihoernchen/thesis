@@ -4,7 +4,7 @@ from torch import nn
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.models import ModelCatalog
 import torch
-from .custom_blocks import MatrixGraph, MiniMatrixGraph, MatrixPositionEmbedder, FourierFeatureEmbedder
+from .custom_blocks import MatrixGraph, MiniMatrixGraph, MatrixPositionEmbedder, FourierFeatureEmbedder, TransformerDecoderBlock
 from torch_geometric.data import Data, Batch
 from torch_geometric.nn import Sequential, GATv2Conv, GraphNorm
 
@@ -33,9 +33,6 @@ class GNNFeatureExtractor(nn.Module):
         elif type == "minimatrix":
             self.basegraph = MiniMatrixGraph()
 
-        self.paths = nn.Parameter(self.basegraph.paths.T[None, :], requires_grad=False)
-        self.register_parameter("paths", self.paths)
-
         self.with_pos_embedding =  position_embedd_dim > 0
         self.with_ff_embedding =  ff_embedd_dim > 0
         if self.with_pos_embedding:
@@ -47,25 +44,21 @@ class GNNFeatureExtractor(nn.Module):
 
         self.embedd_main = self.get_embedder(
             n_features + 2 + 7 * position_embedd_dim + 2* 7 * ff_embedd_dim,
-            int(embed_dim / 2),
+            embed_dim,
             len(self.basegraph.nodes),
             activation,
         )
         self.embedd_agv = self.get_embedder(
             n_features + 2 + 7 * position_embedd_dim + 2* 7 * ff_embedd_dim,
-            int(embed_dim / 2),
+            embed_dim,
             len(self.basegraph.nodes),
             activation,
         )
         self.embedd_station = self.get_embedder(
             n_features + 2 + position_embedd_dim + 2 * ff_embedd_dim,
-            int(embed_dim / 2),
+            embed_dim,
             len(self.basegraph.nodes),
             activation,
-        )
-
-        self.embedd_paths = self.get_embedder(
-            2 * embed_dim + 4, embed_dim, self.paths.shape[1], activation, d2=False
         )
 
         node_convs = []
@@ -73,13 +66,15 @@ class GNNFeatureExtractor(nn.Module):
             node_convs.extend(
                 [
                     (
-                        GATv2Conv(embed_dim, embed_dim),#, edge_dim=embed_dim),
-                        "x, edge_index -> x"#, edge_attr -> x",
+                        GATv2Conv(embed_dim, embed_dim),
+                        "x, edge_index -> x"
                     ),
                     GraphNorm(embed_dim),
                 ]
             )
-        self.node_convolutions = Sequential("x, edge_index", node_convs) #, edge_attr
+        self.node_convolutions = Sequential("x, edge_index", node_convs)
+
+
 
     def get_embedder(self, n_features, embed_dim, n_objects, activation, d2=True):
         return nn.Sequential(
@@ -101,7 +96,7 @@ class GNNFeatureExtractor(nn.Module):
         )
 
     def forward(self, x):
-        obs_main = x["agvs"][:, None, :1]
+        obs_main = x["agvs"][:, :1]
         if self.with_pos_embedding:
             obs_main=self.pos_encoder(obs_main, range(2, 15, 2))
         if self.with_ff_embedding:
@@ -117,11 +112,11 @@ class GNNFeatureExtractor(nn.Module):
                 obs_stations=self.pos_encoder(obs_stations, [0])
             if self.with_ff_embedding:
                 obs_stations=self.ff_encoder(obs_stations, [0])
-        in_reach_indices = self.basegraph.get_node_indices(
-            obs_main[:, :, :, 8:16].reshape(-1, 4, 2)
-        )
+        # in_reach_indices = self.basegraph.get_node_indices(
+        #     obs_main[:, None, :, 8:16].reshape(-1, 4, 2)
+        # )
         nodes = self.basegraph.nodes[None, :, None, :]
-        main_expanded = self.obs_node_expansion(obs_main, nodes)
+        main_expanded = self.obs_node_expansion(obs_main[:, None], nodes)
         agvs_expanded = self.obs_node_expansion(obs_agvs, nodes)
         if self.with_stations:
             stations_expanded = self.obs_node_expansion(obs_stations, nodes)
@@ -137,42 +132,24 @@ class GNNFeatureExtractor(nn.Module):
             dim=2,
         )
 
-        node_info = torch.concat(
-            [node_info_raw.mean(dim=2), node_info_raw.max(dim=2)[0]], dim=2
-        )
-        # path_info_raw = torch.gather(
-        #     node_info.repeat(1, 1, 2),
-        #     1,
-        #     self.paths.repeat(node_info.shape[0], 1, 1).repeat_interleave(
-        #         node_info.shape[2], dim=2
-        #     ),
-        # )
-        # path_info = self.embedd_paths(
-        #     torch.concat(
-        #         [
-        #             path_info_raw,
-        #             self.pathencoder(self.paths, [0])[:,:,2:].repeat(node_info.shape[0], 1, 1),
-        #         ],
-        #         dim=2,
-        #     )
-        # )
+        node_info = node_info_raw.mean(dim=2)
 
         in_geo_format = Batch.from_data_list(
             [
-                Data(x=x, edge_index=self.basegraph.paths)#, edge_attr=attr)
-                for x in node_info#, attr in zip(node_info, path_info)
+                Data(x=x, edge_index=self.basegraph.paths)
+                for x in node_info
             ]
         )
         convoluted = self.node_convolutions(
-            in_geo_format.x, in_geo_format.edge_index#, in_geo_format.edge_attr
+            in_geo_format.x, in_geo_format.edge_index
         )
         convoluted_by_batch = convoluted.reshape(node_info.shape)
-        filtered_in_reach = torch.gather(
-            convoluted_by_batch,
-            1,
-            in_reach_indices.unsqueeze(-1).repeat(1, 1, convoluted_by_batch.shape[-1]),
-        )
-        return filtered_in_reach.flatten(1)
+        # filtered_in_reach = torch.gather(
+        #     convoluted_by_batch,
+        #     1,
+        #     in_reach_indices.unsqueeze(-1).repeat(1, 1, convoluted_by_batch.shape[-1]),
+        # )
+        return convoluted_by_batch#.flatten(1)
 
 
 class GNNRoutingNet(TorchModelV2, nn.Module):
@@ -206,7 +183,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             position_embedd_dim = 2,
             ff_embedd_dim = 0,
             activation=nn.ReLU,
-            n_convolutions=6,
+            n_convolutions=2,
             env_type="matrix",
         ).items():
             setattr(
@@ -229,8 +206,26 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             n_convolutions=self.n_convolutions,
         )
 
+
+        self.embedd_main_action = self.get_embedder(
+            self.n_features,
+            self.embed_dim,
+            1,
+            d2=False,
+            activation=nn.ReLU
+        )
+        self.action_attention = TransformerDecoderBlock(self.embed_dim, 4, 1)
+        self.embedd_main_value = self.get_embedder(
+            self.n_features,
+            self.embed_dim,
+            1,
+            d2=False,
+            activation=nn.ReLU
+        )
+        self.value_attention = TransformerDecoderBlock(self.embed_dim, 4, 1)
+
         self.action_net = nn.Sequential(
-            nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
+            nn.Linear(self.embed_dim, self.embed_dim * 4),
             self.activation(),
             nn.Linear(self.embed_dim * 4, self.embed_dim),
             self.activation(),
@@ -241,7 +236,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         )
 
         self.value_net = nn.Sequential(
-            nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
+            nn.Linear(self.embed_dim, self.embed_dim * 4),
             self.activation(),
             nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
             self.activation(),
@@ -250,11 +245,21 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             nn.Linear(self.embed_dim, 1),
         )
 
+    def get_embedder(self, n_features, embed_dim, n_objects, activation, d2=True):
+        return nn.Sequential(
+            nn.Linear(n_features, embed_dim * 2),
+            nn.BatchNorm2d(n_objects) if d2 else nn.BatchNorm1d(n_objects),
+            activation(),
+            nn.Linear(embed_dim * 2, embed_dim),
+            nn.BatchNorm2d(n_objects) if d2 else nn.BatchNorm1d(n_objects),
+            activation(),
+        )
     def forward(self, obsdict, state, seq_lengths):
         self.obs = obsdict["obs"]
         self.features = self.fe(self.obs)
-
-        actions = self.action_net(self.features)
+        main_key = self.embedd_main_action(self.obs["agvs"][:, :1])
+        features = self.action_attention(self.features, main_key).flatten(1)
+        actions = self.action_net(features)
         if self.discrete_action_space:
             action_out = actions
         else:
@@ -268,4 +273,6 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         return action_out.flatten(1), []
 
     def value_function(self):
-        return self.value_net(self.features).flatten()
+        main_key = self.embedd_main_value(self.obs["agvs"][:, :1])
+        features = self.value_attention(self.features, main_key).flatten(1)
+        return self.value_net(features).flatten()

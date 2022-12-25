@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[3]]></Code>
+							<Code><![CDATA[2]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -269,7 +269,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[1]]></Code>
+							<Code><![CDATA[4]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656344279462</Id>
@@ -4711,6 +4711,21 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1671783880658</Id>
+					<Name><![CDATA[blockTime]]></Name>
+					<X>270</X><Y>90</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0.0]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 			</Variables>
 			<StatechartElements>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
@@ -4937,7 +4952,9 @@ if(((PointNode)nextNode).getRadius() == 10)
 						<Action><![CDATA[stop();
 
 if(contents().size() == 1)
-	contents().get(0).stop();]]></Action>
+	contents().get(0).stop();
+	
+blockTime = time();]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -4974,7 +4991,8 @@ if(contents().size() == 1)
 moveTo(nextPathEndPoint());
 
 if(contents().size() == 1)
-	contents().get(0).moveTo(nextPathEndPoint());]]></Action>
+	contents().get(0).moveTo(nextPathEndPoint());
+main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-blockTime, false);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -8577,6 +8595,8 @@ else
 	main.controller.addReward( main.RL_reward_respot_operation * respotsToDo.size(), myAgv, true);
 	
 }
+main.controller.getStatistic("_jobdur_" + getName(), workDuration(), false);
+main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 
 ]]></Action>
 						<Timeout Class="CodeUnitValue">
@@ -8900,6 +8920,7 @@ if(a.fix())
 {
 	myAgv = a;
 	main.controller.addReward(main.RL_reward_accepted_in_station, myAgv, true);
+	main.controller.getStatistic("_njobs_agv" + Integer.toString(myAgv.index), 1.0, false);
 }]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>

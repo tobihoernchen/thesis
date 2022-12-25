@@ -36,7 +36,7 @@ class Experiment:
         self.trainer = None
         self.folder = folder
 
-    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42):
+    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42, load_agv=None):
         seed_all(seed)
         config, logger_creator, checkpoint_dir = get_config(
             path = path,
@@ -59,6 +59,8 @@ class Experiment:
             self.trainer = dqn.DQN(config, logger_creator=logger_creator)
         elif algo == "apex":
             self.trainer = apex_dqn.ApexDQN(config, logger_creator=logger_creator)
+        if load_agv is not None:
+            self.trainer.restore(load_agv)
         for j in range(n_intervals):
             for i in range(backup_interval):
                 self.trainer.train()    
@@ -150,6 +152,15 @@ def config_apex_training(batch_size=5000):
     config["train_batch_size"] = batch_size
     config["gamma"] = 0.98
     config["lr"] = 3e-5
+    config["replay_buffer_config"] ={
+            "type": "MultiAgentPrioritizedReplayBuffer",
+            "capacity": 10000,
+            "prioritized_replay_alpha": 0.6,
+            "prioritized_replay_beta": 0.4,
+            "prioritized_replay_eps": 1e-6,
+            "replay_sequence_length": 1,
+            "worker_side_prioritization": False,
+        }
     return config
 
 
@@ -158,15 +169,7 @@ def config_dqn_training(batch_size=5000):
     config["train_batch_size"] = batch_size
     config["gamma"] = 0.98
     config["lr"] = 3e-5
-    # config["replay_buffer_config"] ={
-    #         "type": "MultiAgentPrioritizedReplayBuffer",
-    #         "capacity": 1000,
-    #         "prioritized_replay_alpha": 0.6,
-    #         "prioritized_replay_beta": 0.4,
-    #         "prioritized_replay_eps": 1e-6,
-    #         "replay_sequence_length": 1,
-    #         "worker_side_prioritization": False,
-    #     }
+    config["hiddens"] = []
     return config
 
 

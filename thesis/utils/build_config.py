@@ -22,7 +22,7 @@ def build_config(
             else config_args["routing_interval"]
         ),
         dispatching_interval=float(
-            35
+            30
             if not "dispatching_interval" in config_args
             else config_args["dispatching_interval"]
         ),
