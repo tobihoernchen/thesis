@@ -25,8 +25,10 @@ init_pypeline();
 init_network();
 
 setDefaultRandomGenerator(new Random(seed));
+traceln(seed);
 for(int i = 0; i<fleetsize; i++)
 	add_agvs();
+
 ]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
@@ -245,7 +247,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -269,7 +271,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[6]]></Code>
+							<Code><![CDATA[8]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656344279462</Id>
@@ -654,7 +656,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[true]]></Code>
+							<Code><![CDATA[false]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1658128631132</Id>
@@ -977,6 +979,30 @@ for(int i = 0; i<fleetsize; i++)
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1673025206814</Id>
+					<Name><![CDATA[RL_obs_include_distance]]></Name>
+					<X>-220</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[true]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1673025206812</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
@@ -1114,11 +1140,26 @@ else
 					<Body><![CDATA[double[][] obs = controller.getObservation();
 String obsstr = toStr2(obs);
 String context = "None";
-
+String stats = "[],[]";
 
 if(firstRLcall)
 {
 	context = toStr2(getNetworkContext());
+	stats = "["
+	+ "'maxX',"
+	+ "'maxY',"
+	+ "'rout_len'," 
+	+ "'disp_len'," 
+	+ "'n_stat',"
+	+ "'n_agv',"
+	+ "],["
+	+ maxX + "," 
+	+ maxY + "," 
+	+ controller.obs_size_routing + "," 
+	+ controller.obs_size_dispatching + "," 
+	+ controller.registeredStations.size() + "," 
+	+ controller.registeredAgvs.size() + "," 
+	+ "]" ;
 	firstRLcall = false;
 }
 String actstr = py.runResults(
@@ -1131,12 +1172,12 @@ String actstr = py.runResults(
 	+ "," 
 	+ context
 	+ ","
-	+ maxX
+	+ stats
 	+ ","
-	+ maxY
-	+ "," 
 	+ time()
 	+ ")").getFeedback(String.class);
+	
+
 traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
 String intstr = "";
@@ -5683,6 +5724,8 @@ if(include_target)
 	obs_len += nObsNode;
 if(main.RL_obs_include_nodes_in_reach)
 	obs_len += 4*nObsNode;
+if(main.RL_obs_include_distance && !dispatching)
+	obs_len++;
 	
 double obs[] = new double[obs_len];
 obs[0] = inSys;
@@ -5715,6 +5758,18 @@ if(main.RL_obs_include_nodes_in_reach)
 			obs[obs_hwm + j] = node_obs[j];
 		obs_hwm += nObsNode;
 	}
+}
+
+if(main.RL_obs_include_distance && !dispatching)
+{
+	double should = ((PointNode)lastNode).getXYZ().distance(((PointNode)nextNode).getXYZ());
+	double is = ((PointNode)lastNode).getXYZ().distance(getXYZ());
+	if(is<should)
+		obs[obs_hwm] = is/should;
+	else
+		obs[obs_hwm] = 0.0;
+	obs_hwm+=1;
+		
 }
 
 if(contents().size() >= 1 && include_part)
@@ -5979,7 +6034,7 @@ if(main.RL_dispatching_ma && main.RL_dispatch)
 					<ReturnType><![CDATA[Point]]></ReturnType>
 					<Id>1668346993873</Id>
 					<Name><![CDATA[nextPathEndPoint]]></Name>
-					<X>190</X><Y>230</Y>
+					<X>190</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6057,7 +6112,7 @@ return toMove;]]></Body>
 				<Rectangle>
 					<Id>1657313175079</Id>
 					<Name><![CDATA[rectangle]]></Name>
-					<X>0</X><Y>-80</Y>
+					<X>0</X><Y>-60</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6071,8 +6126,8 @@ return toMove;]]></Body>
 					<LineColor/>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>DASHED</LineStyle>
-					<Width>160</Width>
-					<Height>160</Height>
+					<Width>150</Width>
+					<Height>120</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>1006632704</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -6123,7 +6178,7 @@ return toMove;]]></Body>
 				<Text>
 					<Id>1657313298481</Id>
 					<Name><![CDATA[text]]></Name>
-					<X>0</X><Y>-80</Y>
+					<X>0</X><Y>-40</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9930,6 +9985,9 @@ send(msg, main.controller);]]></Body>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[RL_reward_reached_target_by_time]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_obs_include_distance]]></ParameterName>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties>

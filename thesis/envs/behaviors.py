@@ -574,7 +574,7 @@ class MultiAgent(TrainingBehavior):
         if self.dispatching or not self.die_on_target:
             at_target = False
         else:
-            at_target = alpyne_obs.rew >= 5
+            at_target = alpyne_obs.rew >= 1
         return (
             obs,
             reward,

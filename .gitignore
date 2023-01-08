@@ -2,6 +2,7 @@
 *.log
 /models
 /logs
+/removed
 desktop.ini
 /envs/Archiv
 *.pyc

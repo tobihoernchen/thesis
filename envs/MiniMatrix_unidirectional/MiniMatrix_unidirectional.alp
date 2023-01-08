@@ -1114,11 +1114,26 @@ else
 					<Body><![CDATA[double[][] obs = controller.getObservation();
 String obsstr = toStr2(obs);
 String context = "None";
-
+String stats = "[],[]";
 
 if(firstRLcall)
 {
 	context = toStr2(getNetworkContext());
+	stats = "["
+	+ "'maxX',"
+	+ "'maxY',"
+	+ "'rout_len'," 
+	+ "'disp_len'," 
+	+ "'n_stat',"
+	+ "'n_agv',"
+	+ "],["
+	+ maxX + "," 
+	+ maxY + "," 
+	+ controller.obs_size_routing + "," 
+	+ controller.obs_size_dispatching + "," 
+	+ controller.registeredStations.size() + "," 
+	+ controller.registeredAgvs.size() + "," 
+	+ "]" ;
 	firstRLcall = false;
 }
 String actstr = py.runResults(
@@ -1130,13 +1145,13 @@ String actstr = py.runResults(
 	+ nodeCount
 	+ "," 
 	+ context
-	+ "," 
-	+ maxX
 	+ ","
-	+ maxY
-	+ "," 
+	+ stats
+	+ ","
 	+ time()
 	+ ")").getFeedback(String.class);
+	
+
 traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
 String intstr = "";

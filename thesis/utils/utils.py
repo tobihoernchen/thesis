@@ -36,7 +36,7 @@ class Experiment:
         self.trainer = None
         self.folder = folder
 
-    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42, load_agv=None):
+    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42, load_agv=None, lr = 1e-3, gamma = 0.98):
         seed_all(seed)
         config, logger_creator, checkpoint_dir = get_config(
             path = path,
@@ -49,11 +49,13 @@ class Experiment:
             env = env,
             run_class=self.folder,
             run_name = run_name,
-            type = algo
+            type = algo,
+            lr = lr,
+            gamma = gamma,
         )
         if algo=="ppo":
             self.trainer =  ppo.PPO(config, logger_creator=logger_creator)
-        elif algo == "a3c":
+        elif algo == "a2c":
             self.trainer = a2c.A2C(config, logger_creator=logger_creator)
         elif algo == "dqn" or algo == "rainbow":
             self.trainer = dqn.DQN(config, logger_creator=logger_creator)
@@ -122,14 +124,14 @@ def config_ma_policies(
     return config
 
 
-def config_ppo_training(batch_size=5000, sgd_batch_size=None):
+def config_ppo_training(batch_size=5000, gamma = 0.98,sgd_batch_size=None):
     config = {}
     config["train_batch_size"] = batch_size
     config["sgd_minibatch_size"] = (
         batch_size / 2 if sgd_batch_size is None else sgd_batch_size
     )
     # config["entropy_coeff"] = 0.01
-    # config["gamma"] = 0.9
+    config["gamma"] = gamma
     # config["lambda"] = 0.9
     # config["kl_coeff"] = 0
     # config["lr"] = 3e-5
@@ -139,19 +141,17 @@ def config_ppo_training(batch_size=5000, sgd_batch_size=None):
     return config
 
 
-def config_a2c_training(batch_size=5000):
+def config_a2c_training(batch_size=5000, gamma = 0.98):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = 0.98
-    config["lr"] = 3e-5
+    config["gamma"] = gamma
     return config
 
 
-def config_apex_training(batch_size=5000):
+def config_apex_training(batch_size=5000, gamma = 0.98):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = 0.98
-    config["lr"] = 3e-5
+    config["gamma"] = gamma
     config["replay_buffer_config"] ={
             "type": "MultiAgentPrioritizedReplayBuffer",
             "capacity": 10000,
@@ -164,25 +164,30 @@ def config_apex_training(batch_size=5000):
     return config
 
 
-def config_dqn_training(batch_size=5000):
+def config_dqn_training(batch_size=5000, gamma = 0.98):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = 0.98
-    config["lr"] = 3e-5
+    config["gamma"] = gamma
     config["hiddens"] = []
+    #New after minimatrix_routing_opt
+    config["exploration_config"] = {
+        "epsilon_timesteps": 100000,
+        "final_epsilon": 0.02,
+        "initial_epsilon": 1.0,
+        "type": "EpsilonGreedy"
+    }
     return config
 
 
-def config_rainbow_training(batch_size=5000):
+def config_rainbow_training(batch_size=5000, gamma = 0.98):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = 0.98
+    config["gamma"] = gamma
     config["n_step"] = 5
     config["num_atoms"] = 5
     config["noisy"] = True
     config["v_min"] = -1
     config["v_max"] = 1
-    config["lr"] = 3e-5
     return config
 
 
@@ -200,34 +205,39 @@ def get_config(
     train_dispatcher=True,
     batch_size=5000,
     type="ppo",
-    n_envs=4,
+    n_envs=8,
     env="minimatrix",
     run_class="default",
     run_name = "-",
+    gamma = 0.98,
+    lr = 1e-3,
 ):
     if type == "ppo":
         config = ppo.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_ppo_training(batch_size))
-    elif type == "a3c":
-        config = a2c.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_a2c_training(batch_size))
+        add_to_config(config, config_ppo_training(batch_size, gamma))
+    elif type == "a2c":
+        config = a2c.A2C_DEFAULT_CONFIG.copy()
+        add_to_config(config, config_a2c_training(batch_size, gamma))
     elif type == "dqn":
         config = dqn.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_dqn_training(batch_size))
+        add_to_config(config, config_dqn_training(batch_size, gamma))
     elif type == "apex":
         config = apex_dqn.APEX_DEFAULT_CONFIG.copy()
-        add_to_config(config, config_apex_training(batch_size))
+        add_to_config(config, config_apex_training(batch_size, gamma))
     elif type == "rainbow":
         config = dqn.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_rainbow_training(batch_size))
+        add_to_config(config, config_rainbow_training(batch_size, gamma))
 
     config["framework"] = "torch"
     config["callbacks"] = lambda: CustomCallback()
     config["batch_mode"] = "truncate_episodes"  # "complete_episodes"
 
+    #New after minimatrix_routing_opt
+    config["metrics_num_episodes_for_smoothing"] = 16
+
     config["num_gpus"] = 1
     config["num_workers"] = 0
-    config["lr"] = 1e-3
+    config["lr"] = lr
     config["log_level"] = "ERROR"
     config["num_envs_per_worker"] = n_envs
 

@@ -154,7 +154,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657465070128</Id>
 					<Name><![CDATA[nodeCount]]></Name>
-					<X>-260</X><Y>480</Y>
+					<X>-260</X><Y>500</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -166,7 +166,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657471379249</Id>
 					<Name><![CDATA[maxX]]></Name>
-					<X>-420</X><Y>500</Y>
+					<X>-420</X><Y>520</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -178,7 +178,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1657471381238</Id>
 					<Name><![CDATA[maxY]]></Name>
-					<X>-260</X><Y>500</Y>
+					<X>-260</X><Y>520</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -190,7 +190,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1659625806429</Id>
 					<Name><![CDATA[firstRLcall]]></Name>
-					<X>-260</X><Y>540</Y>
+					<X>-260</X><Y>560</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -205,7 +205,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1667145895341</Id>
 					<Name><![CDATA[RL_pypeline_path]]></Name>
-					<X>-420</X><Y>420</Y>
+					<X>-420</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -220,7 +220,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="PlainVariable">
 					<Id>1667145898322</Id>
 					<Name><![CDATA[RL_pypeline_name]]></Name>
-					<X>-420</X><Y>440</Y>
+					<X>-420</X><Y>460</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[3]]></Code>
+							<Code><![CDATA[2]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -283,7 +283,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310401337</Id>
 					<Name><![CDATA[RL_reward_accepted_in_station]]></Name>
-					<X>-420</X><Y>300</Y>
+					<X>-420</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -307,7 +307,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310468453</Id>
 					<Name><![CDATA[RL_reward_removed_for_block]]></Name>
-					<X>-420</X><Y>230</Y>
+					<X>-420</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -331,7 +331,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310532924</Id>
 					<Name><![CDATA[RL_reward_geo_operation]]></Name>
-					<X>-420</X><Y>320</Y>
+					<X>-420</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -355,7 +355,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310545392</Id>
 					<Name><![CDATA[RL_reward_respot_operation]]></Name>
-					<X>-420</X><Y>360</Y>
+					<X>-420</X><Y>380</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -379,7 +379,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657310886056</Id>
 					<Name><![CDATA[RL_reward_part_completed]]></Name>
-					<X>-420</X><Y>380</Y>
+					<X>-420</X><Y>400</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -451,7 +451,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657461195968</Id>
 					<Name><![CDATA[station_availability]]></Name>
-					<X>-220</X><Y>280</Y>
+					<X>-220</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>false</PresentationFlag>
@@ -476,7 +476,7 @@ for(int i = 0; i<fleetsize; i++)
 					<Id>1657461223303</Id>
 					<Name><![CDATA[station_mttr]]></Name>
 					<Description><![CDATA[in Minutes]]></Description>
-					<X>-220</X><Y>300</Y>
+					<X>-220</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -500,7 +500,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657463746020</Id>
 					<Name><![CDATA[station_io_quote]]></Name>
-					<X>-220</X><Y>320</Y>
+					<X>-220</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -524,7 +524,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657464127029</Id>
 					<Name><![CDATA[RL_reward_rework_operation]]></Name>
-					<X>-420</X><Y>340</Y>
+					<X>-420</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -572,7 +572,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1657466207482</Id>
 					<Name><![CDATA[RL_obs_include_part_info]]></Name>
-					<X>-220</X><Y>210</Y>
+					<X>-220</X><Y>230</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -654,7 +654,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[true]]></Code>
+							<Code><![CDATA[false]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1658128631132</Id>
@@ -788,7 +788,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1663419816560</Id>
 					<Name><![CDATA[RL_reward_invalid]]></Name>
-					<X>-420</X><Y>250</Y>
+					<X>-420</X><Y>270</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -836,7 +836,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1664179180254</Id>
 					<Name><![CDATA[RL_reward_declined_in_station]]></Name>
-					<X>-420</X><Y>280</Y>
+					<X>-420</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -884,7 +884,7 @@ for(int i = 0; i<fleetsize; i++)
 				<Variable Class="Parameter">
 					<Id>1667145719310</Id>
 					<Name><![CDATA[RL_reward_wrong_target]]></Name>
-					<X>-420</X><Y>210</Y>
+					<X>-420</X><Y>230</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -929,6 +929,78 @@ for(int i = 0; i<fleetsize; i++)
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1668344770364</Id>
+					<Name><![CDATA[station_separate]]></Name>
+					<X>-220</X><Y>380</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>false</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1668344770362</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1668344816069</Id>
+					<Name><![CDATA[RL_reward_reached_target_by_time]]></Name>
+					<X>-420</X><Y>210</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1668344816067</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1673025206814</Id>
+					<Name><![CDATA[RL_obs_include_distance]]></Name>
+					<X>-220</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[true]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1673025206812</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
@@ -957,7 +1029,7 @@ for(int i = 0; i<fleetsize; i++)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656346938043</Id>
 					<Name><![CDATA[take_action_debug]]></Name>
-					<X>-420</X><Y>460</Y>
+					<X>-420</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1002,7 +1074,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656943173118</Id>
 					<Name><![CDATA[init_pypeline]]></Name>
-					<X>-260</X><Y>420</Y>
+					<X>-260</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1058,7 +1130,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656953880415</Id>
 					<Name><![CDATA[take_action_pypeline]]></Name>
-					<X>-260</X><Y>440</Y>
+					<X>-260</X><Y>460</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1066,11 +1138,26 @@ else
 					<Body><![CDATA[double[][] obs = controller.getObservation();
 String obsstr = toStr2(obs);
 String context = "None";
-
+String stats = "[],[]";
 
 if(firstRLcall)
 {
 	context = toStr2(getNetworkContext());
+	stats = "["
+	+ "'maxX',"
+	+ "'maxY',"
+	+ "'rout_len'," 
+	+ "'disp_len'," 
+	+ "'n_stat',"
+	+ "'n_agv',"
+	+ "],["
+	+ maxX + "," 
+	+ maxY + "," 
+	+ controller.obs_size_routing + "," 
+	+ controller.obs_size_dispatching + "," 
+	+ controller.registeredStations.size() + "," 
+	+ controller.registeredAgvs.size() + "," 
+	+ "]" ;
 	firstRLcall = false;
 }
 String actstr = py.runResults(
@@ -1082,7 +1169,13 @@ String actstr = py.runResults(
 	+ nodeCount
 	+ "," 
 	+ context
+	+ ","
+	+ stats
+	+ ","
+	+ time()
 	+ ")").getFeedback(String.class);
+	
+
 traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
 String intstr = "";
@@ -1138,7 +1231,7 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657458590124</Id>
 					<Name><![CDATA[node2obs]]></Name>
-					<X>-420</X><Y>520</Y>
+					<X>-420</X><Y>540</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1179,7 +1272,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657462158695</Id>
 					<Name><![CDATA[station_mtbf]]></Name>
-					<X>-220</X><Y>340</Y>
+					<X>-220</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1194,7 +1287,7 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657471403592</Id>
 					<Name><![CDATA[init_network]]></Name>
-					<X>-420</X><Y>480</Y>
+					<X>-420</X><Y>500</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1219,7 +1312,7 @@ for(int i=0; i<nodeCount; i++)
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1659625665194</Id>
 					<Name><![CDATA[getNetworkContext]]></Name>
-					<X>-420</X><Y>540</Y>
+					<X>-420</X><Y>560</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1231,7 +1324,7 @@ int n_nodeObs = node2obs(net.getNode(0)).length;
 
 double[][] context = new double
 	[n_paths + n_nodes]
-	[n_nodeObs * 2];
+	[n_nodeObs * 2 + 1];
 	
 for(int i = 0; i<n_paths; i++)
 {
@@ -1244,6 +1337,7 @@ for(int i = 0; i<n_paths; i++)
 	double[] obst = node2obs(t);
 	for(int j = 0; j<n_nodeObs; j++)
 		context[i][j + n_nodeObs] = obst[j];
+	context[i][2*n_nodeObs] = p.isBidirectional()? 1.0 : 0.0;
 }
 
 for(int i = 0; i<n_nodes; i++)
@@ -1263,7 +1357,7 @@ return context;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659716736727</Id>
 					<Name><![CDATA[toStr2]]></Name>
-					<X>-200</X><Y>460</Y>
+					<X>-200</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1285,7 +1379,7 @@ return str;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659959662180</Id>
 					<Name><![CDATA[toStr1]]></Name>
-					<X>-260</X><Y>460</Y>
+					<X>-260</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1579,6 +1673,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[separateAgvPart]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[station_separate]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[partFamily]]></Name>
@@ -1692,6 +1789,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[separateAgvPart]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[station_separate]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[partFamily]]></Name>
@@ -1802,6 +1902,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[separateAgvPart]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[station_separate]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[partFamily]]></Name>
@@ -1912,6 +2015,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[separateAgvPart]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[station_separate]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[partFamily]]></Name>
@@ -1969,7 +2075,7 @@ return str;]]></Body>
 				<EmbeddedObject>
 					<Id>1656943069102</Id>
 					<Name><![CDATA[py]]></Name>
-					<X>-120</X><Y>400</Y>
+					<X>-120</X><Y>420</Y>
 					<Label><X>40</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2004,7 +2110,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[pythonExecPath]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis\\python.exe"]]></Code>
+								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis3_9\\python.exe"]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>
@@ -2106,6 +2212,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[separateAgvPart]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[station_separate]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[partFamily]]></Name>
@@ -2512,7 +2621,7 @@ return str;]]></Body>
 						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-21.603</X><Y>-2.788</Y><Z>0</Z></Point>
+						<Point><X>-21.603</X><Y>-2.7880000000000003</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -2789,10 +2898,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1655914489143" TargetId="1655914478872">
+				<Path SourceId="1655914478872" TargetId="1655914489143">
 					<Id>1655914510883</Id>
 					<Name><![CDATA[path17]]></Name>
-					<X>185</X><Y>130</Y>
+					<X>185</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2810,11 +2919,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>50</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-50</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -3144,10 +3253,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1655914489143" TargetId="1655914347310">
+				<Path SourceId="1655914347310" TargetId="1655914489143">
 					<Id>1655914518131</Id>
 					<Name><![CDATA[path18]]></Name>
-					<X>175</X><Y>120</Y>
+					<X>145</X><Y>112</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3165,14 +3274,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-24.876</X><Y>2.488</Y><Z>0</Z></Point>
-						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-30</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-30</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>-30</X><Y>-8</Y><Z>0</Z></Point>
-						<Point><X>-30</X><Y>17</Y><Z>0</Z></Point>
-						<Point><X>14.749</X><Y>-21.555999999999997</Y><Z>0</Z></Point>
+						<Point><X>-24.875999999999998</X><Y>2.4879999999999995</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-17</Y><Z>0</Z></Point>
+						<Point><X>25</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>74.749</X><Y>-5.556</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -3183,10 +3292,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1655914478884" TargetId="1655914422229">
+				<Path SourceId="1655914422229" TargetId="1655914478884">
 					<Id>1655914632844</Id>
 					<Name><![CDATA[path23]]></Name>
-					<X>220</X><Y>215</Y>
+					<X>230</X><Y>215</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3204,11 +3313,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>15</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>15</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -3577,10 +3686,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1655914427325" TargetId="1655914469851">
+				<Path SourceId="1655914469851" TargetId="1655914427325">
 					<Id>1655914676585</Id>
 					<Name><![CDATA[path27]]></Name>
-					<X>275</X><Y>215</Y>
+					<X>325</X><Y>215</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3599,10 +3708,10 @@ return str;]]></Body>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>50</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-24</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-50</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-100</X><Y>-24</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -3971,10 +4080,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1655914469855" TargetId="1657464431940">
+				<Path SourceId="1657464431940" TargetId="1655914469855">
 					<Id>1657464458227</Id>
 					<Name><![CDATA[path35]]></Name>
-					<X>370</X><Y>215</Y>
+					<X>405</X><Y>215</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -3992,11 +4101,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>35</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-35</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-10</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -4007,10 +4116,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1657464431928" TargetId="1657464519083">
+				<Path SourceId="1657464519083" TargetId="1657464431928">
 					<Id>1657464536207</Id>
 					<Name><![CDATA[path36]]></Name>
-					<X>415</X><Y>180</Y>
+					<X>423</X><Y>155</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4029,13 +4138,13 @@ return str;]]></Body>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>-17</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>17</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>17</X><Y>25</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -4108,10 +4217,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1657464431940" TargetId="1664298688732">
+				<Path SourceId="1664298688732" TargetId="1657464431940">
 					<Id>1664298713661</Id>
 					<Name><![CDATA[path38]]></Name>
-					<X>415</X><Y>225</Y>
+					<X>423</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -4130,13 +4239,13 @@ return str;]]></Body>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>-17</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>10</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>17</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-8</X><Y>-40</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -4641,6 +4750,18 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1671784857218</Id>
+					<Name><![CDATA[blockTime]]></Name>
+					<X>260</X><Y>90</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
 			</Variables>
 			<StatechartElements>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
@@ -4786,9 +4907,9 @@ requestPending = false;]]></EntryAction>
 					<Properties Source="1655919201546" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[lastNode = currentNode;
 moving = true;
-moveTo(nextNode);
+moveTo(nextPathEndPoint());
 if(contents().size() == 1)
-	contents().get(0).moveTo(nextNode);
+	contents().get(0).moveTo(nextPathEndPoint());
 	
 if(targetNode == nextNode)
 	sendArrival(true);
@@ -4798,7 +4919,7 @@ else if(((PointNode)nextNode).getRadius() != 10)
 							<Code><![CDATA[0.05]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
-						<Condition><![CDATA[(nextNode != null) && ((((PointNode)nextNode).getX() != getX()) | (((PointNode)nextNode).getY()!=getY()))]]></Condition>
+						<Condition><![CDATA[(nextNode != null) && ((((PointNode)nextNode).getX() != ((PointNode)currentNode).getX()) | (((PointNode)nextNode).getY()!=((PointNode)currentNode).getY()))]]></Condition>
 						<Rate Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
@@ -4867,7 +4988,9 @@ if(((PointNode)nextNode).getRadius() == 10)
 						<Action><![CDATA[stop();
 
 if(contents().size() == 1)
-	contents().get(0).stop();]]></Action>
+	contents().get(0).stop();
+	
+blockTime = time();]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -4901,10 +5024,12 @@ if(contents().size() == 1)
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[main.controller.agvHandleBlock(this, null);
-moveTo(nextNode);
+moveTo(nextPathEndPoint());
 
 if(contents().size() == 1)
-	contents().get(0).moveTo(nextNode);]]></Action>
+	contents().get(0).moveTo(nextPathEndPoint());
+	
+main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-blockTime, false);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -5528,6 +5653,11 @@ for(int i = 0; i<n_connections; i++)
 	INode start = node;
 	IPath path = start.getConnection(i);
 	INode end = path.getOtherNode(start);
+	if(!path.isBidirectional() && path.getTarget() == start)
+	{
+		traceln("uni!");
+		continue;
+	}
 	if(end != oldNode)
 	{
 		double angle = angle(start, end);
@@ -5592,6 +5722,8 @@ if(include_target)
 	obs_len += nObsNode;
 if(main.RL_obs_include_nodes_in_reach)
 	obs_len += 4*nObsNode;
+if(main.RL_obs_include_distance && !dispatching)
+	obs_len++;
 	
 double obs[] = new double[obs_len];
 obs[0] = inSys;
@@ -5624,6 +5756,18 @@ if(main.RL_obs_include_nodes_in_reach)
 			obs[obs_hwm + j] = node_obs[j];
 		obs_hwm += nObsNode;
 	}
+}
+
+if(main.RL_obs_include_distance && !dispatching)
+{
+	double should = ((PointNode)lastNode).getXYZ().distance(((PointNode)nextNode).getXYZ());
+	double is = ((PointNode)lastNode).getXYZ().distance(getXYZ());
+	if(is<should)
+		obs[obs_hwm] = is/should;
+	else
+		obs[obs_hwm] = 0.0;
+	obs_hwm+=1;
+		
 }
 
 if(contents().size() >= 1 && include_part)
@@ -5700,8 +5844,7 @@ return atan2fast(dy, dx);]]></Body>
 	double fact = sqrt(sqr(dx) + sqr(dy));
 	
 	main.controller.addReward(fact * main.RL_reward_target_distance, this, false);
-}
-]]></Body>
+}]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -5739,7 +5882,10 @@ if(targetNode != null)
 					</Parameter>
 					<Body><![CDATA[if(right)
 {
-	main.controller.addReward(main.RL_reward_reached_target, this, false);
+	double reward_factor = 1.0;
+	if(main.RL_reward_reached_target_by_time)
+		reward_factor = DispatchTimeout.getRest() / main.RL_dispatching_interval;
+	main.controller.addReward(reward_factor * main.RL_reward_reached_target, this, false);
 	main.controller.getStatistic("targetReached", 1.0, false);
 }
 else
@@ -5759,8 +5905,7 @@ else
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[main.controller.addReward(main.RL_reward_removed_for_block, this, false);
-main.controller.getStatistic("block", 1.0, false);
-]]></Body>
+main.controller.getStatistic("block", 1.0, false);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>
@@ -5872,13 +6017,37 @@ if(currentNode != targetNode)
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(main.RL_dispatching_ma && main.RL_dispatch)
+					<Body><![CDATA[
+
+if(main.RL_dispatching_ma && main.RL_dispatch)
 {
 	main.controller.dispatch(this);
 	DispatchTimeout.restart(main.RL_dispatching_interval, SECOND);
 	main.controller.getStatistic("dispatch", 1.0, false);
-
-}]]></Body>
+}
+]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
+					<ReturnType><![CDATA[Point]]></ReturnType>
+					<Id>1668346993873</Id>
+					<Name><![CDATA[nextPathEndPoint]]></Name>
+					<X>190</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[int i = 0;
+if(((PointNode)nextNode).getRadius() == 5)
+	return ((PointNode)nextNode).getXYZ();
+for(i = 0; i<currentNode.getConnectionsCount(); i++)
+	if(currentNode.getConnection(i).getOtherNode(currentNode) == nextNode)
+		break;
+IPath path = currentNode.getConnection(i);
+Point toMove = path.getStartPoint();
+if(currentNode == path.getSource())
+	toMove = path.getEndPoint();
+return toMove;]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -5941,7 +6110,7 @@ if(currentNode != targetNode)
 				<Rectangle>
 					<Id>1657313175079</Id>
 					<Name><![CDATA[rectangle]]></Name>
-					<X>0</X><Y>-80</Y>
+					<X>0</X><Y>-60</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5955,8 +6124,8 @@ if(currentNode != targetNode)
 					<LineColor/>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>DASHED</LineStyle>
-					<Width>160</Width>
-					<Height>160</Height>
+					<Width>150</Width>
+					<Height>120</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>1006632704</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -6007,7 +6176,7 @@ if(currentNode != targetNode)
 				<Text>
 					<Id>1657313298481</Id>
 					<Name><![CDATA[text]]></Name>
-					<X>0</X><Y>-80</Y>
+					<X>0</X><Y>-40</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6815,7 +6984,6 @@ return obs;]]></Body>
 					<Body><![CDATA[double[][] obs = new double
 	[registeredAgvs.size() + registeredStations.size()]
 	[obs_size_dispatching];
-	traceln("dispobs!");
 for(int i = 0; i<registeredAgvs.size();i++)
 {
 	Agv agv = (Agv)registeredAgvs.get(i)[0];
@@ -8481,7 +8649,8 @@ else
 	main.controller.addReward( main.RL_reward_respot_operation * respotsToDo.size(), myAgv, true);
 	
 }
-
+main.controller.getStatistic("_jobdur_" + getName(), workDuration(), false);
+main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 ]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[workDuration()]]></Code>
@@ -8804,6 +8973,7 @@ if(a.fix())
 {
 	myAgv = a;
 	main.controller.addReward(main.RL_reward_accepted_in_station, myAgv, true);
+	main.controller.getStatistic("_njobs_agv" + Integer.toString(myAgv.index), 1.0, false);
 }]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -9808,6 +9978,15 @@ send(msg, main.controller);]]></Body>
 				<Parameter>
 					<ParameterName><![CDATA[RL_remove_all_blocked]]></ParameterName>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[station_separate]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_reward_reached_target_by_time]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_obs_include_distance]]></ParameterName>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
 				<EnableZoomAndPanning>true</EnableZoomAndPanning>
@@ -9888,12 +10067,16 @@ if(root.firstRLcall)
 		"disp_len", 
 		"n_stat",
 		"n_agv",
+		"maxX",
+		"maxY"
 	};
 	statValues = new double[]{
 		(double)root.controller.obs_size_routing,
 		(double)root.controller.obs_size_dispatching,
 		(double)root.controller.registeredStations.size(),
 		(double)root.controller.registeredAgvs.size(),
+		(double)root.maxX,
+		(double)root.maxY
 	};
 }
 else
@@ -9972,6 +10155,10 @@ else
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[reward_reached_target_by_time]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[reward_wrong_target]]></Name>
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
@@ -10020,6 +10207,10 @@ else
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[station_separate]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[station_availability]]></Name>
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
@@ -10048,6 +10239,7 @@ root.RL_remove_all_blocked = remove_all_blocked;
 // AGV Parameters
 root.RL_reward_target_distance = reward_target_distance;
 root.RL_reward_reached_target = reward_reached_target;
+root.RL_reward_reached_target_by_time = reward_reached_target_by_time;
 root.RL_reward_wrong_target = reward_wrong_target;
 root.RL_reward_removed_for_block = reward_removed_for_block;
 root.RL_reward_invalid = reward_invalid;
@@ -10062,6 +10254,7 @@ root.RL_reward_geo_operation = reward_geo_operation;
 root.RL_reward_rework_operation = reward_rework_operation;
 root.RL_reward_respot_operation = reward_respot_operation;
 root.RL_reward_part_completed = reward_part_completed;
+root.station_separate = station_separate;
 root.station_availability = station_availability;
 root.station_mttr = station_mttr;
 root.station_io_quote = station_io_quote;

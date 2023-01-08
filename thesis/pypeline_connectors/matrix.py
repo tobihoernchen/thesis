@@ -1,12 +1,12 @@
 import json
-import ray.rllib.algorithms.ppo as ppo
+import ray.rllib.algorithms.dqn as dqn
 from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
 setup_ray(port=51160)
 
-model_path = "../../models/trained_for_pypeline/all_pseudo_mini"
-checkpoint = 0
+model_path = "../../models/minimatrix_routing/12_scale_base_6_10_2023-01-08_11-02-19"#trained_for_pypeline/all_pseudo_mini"
+checkpoint = 600
 path = "D:/Master/Masterarbeit/thesis"
 with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)
@@ -14,7 +14,7 @@ hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 0
-trainer = ppo.PPO(config, logger_creator=logger_creator)
+trainer = dqn.DQN(config, logger_creator=logger_creator)
 trainer.restore(
     model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}"
 )
@@ -29,10 +29,8 @@ def get_config(id: str):
     return "NOT FOUND"
 
 
-def get_action(observation, caller, n_nodes, context, maxX, maxY, time):
+def get_action(observation, caller, n_nodes, context, statTitles, statValues, time):
 
-    statTitles = [] if context is None else ["maxX", "maxY"]
-    statValues = [] if context is None else [maxX, maxY]
     alpyne_obs = Observation(
         obs=observation, caller=caller, n_nodes=n_nodes, networkcontext=context, rew=[0], statTitles = statTitles, statValues = statValues
     )
@@ -47,7 +45,7 @@ def get_action(observation, caller, n_nodes, context, maxX, maxY, time):
         )
         action = trainer.get_policy(
             config["multiagent"]["policy_mapping_fn"](agent, None, None)
-        ).compute_single_action(env.last()[0], explore=True)[0]
+        ).compute_single_action(env.last()[0], explore=False)[0]
         return env.agent_behaviors[env.agent_selection].convert_to_action(
             action, caller
         )

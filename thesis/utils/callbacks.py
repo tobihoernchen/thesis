@@ -17,7 +17,7 @@ class CustomCallback(DefaultCallbacks):
         episode: Episode,
         **kwargs
     ) -> None:
-        episode.custom_metrics.update(base_env._unwrapped_env.env.statistics)
+        episode.custom_metrics.update(base_env.get_sub_environments()[episode.env_id].env.statistics)
         return super().on_episode_end(
             worker=worker,
             base_env=base_env,
