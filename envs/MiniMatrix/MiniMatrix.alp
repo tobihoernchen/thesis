@@ -6034,7 +6034,7 @@ if(main.RL_dispatching_ma && main.RL_dispatch)
 					<ReturnType><![CDATA[Point]]></ReturnType>
 					<Id>1668346993873</Id>
 					<Name><![CDATA[nextPathEndPoint]]></Name>
-					<X>190</X><Y>250</Y>
+					<X>190</X><Y>230</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>

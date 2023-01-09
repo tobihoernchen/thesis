@@ -5,8 +5,8 @@ from ..utils.utils import get_config, setup_ray
 
 setup_ray(port=51160)
 
-model_path = "../../models/minimatrix_routing/12_scale_base_6_10_2023-01-08_11-02-19"#trained_for_pypeline/all_pseudo_mini"
-checkpoint = 600
+model_path = "../../models/minimatrix_routing/13_unidirectional_8_10_2023-01-09_12-15-17"#trained_for_pypeline/all_pseudo_mini"
+checkpoint = 300
 path = "D:/Master/Masterarbeit/thesis"
 with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)

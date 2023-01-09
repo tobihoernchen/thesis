@@ -977,6 +977,30 @@ for(int i = 0; i<fleetsize; i++)
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1673199131971</Id>
+					<Name><![CDATA[RL_obs_include_distance]]></Name>
+					<X>-220</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[true]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1673199131969</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
@@ -5697,6 +5721,8 @@ if(include_target)
 	obs_len += nObsNode;
 if(main.RL_obs_include_nodes_in_reach)
 	obs_len += 4*nObsNode;
+if(main.RL_obs_include_distance && !dispatching)
+	obs_len++;
 	
 double obs[] = new double[obs_len];
 obs[0] = inSys;
@@ -5729,6 +5755,18 @@ if(main.RL_obs_include_nodes_in_reach)
 			obs[obs_hwm + j] = node_obs[j];
 		obs_hwm += nObsNode;
 	}
+}
+
+if(main.RL_obs_include_distance && !dispatching)
+{
+	double should = ((PointNode)lastNode).getXYZ().distance(((PointNode)nextNode).getXYZ());
+	double is = ((PointNode)lastNode).getXYZ().distance(getXYZ());
+	if(is<should)
+		obs[obs_hwm] = is/should;
+	else
+		obs[obs_hwm] = 0.0;
+	obs_hwm+=1;
+		
 }
 
 if(contents().size() >= 1 && include_part)
@@ -6071,7 +6109,7 @@ return toMove;]]></Body>
 				<Rectangle>
 					<Id>1657313175079</Id>
 					<Name><![CDATA[rectangle]]></Name>
-					<X>0</X><Y>-80</Y>
+					<X>0</X><Y>-60</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6085,8 +6123,8 @@ return toMove;]]></Body>
 					<LineColor/>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>DASHED</LineStyle>
-					<Width>160</Width>
-					<Height>160</Height>
+					<Width>150</Width>
+					<Height>120</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>1006632704</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -9945,6 +9983,9 @@ send(msg, main.controller);]]></Body>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[RL_reward_reached_target_by_time]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_obs_include_distance]]></ParameterName>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
