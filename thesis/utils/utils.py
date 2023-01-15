@@ -36,7 +36,7 @@ class Experiment:
         self.trainer = None
         self.folder = folder
 
-    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42, load_agv=None, lr = 1e-3, gamma = 0.98):
+    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42, load_agv=None, lr = 1e-3, algo_params = {}):
         seed_all(seed)
         config, logger_creator, checkpoint_dir = get_config(
             path = path,
@@ -51,7 +51,7 @@ class Experiment:
             run_name = run_name,
             type = algo,
             lr = lr,
-            gamma = gamma,
+            algo_params = algo_params,
         )
         if algo=="ppo":
             self.trainer =  ppo.PPO(config, logger_creator=logger_creator)
@@ -63,10 +63,18 @@ class Experiment:
             self.trainer = apex_dqn.ApexDQN(config, logger_creator=logger_creator)
         if load_agv is not None:
             self.trainer.restore(load_agv)
+        self.checkpoint_dir = checkpoint_dir
+        self.backup_interval = backup_interval
         for j in range(n_intervals):
             for i in range(backup_interval):
                 self.trainer.train()    
             self.trainer.save(checkpoint_dir)
+
+    def keep_training(self, n_intervals):
+        for j in range(n_intervals):
+            for i in range(self.backup_interval):
+                self.trainer.train()    
+            self.trainer.save(self.checkpoint_dir)
 
 def setup_ray(path="../..", unidirectional=False, port=None, seed =42):
     seed_all(seed)
@@ -124,14 +132,12 @@ def config_ma_policies(
     return config
 
 
-def config_ppo_training(batch_size=5000, gamma = 0.98,sgd_batch_size=None):
+def config_ppo_training(batch_size=5000, algo_params:dict={}):
     config = {}
     config["train_batch_size"] = batch_size
-    config["sgd_minibatch_size"] = (
-        batch_size / 2 if sgd_batch_size is None else sgd_batch_size
-    )
+    config["sgd_minibatch_size"] = algo_params.get("sgd_batch_size",batch_size / 2)
     # config["entropy_coeff"] = 0.01
-    config["gamma"] = gamma
+    config["gamma"] = algo_params.get("gamma", 0.98)
     # config["lambda"] = 0.9
     # config["kl_coeff"] = 0
     # config["lr"] = 3e-5
@@ -141,17 +147,17 @@ def config_ppo_training(batch_size=5000, gamma = 0.98,sgd_batch_size=None):
     return config
 
 
-def config_a2c_training(batch_size=5000, gamma = 0.98):
+def config_a2c_training(batch_size=5000, algo_params:dict={}):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = gamma
+    config["gamma"] = algo_params.get("gamma", 0.98)
     return config
 
 
-def config_apex_training(batch_size=5000, gamma = 0.98):
+def config_apex_training(batch_size=5000, algo_params:dict={}):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = gamma
+    config["gamma"] = algo_params.get("gamma", 0.98)
     config["replay_buffer_config"] ={
             "type": "MultiAgentPrioritizedReplayBuffer",
             "capacity": 10000,
@@ -164,25 +170,25 @@ def config_apex_training(batch_size=5000, gamma = 0.98):
     return config
 
 
-def config_dqn_training(batch_size=5000, gamma = 0.98):
+def config_dqn_training(batch_size=5000, algo_params:dict={}):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = gamma
+    config["gamma"] = algo_params.get("gamma", 0.98)
     config["hiddens"] = []
     #New after minimatrix_routing_opt
-    config["exploration_config"] = {
+    config["exploration_config"] = algo_params.get("exploration_config", {
         "epsilon_timesteps": 100000,
         "final_epsilon": 0.02,
         "initial_epsilon": 1.0,
         "type": "EpsilonGreedy"
-    }
+    })
     return config
 
 
-def config_rainbow_training(batch_size=5000, gamma = 0.98):
+def config_rainbow_training(batch_size=5000, algo_params:dict={}):
     config = {}
     config["train_batch_size"] = batch_size
-    config["gamma"] = gamma
+    config["gamma"] = algo_params.get("gamma", 0.98)
     config["n_step"] = 5
     config["num_atoms"] = 5
     config["noisy"] = True
@@ -209,24 +215,24 @@ def get_config(
     env="minimatrix",
     run_class="default",
     run_name = "-",
-    gamma = 0.98,
+    algo_params = {},
     lr = 1e-3,
 ):
     if type == "ppo":
         config = ppo.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_ppo_training(batch_size, gamma))
+        add_to_config(config, config_ppo_training(batch_size, algo_params))
     elif type == "a2c":
         config = a2c.A2C_DEFAULT_CONFIG.copy()
-        add_to_config(config, config_a2c_training(batch_size, gamma))
+        add_to_config(config, config_a2c_training(batch_size, algo_params))
     elif type == "dqn":
         config = dqn.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_dqn_training(batch_size, gamma))
+        add_to_config(config, config_dqn_training(batch_size, algo_params))
     elif type == "apex":
         config = apex_dqn.APEX_DEFAULT_CONFIG.copy()
-        add_to_config(config, config_apex_training(batch_size, gamma))
+        add_to_config(config, config_apex_training(batch_size, algo_params))
     elif type == "rainbow":
         config = dqn.DEFAULT_CONFIG.copy()
-        add_to_config(config, config_rainbow_training(batch_size, gamma))
+        add_to_config(config, config_rainbow_training(batch_size, algo_params))
 
     config["framework"] = "torch"
     config["callbacks"] = lambda: CustomCallback()

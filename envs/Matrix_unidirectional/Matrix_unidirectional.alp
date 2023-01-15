@@ -245,7 +245,7 @@ for(int i = 0; i<fleetsize; i++)
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[3]]></Code>
+							<Code><![CDATA[2]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -2941,7 +2941,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[node]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA[nrw1]]></Code>
+								<Code><![CDATA[nrw8]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>
@@ -14808,6 +14808,9 @@ return toMove;]]></Body>
 			<Name><![CDATA[Controller]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.google.common.collect.ArrayListMultimap;]]></Import>
+			<StartupCode><![CDATA[getStatistic("block", 0.0, false);
+getStatistic("targetReached", 0.0, false);
+getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656063853588</Id>

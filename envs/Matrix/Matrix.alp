@@ -14808,6 +14808,9 @@ return toMove;]]></Body>
 			<Name><![CDATA[Controller]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.google.common.collect.ArrayListMultimap;]]></Import>
+			<StartupCode><![CDATA[getStatistic("block", 0.0, false);
+getStatistic("targetReached", 0.0, false);
+getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656063853588</Id>

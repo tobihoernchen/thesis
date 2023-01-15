@@ -112,7 +112,7 @@ def build_config(
         station_mttr=float(0 if not "mttr" in config_args else config_args["mttr"]),
         station_io_quote=float(
             1
-            if not "station_io_quote" in config_args
-            else config_args["station_io_quote"]
+            if not "io_quote" in config_args
+            else config_args["io_quote"]
         ),
     )

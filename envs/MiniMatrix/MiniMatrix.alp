@@ -1178,7 +1178,7 @@ String actstr = py.runResults(
 	+ ")").getFeedback(String.class);
 	
 
-traceln(actstr);
+//traceln(actstr);
 List<Integer> act = new ArrayList<Integer>();
 String intstr = "";
 for(int i = 0; i<actstr.length(); i++)
@@ -1213,8 +1213,8 @@ for(int i = actstr.length()-1; i>0; i--)
 		break;
 	} //fleetsize < 10!!!
 }
-traceln(act);
-traceln(receiver);
+//traceln(act);
+//traceln(receiver);
 if(receiver == 2000)
 	controller.action_agvs(act.toArray(new Integer[0]));
 else if(receiver == 2001)
@@ -1223,7 +1223,7 @@ else if(receiver<1000)
 	controller.action_agv(act.get(0), receiver);
 else
 {	
-	traceln(actstr);
+	//traceln(actstr);
 	controller.action_target(act.get(0), receiver-1000);
 }
 ]]></Body>
@@ -6208,6 +6208,9 @@ return toMove;]]></Body>
 			<Name><![CDATA[Controller]]></Name>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.google.common.collect.ArrayListMultimap;]]></Import>
+			<StartupCode><![CDATA[getStatistic("block", 0.0, false);
+getStatistic("targetReached", 0.0, false);
+getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656063853588</Id>
@@ -9049,7 +9052,7 @@ if(separateAgvPart || isLast)
 					<Properties Source="1657312149980" Target="1657312161253" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[normal(main.station_mttr/10, main.station_mttr)]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[true]]></Condition>
 						<Rate Class="CodeUnitValue">
@@ -9079,7 +9082,7 @@ if(separateAgvPart || isLast)
 					<Properties Source="1657311980602" Target="1657312149980" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[Math.max(0, normal(main.station_mtbf()/2, main.station_mtbf()))]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[MINUTE]]></Unit>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[true]]></Condition>
 						<Rate Class="CodeUnitValue">
