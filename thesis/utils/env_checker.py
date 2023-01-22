@@ -2,6 +2,7 @@ import time
 import numpy as np
 import random
 from ..envs.matrix import Matrix
+from ..envs.part_variants import MatrixPart
 from IPython.display import clear_output, display
 import plotly.express as px
 import pandas as pd
@@ -21,7 +22,10 @@ class RewardCheck:
         seed=42,
         reset=True,
         manual_agents=[],
+        max_action = 5,
     ):
+    
+        self.history["statistics"] = []
         random.seed(seed)
         self.step_times = []
         episode_counter = 0
@@ -46,14 +50,17 @@ class RewardCheck:
                     )
                 else:
                     if not agent in manual_agents:
-                        action = [random.randint(0, 5) for i in range(10)]
+                        action = [random.randint(0, max_action) for i in range(10)]
                     else:
                         clear_output()
                         print(
                             f"AGENT {agent} --- STEP {step_counter} --- REWARD {last[1]}"
                         )
                         display(render)
-                        action = [
+                        po=self.env.agent_behaviors["1000"].part_obs_to_dict(self.env.run.get_observation().obs[0][16:], "matrix")
+                        if po:
+                            print(MatrixPart().translate(po))
+                        action = [int(input("ACTION"))] if max_action == 5 else [
                             0,
                         ]
                         while True:
@@ -91,7 +98,7 @@ class RewardCheck:
             print(
                 f"Mean Step Time: {np.mean(self.step_times)}s ; Max: {max(self.step_times)}s ; Min: {min(self.step_times)}s"
             )
-            print(self.env.statistics)
+            self.history["statistics"].append(self.env.statistics)
 
     def get_reward_situations(
         self,

@@ -15985,8 +15985,9 @@ sr - Station Register ("sr", Station, len(obs))]]></Text>
 			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<StartupCode><![CDATA[initRespot();
 fillVarCode();
-if(partVariant == "Normal")
-	washer.setColor("MA_material", yellow);]]></StartupCode>
+if(partVariant == "V1")
+	washer.setColor("MA_material", yellow);
+	bicycle.setColor("frame", yellow);]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
 				<Id>1656163936499</Id>
@@ -16500,7 +16501,7 @@ if(partVariant == "Normal")
 						<MessageType><![CDATA[String]]></MessageType>
 						<DefaultTransition>true</DefaultTransition>
 						<FilterType><![CDATA[equalsTo]]></FilterType>
-						<EqualsExpression><![CDATA["geo5"]]></EqualsExpression>
+						<EqualsExpression><![CDATA["geo6"]]></EqualsExpression>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
@@ -16674,19 +16675,12 @@ return ready;]]></Body>
 					<Body><![CDATA[List<Integer> possible = new ArrayList<Integer>();
 for(int i = 0; i<respot.size(); i++)
 {
-	boolean done = false;
-	for(int j = 0; j<respotDone.size(); j++)
-	{
-		if(respotDone.get(j) == i)
-		{
-			done = true;
-			break;
-		}
-	}
+	boolean done = respotDone.contains(i);
 	Object[] rsp = respot.get(i);
 	String proc = (String)rsp[0];
 	if(!done && proc == procedure)
-		possible.add(i);
+		if((int)rsp[2] <= afterGeo() && (int)rsp[3] >= beforeGeo())
+			possible.add(i);
 }
 return possible;]]></Body>
 				</Function>
@@ -16761,12 +16755,23 @@ return observation;]]></Body>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[for(int i = 0; i < main.vbVariants.size(); i++)
+					<Body><![CDATA[
+if(partFamily == "VB")
 {
-	if(((String) main.vbVariants.get(i)[0]) == partVariant)
-		varCode[i] = 1.0;
+	for(int i = 0; i < main.vbVariants.size(); i++)
+	{
+		if(((String) main.vbVariants.get(i)[0]) == partVariant)
+			varCode[i] = 1.0;
+	}
 }
-]]></Body>
+if(partFamily == "HC")
+{
+	for(int i = 0; i < main.hcVariants.size(); i++)
+	{
+		if(((String) main.hcVariants.get(i)[0]) == partVariant)
+			varCode[i+main.vbVariants.size()] = 1.0;
+	}
+}]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -17422,7 +17427,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
-						<EntryAction><![CDATA[if(!isGeo())
+						<EntryAction><![CDATA[if(!isGeo() && !isRework())
 	initRespots();]]></EntryAction>
 						<FillColor/>
 					</Properties>

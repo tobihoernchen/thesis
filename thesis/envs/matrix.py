@@ -9,6 +9,8 @@ from .behaviors import (
     CollisionFreeRouting,
     CollisionFreeRoutingHive,
     Dummy,
+    MultiDispAgent,
+    CleverMatrixDispatcher
 )
 from ..utils.build_config import build_config
 from PIL import ImageDraw, Image
@@ -29,11 +31,13 @@ class Matrix(BaseAlpyneZoo):
         max_steps: int = None,
         max_seconds: int = None,
         pseudo_dispatcher=True,
+        pseudo_dispatcher_clever=False,
         pseudo_dispatcher_distance=None,
         pseudo_routing=False,
         routing_agent_death=False,
         death_on_target=False,
         dispatching_agent_death=False,
+        transform_dispatching_partobs = False
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
@@ -46,6 +50,7 @@ class Matrix(BaseAlpyneZoo):
         self.dispatch = sim_config["dispatch"]
         self.pseudo_dispatcher = pseudo_dispatcher
         self.pseudo_routing = pseudo_routing
+        self.pseudo_disp_cls = CleverMatrixDispatcher if pseudo_dispatcher_clever else RandomStationDispatcher
         self.pseudo_dispatcher_distance = pseudo_dispatcher_distance
         self.routing_ma = sim_config["routing_ma"]
         self.dispatching_ma = sim_config["dispatching_ma"]
@@ -58,6 +63,7 @@ class Matrix(BaseAlpyneZoo):
         if dispatching_agent_death:
             self.dispatching_hwm = 1000 + self.fleetsize
         self.agent_hive = None
+        self.ma_disp_cls = MultiAgent if not transform_dispatching_partobs else MultiDispAgent
 
         self.client = None
         self.started = False
@@ -158,7 +164,7 @@ class Matrix(BaseAlpyneZoo):
                         [
                             ZooAgent(
                                 str(i),
-                                RandomStationDispatcher(
+                                self.pseudo_disp_cls(
                                     self.agent_hive, 1, self.pseudo_dispatcher_distance
                                 ),
                                 False,
@@ -170,7 +176,7 @@ class Matrix(BaseAlpyneZoo):
                     agents.append(
                         ZooAgent(
                             "2001",
-                            RandomStationDispatcher(
+                            self.pseudo_disp_cls(
                                 self.agent_hive,
                                 self.fleetsize,
                                 self.pseudo_dispatcher_distance,
@@ -184,7 +190,7 @@ class Matrix(BaseAlpyneZoo):
                         [
                             ZooAgent(
                                 str(i),
-                                MultiAgent(
+                                self.ma_disp_cls(
                                     self.agent_hive,
                                     self.max_fleetsize,
                                     6 if not self.config.obs_include_agv_target else 8,
@@ -330,7 +336,7 @@ class Matrix(BaseAlpyneZoo):
             self.add_agent(
                 ZooAgent(
                     name,
-                    MultiAgent(
+                    self.ma_disp_cls(
                         self.agent_hive,
                         self.max_fleetsize,
                         6 if not self.config.obs_include_agv_target else 8,

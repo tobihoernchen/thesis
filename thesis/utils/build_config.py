@@ -68,7 +68,7 @@ def build_config(
         obs_include_nodes_in_reach=True
         if not "obs_include_nodes_in_reach" in config_args
         else config_args["obs_include_nodes_in_reach"],
-        obs_include_agv_target=False
+        obs_include_agv_target=True
         if not "obs_include_agv_target" in config_args
         else config_args["obs_include_agv_target"],
         obs_include_part_info=False

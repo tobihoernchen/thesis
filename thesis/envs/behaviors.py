@@ -1,4 +1,5 @@
 from .base_alpyne_zoo import ZooAgentBehavior
+from .part_variants import MatrixPart
 from alpyne.data.spaces import Observation, Action
 import random
 from gym import spaces
@@ -89,6 +90,25 @@ class ContextualAgent(ZooAgentBehavior):
             ]
         )
 
+    def part_obs_to_dict(self, part_obs, env_type):
+        if not any(part_obs):
+            part_info = None
+        else:
+            if env_type == "matrix":
+                part_info = {
+                    "variant": ["vb_1", "vb_2", "hc_1", "hc_2"][list(part_obs[:4]).index(1)],
+                    "state": ["g01", "g12", "g23", "g34", "g45", "g56", "g6d", "finalState"][list(part_obs[4:12]).index(1)],
+                    "respots": [part_obs[12 + 2 * i] for i in range(10)],
+                    "nio": [part_obs[13 + 2 * i] for i in range(10)]
+                }
+            else:
+                part_info = {
+                    "variant": ["vb_1", "vb_2"][list(part_obs[:2]).index(1)],
+                    "state": ["g01", "g12", "g2d", "finalState"][list(part_obs[2:8]).index(1)],
+                    "respots": [part_obs[8 + 2 * i] for i in range(2)],
+                    "nio": [part_obs[9 + 2 * i] for i in range(2)]
+                }   
+        return part_info
 
 class RandomStationDispatcher(ContextualAgent):
     def __init__(self, hive: HiveContext, n_actions=1, distance=None) -> None:
@@ -134,6 +154,42 @@ class RandomStationDispatcher(ContextualAgent):
             for i in range(self.n_actions)
         ]
         return self._make_action(actions, alpyne_obs.caller)
+
+
+class CleverMatrixDispatcher(ContextualAgent):
+    def __init__(self, hive: HiveContext, *args, **kwargs) -> None:
+        super().__init__(hive)
+        self.part=MatrixPart()
+        self.env_type="matrix"
+        self.assigned = None
+
+
+
+    def is_for_learning(self, alpyne_obs: Observation) -> bool:
+        super().is_for_learning(alpyne_obs)
+        return False
+
+    def get_action(self, alpyne_obs, time):
+        relevant_obs = alpyne_obs.obs[alpyne_obs.caller - 1000]
+        part_obs = np.array(relevant_obs[16:])
+        part_info = self.part_obs_to_dict(part_obs, self.env_type)
+        part_info = self.part.translate(part_info) if part_info is not None else None
+        stations = []
+        if part_info is None:
+            stations.extend(["vgeo1", "hgeo1"])
+        else:
+            if part_info["rework"]:
+                stations.append("rework")
+            elif part_info["next_geo"] is not None:
+                stations.append(part_info["variant"][0] + "geo" + str(part_info["next_geo"]))
+            else:  
+                processes = [proc for proc, amount in zip(part_info["proc"], part_info["amount"]) if amount>0]
+
+                for proc in processes:
+                    stations.extend(self.part.proc_stat[proc])
+        if self.assigned is None or not self.assigned in stations:
+            self.assigned = random.choice(stations)
+        return self._make_action([self.part.stat_node[self.assigned]], alpyne_obs.caller)
 
 
 class OnlyStandBehavior(ContextualAgent):
@@ -296,7 +352,7 @@ class CollisionFreeRoutingHive(HiveContext):
         ]
         for arc in start_arcs:
             H.append(Label(arc, 0, start_time, np.inf, None))
-        while len(H) > 0:
+        while len(H) > 0 and len(H) < 1000:
             H.sort(key=lambda l: l.distance)
             label = H[0]
             if label.arc.start == target_node and label.predecessor != None:
@@ -322,7 +378,8 @@ class CollisionFreeRoutingHive(HiveContext):
                         ):
                             H.append(new_label)
             H.pop(0)
-        if len(H) == 0:
+        if  len(H) == 0 or len(H) >= 1000:
+            print(f"couldn't route from {start_node_coords} to {target_node_coords}")
             return None
         else:
             path = []
@@ -398,7 +455,7 @@ class TrainingBehavior(ContextualAgent):
 
     def _gen_spaces(self):
         self.n_agv = int(self.hive.statistics["n_agv"])
-        self.n_stat = int(self.hive.statistics["n_stat"])
+        self.n_stat = len(self.hive.stations)
         rout_len = int(self.hive.statistics["rout_len"])
         disp_len = int(self.hive.statistics["disp_len"])
         self.action_max = max(self.n_stat, 5)
@@ -433,7 +490,7 @@ class TrainingBehavior(ContextualAgent):
     def _state_dict(self, obs):
         include_nodes_in_reach = True
         result = dict(agvs={}, stations={})
-        for i, agv in enumerate(obs["agvs"]):
+        for i, agv in enumerate(obs["agvs"][np.any(obs["agvs"], axis=1)]):
             result["agvs"][str(i)] = d = {}
             d["in_system"] = agv[0]
             d["moving"] = agv[1]
@@ -450,13 +507,17 @@ class TrainingBehavior(ContextualAgent):
                     agv[hwm + 4 : hwm + 6],
                     agv[hwm + 6 : hwm + 8],
                 ]
-                hwm = hwm + 8
+                hwm = hwm + 8   
             if not self.dispatching:
-                d["part_info"] = agv[hwm:]
+                d["distance"] = agv[hwm]
+                hwm += 1   
+            if self.dispatching and not isinstance(self, MultiDispAgent):
+                d["part_info"] = self.part_obs_to_dict(agv[hwm:], "matrix" if len(self.hive.nodes)>100 else "minimatrix")
         for i, station in enumerate(obs["stat"]):
             result["stations"]["station" + str(i)] = d = {}
             d["position"] = station[:2]
             d["state_vec"] = station[2:]
+
         return result
 
 
@@ -574,7 +635,7 @@ class MultiAgent(TrainingBehavior):
         if self.dispatching or not self.die_on_target:
             at_target = False
         else:
-            at_target = alpyne_obs.rew >= 1
+            at_target = alpyne_obs.rew >= 0.1
         return (
             obs,
             reward,
@@ -601,6 +662,48 @@ class MultiAgent(TrainingBehavior):
             ],
             int(agent),
         )
+
+class MultiDispAgent(MultiAgent):
+    def __init__(self, hive: HiveContext, max_fleetsize, start_of_nodes_in_reach, dispatching=False, all_ma=False, die_on_target=False) -> None:
+        super().__init__(hive, max_fleetsize, start_of_nodes_in_reach, dispatching, all_ma, die_on_target)
+        self.part = None
+        self.env_type = None
+
+    def convert_from_observation(self, alpyne_obs):
+        if self.part is None:
+            self.env_type = "matrix" if len(self.hive.stations) > 7 else "minimatrix"
+            self.part = MatrixPart() if self.env_type == "matrix" else None
+        _obs, _reward, _done, _info =  super().convert_from_observation(alpyne_obs)
+        part_obs = _obs["agvs"][:, 16:]
+
+        part_infos = [self.part_obs_to_dict(o, self.env_type) for o in part_obs]
+        translated = [self.part.translate(info) if info is not None else None for info in part_infos ]
+        new_part_obs = np.zeros(part_obs.shape)
+        possible_stations = []
+        for i, info in enumerate(translated):
+            if info is not None:
+                variant = [info["variant"].startswith("vb"), info["variant"].endswith("1")]
+                geo_bits = [1 if i+1 == info["next_geo"] else 0 for i in range(self.part.n_geos)]
+                proc_values = [v / self.part.max_procedure for v in info["amount"]]
+                new_obs = variant + geo_bits + proc_values + [1 if info["rework"] else 0]
+                new_part_obs[i, :len(new_obs)] = np.array(new_obs)
+                if i == alpyne_obs.caller - 1000:
+                    if info["next_geo"] is not None:
+                        possible_stations.append(f'{"v" if info["variant"].startswith("vb") else "h"}geo{info["next_geo"]}')
+                    for proc, amount in zip(info["proc"], info["amount"]):
+                        if amount > 0:
+                            possible_stations.extend(self.part.proc_stat[proc])
+                    if info["rework"]:
+                        possible_stations.append("rework")
+            elif i == alpyne_obs.caller - 1000:
+                possible_stations.extend(["vgeo1", "hgeo1"])
+        possible_station_nodes = [self.part.stat_node[stat] for stat in possible_stations] + self.part.stat_node["puffer"]
+        _obs["agvs"][:, 16:] = new_part_obs
+        _obs["action_mask"] = np.array([1 if stat_node in possible_station_nodes else 0 for stat_node in self.hive.stations.keys()])
+        
+        return _obs, _reward, _done, _info
+
+
 
 
 class Dummy(MultiAgent):
