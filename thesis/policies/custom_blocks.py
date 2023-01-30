@@ -72,7 +72,7 @@ class Graph(nn.Module):
             requires_grad=False,
         )
         self.paths = nn.Parameter(
-            torch.tensor(self.init_paths()).t().contiguous().to(dtype=torch.long),
+            torch.tensor(self.init_paths() + [(len(self.nodes)-1,len(self.nodes)-1)]).t().contiguous().to(dtype=torch.long),
             requires_grad=False,
         )
         self.indices = nn.Parameter(
@@ -98,6 +98,14 @@ class Graph(nn.Module):
             original_shape[:-1]
         )
         return indices
+
+    def subgraph(self, center, distance):
+        nodes = self.get_node_indices(center).unsqueeze(0)
+        for d in range(distance):
+            new = self.paths[:,torch.isin(self.paths, nodes, assume_unique=True).any(dim=0)].flatten()
+            nodes = torch.concat([nodes, new]).unique()
+        paths = self.paths[:,torch.isin(self.paths, nodes, assume_unique=True).all(dim=0)]
+        return nodes,paths 
 
 
 class PointEmbedding(nn.Module):
@@ -164,9 +172,9 @@ class MatrixPositionEmbedder(nn.Module):
 
 class FourierFeatureEmbedder(nn.Module):
 
-    def __init__(self, size = 4, sigma = 20) -> None:
+    def __init__(self, size = 4, sigma = 1) -> None:
         super().__init__()
-        self.b = nn.Parameter(torch.randn(4, 2) * sigma, requires_grad=False)
+        self.b = nn.Parameter(torch.randn(size, 2) * sigma, requires_grad=False)
         self.register_parameter("b", self.b)
 
     def forward(self, x: torch.Tensor, pos_cols):
