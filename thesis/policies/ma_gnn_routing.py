@@ -25,7 +25,7 @@ class GNNFeatureExtractor(nn.Module):
         position_embedd_dim = 2,
         ff_embedd_dim = 0,
         activation=nn.ReLU,
-        n_convolutions=2,
+        n_convolutions=4,
     ) -> None:
         super().__init__()
         self.n_convolutions = n_convolutions
@@ -41,12 +41,28 @@ class GNNFeatureExtractor(nn.Module):
         if self.with_ff_embedding:
             self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
 
-        self.embedd_node = self.get_embedder(
-            15,
-            embed_dim,
-            len(self.basegraph.nodes),
-            activation,
-            d2 = False
+
+        self.embedd_goal = nn.Sequential(
+            nn.Linear(4 + position_embedd_dim * 2 + ff_embedd_dim * 4, 2 * embed_dim),
+            activation(),
+            nn.Linear( 2 * embed_dim, 2 * embed_dim),
+            activation(),
+            nn.Linear( 2 * embed_dim, 2 * embed_dim),
+            activation(),
+            nn.Linear( 2 * embed_dim, embed_dim),
+            activation(),
+        )
+
+
+        self.embedd_node = nn.Sequential(
+            nn.Linear(16, embed_dim * 2),
+            activation(),
+            nn.Linear(embed_dim * 2, embed_dim*2),
+            activation(),
+            nn.Linear(embed_dim * 2, embed_dim*2),
+            activation(),
+            nn.Linear(embed_dim * 2, embed_dim),
+            activation(),
         )
 
         node_convs = []
@@ -54,10 +70,9 @@ class GNNFeatureExtractor(nn.Module):
             node_convs.extend(
                 [
                     (
-                         GCNConv(embed_dim, embed_dim),
+                         GATv2Conv(embed_dim, embed_dim),
                         "x, edge_index -> x"
                     ),
-                    #GraphNorm(embed_dim),
                 ]
             )
         self.node_convolutions = Sequential("x, edge_index", node_convs)
@@ -76,41 +91,65 @@ class GNNFeatureExtractor(nn.Module):
 
 
     def forward(self, x):
-        obs_main = x["agvs"][:, :1]
+        coords = x["agvs"][:, :, 2:16].reshape(x["agvs"].shape[0], -1, 7, 2) 
+        distance_percentage = x["agvs"][:, :, 16]
+        invalid_state = x["agvs"][:, :1, 17]
+        stat_coords = x["stat"][:, :, :2].reshape(x["stat"].shape[0], -1, 1, 2) 
+        
+        obs_main:torch.Tensor = x["agvs"][:, :1]
+        goal_features = obs_main[:, 0, 4:8]
         if self.with_pos_embedding:
-            obs_main=self.pos_encoder(obs_main, range(2, 15, 2))
+            goal_features = self.pos_encoder(goal_features, [0, 2])
         if self.with_ff_embedding:
-            obs_main=self.ff_encoder(obs_main, range(2, 15, 2))
-        obs_agvs = x["agvs"][:, None, 1:]
-        if self.with_pos_embedding:
-            obs_agvs=self.pos_encoder(obs_agvs, range(2, 15, 2))
-        if self.with_ff_embedding:
-            obs_agvs=self.ff_encoder(obs_agvs, range(2, 15, 2))
-        main_coords = obs_main[:, :, 2:16].reshape(obs_main.shape[0], 1, 7, 2)
-        main_indices = self.basegraph.get_node_indices(main_coords)
-        agv_coords = obs_agvs[:, :, :, 2:16].reshape(obs_agvs.shape[0], -1, 7, 2)  
-        agv_indices = self.basegraph.get_node_indices(agv_coords)
-        src_main = torch.ones(obs_main.shape[0], main_indices.shape[1], 7, device=obs_main.device)
-        src_agvs = torch.ones(obs_main.shape[0], agv_indices.shape[1], 7, device=obs_main.device)
+            goal_features = self.ff_encoder(goal_features, [0, 2])
+        goal_features = self.embedd_goal(goal_features)
+
+        indices = self.basegraph.get_node_indices(coords)
+        main_indices = indices[:, :1]
+        agv_indices = indices[:, 1:]
+        stat_indices = self.basegraph.get_node_indices(stat_coords)
+
+        src_main = torch.ones_like(main_indices, dtype = obs_main.dtype, device=obs_main.device)
+        src_main[:, :, 0] = -distance_percentage[:, :1] + 1
+        src_main[:, :, 1] = distance_percentage[:, :1]
+        src_agvs = torch.ones_like(agv_indices, dtype = obs_main.dtype, device=obs_main.device)
+        src_agvs[:, :, 0] = -distance_percentage[:, 1:] + 1
+        src_agvs[:, :, 1] = distance_percentage[:, 1:]
+        src_stat = torch.ones_like(stat_indices, dtype = obs_main.dtype, device=obs_main.device)
+
         node_info_main = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 7, device=obs_main.device)
         node_info_agvs = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 7, device=obs_main.device)
+        node_info_stat = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 1, device=obs_main.device)
+
         node_info_main.scatter_(1, main_indices, src_main, reduce = "add")
         node_info_agvs.scatter_(1, agv_indices, src_agvs, reduce = "add")
+        node_info_stat.scatter_(1, stat_indices, src_stat, reduce = "add")
+
         distances = torch.norm(self.basegraph.nodes[None, :].repeat(obs_main.shape[0], 1, 1) - obs_main[:, :, 6:8], dim=2)
-        node_info = self.embedd_node(torch.concat([node_info_main, node_info_agvs, distances.unsqueeze(-1)], dim = 2).detach())
+        node_info = self.embedd_node(torch.clamp(torch.concat([node_info_main, node_info_agvs, node_info_stat, distances.unsqueeze(-1)], dim = 2).detach(), 0.0, 1.0))
+
+        in_reach_indices = self.basegraph.get_node_indices(
+            obs_main[:, :, 8:16].reshape(-1, 4, 2)
+        )
 
         graphs = []
         for i in range(obs_main.shape[0]):
-            subset, edge_index, mapping, edge_mask = k_hop_subgraph(int(self.basegraph.get_node_indices(obs_main[i, 0, 4:6])), self.n_convolutions, self.basegraph.paths, relabel_nodes=True)
-            graphs.append(Data(node_info[i, subset], edge_index))
+            graphs.append(Data(node_info[i], self.basegraph.paths))
         batch:Batch = Batch.from_data_list(graphs)
 
         convoluted = self.node_convolutions(
             batch.x, batch.edge_index
-        )
-        out = scatter(convoluted, batch.batch, dim=0, reduce='mean')
+        ) + batch.x
 
-        return out
+        convoluted_by_batch = convoluted.reshape(node_info.shape)
+        convoluted_by_batch[:, -1] = 0
+        filtered_in_reach = torch.gather(
+            convoluted_by_batch,
+            1,
+            in_reach_indices.unsqueeze(-1).repeat(1, 1, convoluted_by_batch.shape[-1]),
+        )
+        return torch.concat([filtered_in_reach.flatten(1), goal_features, invalid_state], dim = 1)
+
 
 
 class GNNRoutingNet(TorchModelV2, nn.Module):
@@ -144,7 +183,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             position_embedd_dim = 2,
             ff_embedd_dim = 0,
             activation=nn.ReLU,
-            n_convolutions=2,
+            n_convolutions=4,
             env_type="matrix",
         ).items():
             setattr(
@@ -170,18 +209,18 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
 
 
         self.action_net = nn.Sequential(
-            nn.Linear(self.embed_dim, self.embed_dim * 4),
+            nn.Linear(self.embed_dim * 5 +1, self.embed_dim * 4),
             self.activation(),
             nn.Linear(self.embed_dim * 4, self.embed_dim),
             self.activation(),
             nn.Linear(
                 self.embed_dim,
-                action_space_max if action_space_max is not None else num_outputs,
+                6#action_space_max if action_space_max is not None else num_outputs,
             ),
         )
 
         self.value_net = nn.Sequential(
-            nn.Linear(self.embed_dim, self.embed_dim * 4),
+            nn.Linear(self.embed_dim * 5 +1, self.embed_dim * 4),
             self.activation(),
             nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
             self.activation(),
@@ -195,16 +234,21 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         self.obs = obsdict["obs"]
         self.features = self.fe(self.obs)
         actions = self.action_net(self.features)
-        if self.discrete_action_space:
-            action_out = actions
-        else:
-            action_out = torch.zeros(
-                obsdict["obs"]["action_mask"].shape,
-                device=actions.device,
-            )
-            action_out[:, 0, :] = actions
+        # if self.discrete_action_space:
+        #     action_out = actions
+        # else:
+        #     action_out = torch.zeros(
+        #         obsdict["obs"]["action_mask"].shape,
+        #         device=actions.device,
+        #     )
+        #     action_out[:, 0, :] = actions
+        action_out = torch.zeros(
+            obsdict["obs"]["action_mask"].shape,
+            device=actions.device,
+        )
+        action_out[:, :6] = actions
         if self.with_action_mask:
-            action_out = action_out + (obsdict["obs"]["action_mask"] - 1) * 1e8
+            action_out[obsdict["obs"]["action_mask"] == 0] = -1e8
         return action_out.flatten(1), []
 
     def value_function(self):

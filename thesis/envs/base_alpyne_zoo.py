@@ -65,7 +65,7 @@ class BaseAlpyneZoo(AECEnv):
         Dict[str, Union[np.ndarray, int, float, tuple, dict]],
     ]
 
-    def __init__(self):
+    def __init__(self, agent_behaviors = None):
         """
         Construct a new environment for the provided sim.
 
@@ -77,7 +77,7 @@ class BaseAlpyneZoo(AECEnv):
         :param sim: a created - but not yet started - instance of your model
         :raise ValueError: if the run has been started
         """
-        self._initialize_cache()
+        self._initialize_cache(agents=agent_behaviors)
 
         self.agent_selection = None
         self.observable = False
@@ -112,7 +112,7 @@ class BaseAlpyneZoo(AECEnv):
                         config.__setattr__(option, options[option])
         self.agents.clear()
         self._initialize_cache()
-
+        self.sim.wait_for_completion()
         self.sim.reset(config)
         self.observable = False
         if not dont_collect:

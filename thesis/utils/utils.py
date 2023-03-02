@@ -53,6 +53,7 @@ class Experiment:
             lr = lr,
             algo_params = algo_params,
         )
+        self.trainer = None
         if algo=="ppo":
             self.trainer =  ppo.PPO(config, logger_creator=logger_creator)
         elif algo == "a2c":
@@ -284,6 +285,7 @@ def get_config(
                 n_envs=n_envs,
                 env=env,
                 run_class=run_class,
+                algo_params = algo_params,
             ),
             outfile,
             indent=3,

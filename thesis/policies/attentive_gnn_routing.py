@@ -128,10 +128,17 @@ class AGNNFeatureExtractor(nn.Module):
         )
         nodes_encoded = self.encode(self.basegraph.nodes, [0])
         nodes_embedded = self.embedd_node(nodes_encoded).repeat(obs_main.shape[0], 1, 1)
+
+
+        object_coords =  torch.concat([x["agvs"][:, :, 4:6], x["stat"][:, :, :2]], dim=1)
+        object_coords_enlarged = object_coords[:, None, :, :].repeat(1, len(nodes_encoded), 1, 1)
+        node_coords_enlarged = self.basegraph.nodes[None, :, None, :].repeat(object_coords_enlarged.shape[0], 1, object_coords_enlarged.shape[2], 1)
+        mask = torch.logical_not(torch.all(torch.isclose(object_coords_enlarged, node_coords_enlarged, 0.05), 3))
+        mask[:, :, 0] = False
         # edges_encoded = self.encode(self.edge_coords, [0, 2])
         # edges_embedded = self.embedd_edge(edges_encoded).repeat(obs_main.shape[0], 1, 1)
         for block in self.node_attention:
-            nodes_embedded = block(objects_embedded, nodes_embedded)
+            nodes_embedded = block(objects_embedded, nodes_embedded, attn_mask = mask.repeat_interleave(4, 0))
         # for block in self.edge_attention:
         #     edges_embedded = block(objects_embedded, edges_embedded)
 

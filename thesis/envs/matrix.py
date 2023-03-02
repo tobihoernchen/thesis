@@ -10,7 +10,8 @@ from .behaviors import (
     CollisionFreeRoutingHive,
     Dummy,
     MultiDispAgent,
-    CleverMatrixDispatcher
+    CleverMatrixDispatcher,
+    ApplyPolicyAgent
 )
 from ..utils.build_config import build_config
 from PIL import ImageDraw, Image
@@ -37,13 +38,19 @@ class Matrix(BaseAlpyneZoo):
         routing_agent_death=False,
         death_on_target=False,
         dispatching_agent_death=False,
-        transform_dispatching_partobs = False
+        transform_dispatching_partobs = False,
+        routing_policy:str = None,
+        dispatching_policy:str = None,
+        direction_reward = 0,
     ):
         self.fleetsize = fleetsize
         self.max_fleetsize = max_fleetsize
         self.max_steps = max_steps
         self.max_seconds = max_seconds
         self.stepcounter = 0
+        self.routing_policy = routing_policy
+        self.dispatching_policy = dispatching_policy
+        self.diection_reward = direction_reward
 
         self.metadata = dict(is_parallelizable=True)
         self.statistics = None
@@ -79,12 +86,12 @@ class Matrix(BaseAlpyneZoo):
             self.possible_agents.extend(
                 [str(i) for i in range(self.fleetsize + 1000, 2000)]
             )
-        super().__init__()
-        if not self.pseudo_dispatcher or not self.pseudo_routing:
+        super().__init__(self.object_agents)
+        if not (self.pseudo_dispatcher or self.dispatching_policy is not None) or not (self.pseudo_routing or self.routing_policy is not None):
             self.reset()
 
     def _agent_selection_fn(self, alpyne_obs):
-        if self.pseudo_routing and self.pseudo_dispatcher and self._terminal_alternative(alpyne_obs):
+        if (self.pseudo_routing or self.routing_policy is not None) and (self.pseudo_dispatcher or self.dispatching_policy is not None) and self._terminal_alternative(alpyne_obs):
             return "dummy"
         if alpyne_obs.caller < 1000 and self.routing_agent_death:
             return self.routing_aliases[str(alpyne_obs.caller)]
@@ -106,7 +113,7 @@ class Matrix(BaseAlpyneZoo):
         self.agent_hive = (
             HiveContext() if not self.pseudo_routing else CollisionFreeRoutingHive()
         )
-        if self.pseudo_routing and self.pseudo_dispatcher:
+        if (self.pseudo_routing or self.routing_policy is not None) and (self.pseudo_dispatcher or self.dispatching_policy is not None):
             agents.append(ZooAgent("dummy", Dummy(self.agent_hive,self.max_fleetsize, 8, all_ma=self.all_ma,)))
         if self.pseudo_routing:
             if self.routing_ma:
@@ -128,21 +135,42 @@ class Matrix(BaseAlpyneZoo):
                 raise ValueError("pseudo routing only available for multiagent")
         else:
             if self.routing_ma:
-                agents.extend(
-                    [
-                        ZooAgent(
-                            str(i),
-                            MultiAgent(
-                                self.agent_hive,
-                                self.max_fleetsize,
-                                8,
-                                all_ma=self.all_ma,
-                                die_on_target=self.death_on_target,
-                            ),
-                        )
-                        for i in range(self.fleetsize)
-                    ]
-                )
+                if self.routing_policy is None:
+                    agents.extend(
+                        [
+                            ZooAgent(
+                                str(i),
+                                MultiAgent(
+                                    self.agent_hive,
+                                    self.max_fleetsize,
+                                    8,
+                                    all_ma=self.all_ma,
+                                    die_on_target=self.death_on_target,
+                                    direction_reward=self.diection_reward,
+                                ),
+                            )
+                            for i in range(self.fleetsize)
+                        ]
+                    )
+                else:
+                    agents.extend(
+                        [
+                            ZooAgent(
+                                str(i),
+                                ApplyPolicyAgent(self.agent_hive, self.routing_policy, 
+                                    MultiAgent(
+                                        self.agent_hive,
+                                        self.max_fleetsize,
+                                        8,
+                                        all_ma=self.all_ma,
+                                        die_on_target=self.death_on_target,
+                                        direction_reward=self.diection_reward,
+                                    ),
+                                )
+                            )
+                            for i in range(self.fleetsize)
+                        ]
+                    )
                 if self.routing_agent_death:
                     self.routing_hwm = self.fleetsize
                     self.routing_aliases = {
@@ -186,21 +214,41 @@ class Matrix(BaseAlpyneZoo):
                     )
             else:
                 if self.dispatching_ma:
-                    agents.extend(
-                        [
-                            ZooAgent(
-                                str(i),
-                                self.ma_disp_cls(
-                                    self.agent_hive,
-                                    self.max_fleetsize,
-                                    6 if not self.config.obs_include_agv_target else 8,
-                                    True,
-                                    all_ma=self.all_ma,
-                                ),
-                            )
-                            for i in range(1000, 1000 + self.fleetsize)
-                        ]
-                    )
+                    if self.dispatching_policy is None:
+                        agents.extend(
+                            [
+                                ZooAgent(
+                                    str(i),
+                                    self.ma_disp_cls(
+                                        self.agent_hive,
+                                        self.max_fleetsize,
+                                        6 if not self.config.obs_include_agv_target else 8,
+                                        True,
+                                        all_ma=self.all_ma,
+                                    ),
+                                )
+                                for i in range(1000, 1000 + self.fleetsize)
+                            ]
+                        )
+                    else:
+                        agents.extend(
+                            [
+                                ZooAgent(
+                                    str(i),
+                                    ApplyPolicyAgent(
+                                        self.agent_hive, self.dispatching_policy,
+                                        self.ma_disp_cls(
+                                            self.agent_hive,
+                                            self.max_fleetsize,
+                                            6 if not self.config.obs_include_agv_target else 8,
+                                            True,
+                                            all_ma=self.all_ma,
+                                        ),
+                                    )
+                                )
+                                for i in range(1000, 1000 + self.fleetsize)
+                            ]
+                        )
                     if self.dispatching_agent_death:
                         self.dispatching_hwm = self.fleetsize + 1000
                         self.dispatching_aliases = {
@@ -274,12 +322,10 @@ class Matrix(BaseAlpyneZoo):
                 str(i): str(i) for i in range(1000, 1000 + self.fleetsize)
             }
         # if self.pseudo_dispatcher and self.pseudo_routing:
-        #     return_val = super().reset(self.config, seed, return_info, options, dont_collect = True)
-        #     self.agents.append("dummy")
-        #     self.observable = True
+        #     return_val = super().reset(self.config, seed, return_info, options)
         #     return self.observation_space("dummy").sample(), 0, False, {}
-        # else:
-        return super().reset(self.config, seed, return_info, options)
+        else:
+            return super().reset(self.config, seed, return_info, options)
 
     def action_space(self, agent) -> gym.spaces.Space:
         return super().action_space(agent)
@@ -308,18 +354,36 @@ class Matrix(BaseAlpyneZoo):
             original_name = self.routing_aliases_rev[agent]
             self.routing_aliases[original_name] = name
             self.routing_aliases_rev[name] = original_name  # bidirectional
-            self.add_agent(
-                ZooAgent(
-                    name,
-                    MultiAgent(
-                        self.agent_hive,
-                        self.max_fleetsize,
-                        8,
-                        all_ma=self.all_ma,
-                        die_on_target=self.death_on_target,
-                    ),
+            if self.routing_policy is None:
+                self.add_agent(
+                    ZooAgent(
+                        name,
+                        MultiAgent(
+                            self.agent_hive,
+                            self.max_fleetsize,
+                            8,
+                            all_ma=self.all_ma,
+                            die_on_target=self.death_on_target,
+                            direction_reward=self.diection_reward,
+                        ),
+                    )
                 )
-            )
+            else:
+                self.add_agent(
+                    ZooAgent(
+                        name,
+                        ApplyPolicyAgent(self.agent_hive, self.routing_policy, 
+                            MultiAgent(
+                                self.agent_hive,
+                                self.max_fleetsize,
+                                8,
+                                all_ma=self.all_ma,
+                                die_on_target=self.death_on_target,
+                                direction_reward=self.diection_reward,
+                            ),
+                        )
+                    )
+                )
             self.routing_hwm += 1
         elif (
             agent != "dummy"
@@ -333,18 +397,35 @@ class Matrix(BaseAlpyneZoo):
             original_name = self.dispatching_aliases_rev[agent]
             self.dispatching_aliases[original_name] = name
             self.dispatching_aliases_rev[name] = original_name  # bidirectional
-            self.add_agent(
-                ZooAgent(
-                    name,
-                    self.ma_disp_cls(
-                        self.agent_hive,
-                        self.max_fleetsize,
-                        6 if not self.config.obs_include_agv_target else 8,
-                        True,
-                        all_ma=self.all_ma,
-                    ),
+            if self.dispatching_policy is None:
+                self.add_agent(
+                    ZooAgent(
+                        name,
+                        self.ma_disp_cls(
+                            self.agent_hive,
+                            self.max_fleetsize,
+                            6 if not self.config.obs_include_agv_target else 8,
+                            True,
+                            all_ma=self.all_ma,
+                        ),
+                    )
                 )
-            )
+            else:
+                self.add_agent(
+                    ZooAgent(
+                        name,
+                        ApplyPolicyAgent(
+                            self.agent_hive, self.dispatching_policy,
+                            self.ma_disp_cls(
+                                self.agent_hive,
+                                self.max_fleetsize,
+                                6 if not self.config.obs_include_agv_target else 8,
+                                True,
+                                all_ma=self.all_ma,
+                            ),
+                        )
+                    )
+                )
             self.dispatching_hwm += 1
         return super()._save_observation(alpyne_obs, agent, obs, reward, done, info)
 

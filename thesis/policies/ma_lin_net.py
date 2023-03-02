@@ -21,6 +21,8 @@ class LinFE(nn.Module):
         position_embedd_dim=2,
         ff_embedd_dim = 0,
         activation=nn.ReLU,
+        dont_train_main = False,
+        dont_train_agvs = False
     ) -> None:
 
         super().__init__()
@@ -31,29 +33,42 @@ class LinFE(nn.Module):
         if self.with_ff_embedding:
             self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
         n_features = obs_space["agvs"].shape[1]
+        n_agvs = obs_space["agvs"].shape[0]
+        n_stat = obs_space["stat"].shape[0]
+        self.with_agvs = with_agvs
+        self.dont_train_main = dont_train_main
+        self.dont_train_agvs = dont_train_agvs
 
         self.main_ff = nn.Sequential(
             nn.Linear(n_features + position_embedd_dim * 7 + ff_embedd_dim * 2 * 7, 2 * embed_dim),
             activation(),
+            nn.BatchNorm1d(1),
             nn.Linear(2 * embed_dim, 2 * embed_dim),
             activation(),
+            nn.BatchNorm1d(1),
             nn.Linear(2 * embed_dim, 2 * embed_dim),
             activation(),
+            nn.BatchNorm1d(1),
             nn.Linear(2 * embed_dim, embed_dim),
             activation(),
+            nn.BatchNorm1d(1),
         )
 
-        self.with_agvs = with_agvs
+
         if with_agvs:
             self.lintention_agvs = nn.Sequential(
                 nn.Linear(2 * n_features + position_embedd_dim * 14 + ff_embedd_dim * 2 * 14, 4 * embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_agvs-1),
                 nn.Linear(4 * embed_dim, 4 * embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_agvs-1),
                 nn.Linear(4 * embed_dim, 2 * embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_agvs-1),
                 nn.Linear(2 * embed_dim, embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_agvs-1),
             )
 
         self.with_stations = with_stations
@@ -61,12 +76,16 @@ class LinFE(nn.Module):
             self.lintention_station = nn.Sequential(
                 nn.Linear(2 * n_features + position_embedd_dim * 8  + ff_embedd_dim * 2 * 8, 4 * embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_stat),
                 nn.Linear(4 * embed_dim, 4 * embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_stat),
                 nn.Linear(4 * embed_dim, 2 * embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_stat),
                 nn.Linear(2 * embed_dim, embed_dim),
                 activation(),
+                nn.BatchNorm1d(n_stat),
             )
 
     def forward(self, obs):
@@ -77,7 +96,7 @@ class LinFE(nn.Module):
         if self.with_ff_embedding:
             main_data = self.ff_encoder(main_data, range(2, 15, 2))
         features_main = self.main_ff(main_data).squeeze(dim=1)
-        features.append(features_main)
+        features.append(features_main if not self.dont_train_main else features_main.detach())
 
         if self.with_agvs:
             agvs_data = obs["agvs"][:, 1:]
@@ -144,6 +163,8 @@ class MALinPolicy(TorchModelV2, nn.Module):
             position_embedd_dim = 2,
             ff_embedd_dim = 0,
             activation=nn.ReLU,
+            dont_train_main = False,
+            dont_train_agvs = False,
         ).items():
             setattr(
                 self,
@@ -159,7 +180,9 @@ class MALinPolicy(TorchModelV2, nn.Module):
             with_agvs=self.with_agvs,
             with_stations=self.with_stations,
             position_embedd_dim = self.position_embedd_dim,
-            ff_embedd_dim = self.ff_embedd_dim
+            ff_embedd_dim = self.ff_embedd_dim,
+            dont_train_main = self.dont_train_main,
+            dont_train_agvs = self.dont_train_agvs,
         )
 
         n_concats = 1 + 2* self.with_agvs +  2 * self.with_stations

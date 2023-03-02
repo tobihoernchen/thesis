@@ -7,6 +7,7 @@ import numpy as np
 from collections import OrderedDict
 from typing import List
 import matplotlib.pyplot as plt
+from ray.rllib.policy.policy import Policy
 
 
 class HiveContext:
@@ -15,6 +16,7 @@ class HiveContext:
         self.stations = None
         self.statistics = None
         self.paths = None
+        self.policies = {}
 
     def set_statistics(self, stat_dict):
         self.statistics = stat_dict
@@ -25,6 +27,11 @@ class HiveContext:
             node2 = self.nodes[inode2]
             plt.arrow(node1[0], -node1[1], node2[0]-node1[0], node1[1]-node2[1], length_includes_head = True, head_width = 0.008)
         plt.show()
+
+    def add_policy(self, policy_path):
+        if not policy_path in self.policies.keys():
+            self.policies[policy_path] = Policy.from_checkpoint(policy_path)
+        return self.policies[policy_path]
 
 class ContextualAgent(ZooAgentBehavior):
     def __init__(self, hive: HiveContext) -> None:
@@ -109,6 +116,24 @@ class ContextualAgent(ZooAgentBehavior):
                     "nio": [part_obs[9 + 2 * i] for i in range(2)]
                 }   
         return part_info
+
+
+class ApplyPolicyAgent(ContextualAgent):
+    def __init__(self, hive: HiveContext, policy_path, dummy_learning_agent) -> None:
+        super().__init__(hive)
+        self.policy:Policy = self.hive.add_policy(policy_path)
+        self.dummy_learning_agent:TrainingBehavior = dummy_learning_agent
+
+    def is_for_learning(self, alpyne_obs: Observation) -> bool:
+        super().is_for_learning(alpyne_obs)
+        self.dummy_learning_agent.is_for_learning(alpyne_obs)
+        return False
+
+    def get_action(self, alpyne_obs, time):
+        obs, rew, done, info = self.dummy_learning_agent.convert_from_observation(alpyne_obs)
+        action = self.policy.compute_single_action(obs, explore=False)
+        return self._make_action([action[0]], alpyne_obs.caller)
+
 
 class RandomStationDispatcher(ContextualAgent):
     def __init__(self, hive: HiveContext, n_actions=1, distance=None) -> None:
@@ -588,12 +613,19 @@ class MultiAgent(TrainingBehavior):
         dispatching=False,
         all_ma=False,
         die_on_target=False,
+        direction_reward = 0,
     ) -> None:
         super().__init__(hive, max_fleetsize, all_ma)
         self.shufflerules = dict()
         self.dispatching = dispatching
         self.start_of_nodes_in_reach = start_of_nodes_in_reach
         self.die_on_target = die_on_target
+        self.direction_reward = direction_reward
+        if self.direction_reward != 0:
+            self.lane_coords_x_1 = [0.23076923076923078,0.893491124260355,0.9526627218934911, 0.4772727272727273]
+            self.lane_coords_x_2 = [0.20118343195266272,0.8461538461538461,0.9230769230769231, 0.42045454545454547]
+            self.lane_coords_y_1 = [0.5045871559633027, 0.76]
+            self.lane_coords_y_2 = [0.5504587155963303, 0.86]
 
     def convert_from_observation(self, alpyne_obs):
         self.shufflerules[alpyne_obs.caller] = srule = random.sample(
@@ -607,7 +639,23 @@ class MultiAgent(TrainingBehavior):
         other = list(range(self.n_agv))
         other.remove(caller)
         in_obs_caller = in_obs[caller]
+
+        if self.direction_reward != 0:
+            if in_obs_caller[2] == in_obs_caller[4]:
+                if in_obs_caller[2] in self.lane_coords_x_1 and in_obs_caller[3] < in_obs_caller[5]:
+                    reward += self.direction_reward
+                if in_obs_caller[2] in self.lane_coords_x_2 and in_obs_caller[3] > in_obs_caller[5]:
+                    reward += self.direction_reward
+            if in_obs_caller[3] == in_obs_caller[5]:
+                if in_obs_caller[3] in self.lane_coords_y_1 and in_obs_caller[2] < in_obs_caller[4]:
+                    reward += self.direction_reward
+                if in_obs_caller[3] in self.lane_coords_y_2 and in_obs_caller[2] > in_obs_caller[4]:
+                    reward += self.direction_reward
+
         in_obs_agvs = in_obs[other]
+        for i in range(len(in_obs_agvs)):
+            if in_obs_agvs[i,0] == 0:
+                in_obs_agvs[i] = 0
         obs_agvs[0, : in_obs_agvs.shape[1]] = in_obs_caller
         obs_agvs[srule, : in_obs_agvs.shape[1]] = in_obs_agvs
 
@@ -635,7 +683,7 @@ class MultiAgent(TrainingBehavior):
         if self.dispatching or not self.die_on_target:
             at_target = False
         else:
-            at_target = alpyne_obs.rew >= 0.1
+            at_target = alpyne_obs.rew >= 0.3
         return (
             obs,
             reward,
@@ -707,5 +755,6 @@ class MultiDispAgent(MultiAgent):
 
 
 class Dummy(MultiAgent):
+
     def convert_to_action(self, actions, agent):
         return super().convert_to_action(0, 0)

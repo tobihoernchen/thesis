@@ -47,13 +47,13 @@ class TransformerDecoderBlock(nn.Module):
         )
         self.norm3 = nn.LayerNorm((n_agents, embed_dim))
 
-    def forward(self, inputs, outputs):
+    def forward(self, inputs, outputs, attn_mask  = None):
         self_attended = self.self_attention(
             outputs, outputs, outputs, need_weights=False
         )[0]
         x = outputs + self_attended
         normed1 = self.norm1(x)
-        attended = self.attention(normed1, inputs, inputs, need_weights=False)[0]
+        attended = self.attention(normed1, inputs, inputs, need_weights=False, attn_mask  = attn_mask  )[0]
         x = attended + x
         normed2 = self.norm2(x)
         fedforward = self.feedforward(normed2)
@@ -65,22 +65,22 @@ class TransformerDecoderBlock(nn.Module):
 class Graph(nn.Module):
     def __init__(self) -> None:
         super().__init__()
-        self.nodes = nn.Parameter(
+        self.register_buffer(
+            "nodes",
             torch.tensor(
                 [coords for i, coords in self.init_nodes().items()] + [(0, 0)]
             ),
-            requires_grad=False,
+            persistent=False,
         )
-        self.paths = nn.Parameter(
+        self.register_buffer(
+            "paths",
             torch.tensor(self.init_paths() + [(len(self.nodes)-1,len(self.nodes)-1)]).t().contiguous().to(dtype=torch.long),
-            requires_grad=False,
+            persistent=False,
         )
-        self.indices = nn.Parameter(
-            torch.arange(0, self.nodes.shape[0]), requires_grad=False
+        self.register_buffer(
+            "indices",
+            torch.arange(0, self.nodes.shape[0]), persistent=False
         )
-        self.register_parameter("nodes", self.nodes)
-        self.register_parameter("paths", self.paths)
-        self.register_parameter("indices", self.indices)
 
     def init_nodes(self):
         return OrderedDict([])

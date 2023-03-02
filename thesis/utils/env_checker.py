@@ -16,6 +16,13 @@ class RewardCheck:
         self.history = {}
         self.include_nodes_in_reach = env.config.obs_include_nodes_in_reach
 
+    def statistics_run(self, seeds):
+        statistics = []
+        for seed in seeds:
+            self.run(1, seed)
+            statistics.append(self.env.statistics)
+        return statistics
+
     def run(
         self,
         n_episodes=1,
@@ -57,12 +64,10 @@ class RewardCheck:
                             f"AGENT {agent} --- STEP {step_counter} --- REWARD {last[1]}"
                         )
                         display(render)
-                        po=self.env.agent_behaviors["1000"].part_obs_to_dict(self.env.run.get_observation().obs[0][16:], "matrix")
-                        if po:
-                            print(MatrixPart().translate(po))
-                        action = [int(input("ACTION"))] if max_action == 5 else [
-                            0,
-                        ]
+                        
+                        # action = [int(input("ACTION"))] if max_action == 5 else [
+                        #     0,
+                        # ]
                         while True:
                             if keyboard.is_pressed("left"):
                                 action = [
@@ -85,6 +90,9 @@ class RewardCheck:
                                 ]
                                 break
                             elif keyboard.is_pressed("enter"):
+                                action = [
+                                    0,
+                                ]
                                 break
                         time.sleep(0.5)
                 self.history[agent]["action"].append(action)
