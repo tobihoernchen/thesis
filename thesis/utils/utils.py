@@ -13,6 +13,9 @@ from ray.rllib.algorithms import ppo, a2c, dqn, apex_dqn
 from ray.rllib.env import PettingZooEnv
 from ray.tune.registry import register_env
 from ray.tune.logger import UnifiedLogger
+from ray.rllib.algorithms.algorithm_config import AlgorithmConfig
+from ray.rllib.algorithms.ppo.ppo_torch_policy import PPOTorchPolicy
+from ray.rllib.algorithms.dqn.dqn_torch_policy import DQNTorchPolicy
 
 # from thesis.policies.simplified_attention_module import register_attention_model
 from thesis.policies.ma_lin_net import register_lin_model
@@ -24,6 +27,8 @@ from thesis.policies.attentive_gnn_routing import register_attn_gnn_model
 from thesis.envs.matrix import Matrix
 from thesis.utils.callbacks import CustomCallback
 from thesis.policies.ma_action_dist import register_ma_action_dist
+
+from .double_trainer import DoubleTrainer
 
 
 def seed_all(seed=42):
@@ -62,6 +67,8 @@ class Experiment:
             self.trainer = dqn.DQN(config, logger_creator=logger_creator)
         elif algo == "apex":
             self.trainer = apex_dqn.ApexDQN(config, logger_creator=logger_creator)
+        elif algo == "double":
+            self.trainer = DoubleTrainer(config, logger_creator=logger_creator)
         if load_agv is not None:
             self.trainer.restore(load_agv)
         self.checkpoint_dir = checkpoint_dir
@@ -100,6 +107,7 @@ def config_ma_policies(
     dispatcher_model=None,
     train_dispatcher=True,
     all_ma=False,
+    type = None,
 ):
     config = dict()
 
@@ -108,9 +116,16 @@ def config_ma_policies(
         dispatcher_model["model"]["custom_model_config"]["discrete_action_space"] = True
 
     policies = dict()
-    policies["agv"] = PolicySpec(config=agv_model)
+
+    policies["agv"] = PolicySpec(
+        policy_class = DQNTorchPolicy if type=="double" else None,
+        config=agv_model
+        )
     if dispatcher_model is not None:
-        policies["dispatcher"] = PolicySpec(config=dispatcher_model)
+        policies["dispatcher"] = PolicySpec(
+            policy_class = PPOTorchPolicy if type=="double" else None,
+            config=dispatcher_model
+            )
 
     policies_to_train = []
     if train_agv:
@@ -234,6 +249,11 @@ def get_config(
     elif type == "rainbow":
         config = dqn.DEFAULT_CONFIG.copy()
         add_to_config(config, config_rainbow_training(batch_size, algo_params))
+    elif type == "double":
+        config = AlgorithmConfig().to_dict()
+        add_to_config(agv_model, config_dqn_training(batch_size, algo_params))
+        add_to_config(dispatcher_model, config_ppo_training(batch_size, algo_params))
+
 
     config["framework"] = "torch"
     config["callbacks"] = lambda: CustomCallback()
@@ -261,6 +281,7 @@ def get_config(
             dispatcher_model=dispatcher_model,
             train_dispatcher=train_dispatcher,
             all_ma=all_ma,
+            type = type,
         ),
     )
 

@@ -73,6 +73,7 @@ class GNNFeatureExtractor(nn.Module):
                          GATv2Conv(embed_dim, embed_dim),
                         "x, edge_index -> x"
                     ),
+                    GraphNorm(embed_dim),
                 ]
             )
         self.node_convolutions = Sequential("x, edge_index", node_convs)
@@ -246,7 +247,10 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             obsdict["obs"]["action_mask"].shape,
             device=actions.device,
         )
-        action_out[:, :6] = actions
+        if len(action_out.shape) == 3:
+            action_out[:, 0, :6] = actions
+        else:
+            action_out[:, :6] = actions
         if self.with_action_mask:
             action_out[obsdict["obs"]["action_mask"] == 0] = -1e8
         return action_out.flatten(1), []

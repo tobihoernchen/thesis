@@ -7,7 +7,7 @@ from IPython.display import clear_output, display
 import plotly.express as px
 import pandas as pd
 import keyboard
-
+import ipywidgets as widgets
 
 
 class RewardCheck:
@@ -29,6 +29,7 @@ class RewardCheck:
         seed=42,
         reset=True,
         manual_agents=[],
+        dispatch_mode = False,
         max_action = 5,
     ):
     
@@ -60,41 +61,54 @@ class RewardCheck:
                         action = [random.randint(0, max_action) for i in range(10)]
                     else:
                         clear_output()
+                        if dispatch_mode:
+                            print(self.env.agent_behaviors[agent].convert_from_observation(self.env.run.get_observation())[0]["action_mask"])
                         print(
                             f"AGENT {agent} --- STEP {step_counter} --- REWARD {last[1]}"
                         )
                         display(render)
                         
-                        # action = [int(input("ACTION"))] if max_action == 5 else [
-                        #     0,
-                        # ]
-                        while True:
-                            if keyboard.is_pressed("left"):
-                                action = [
-                                    1,
-                                ]
-                                break
-                            elif keyboard.is_pressed("up"):
-                                action = [
-                                    2,
-                                ]
-                                break
-                            elif keyboard.is_pressed("right"):
-                                action = [
-                                    3,
-                                ]
-                                break
-                            elif keyboard.is_pressed("down"):
-                                action = [
-                                    4,
-                                ]
-                                break
-                            elif keyboard.is_pressed("enter"):
-                                action = [
-                                    0,
-                                ]
-                                break
-                        time.sleep(0.5)
+                        if dispatch_mode:
+                            mask = np.array(self.env.agent_behaviors[agent].convert_from_observation(self.env.run.get_observation())[0]["action_mask"])
+                            indices = np.where(mask == 1)
+                            choices = [f"{i:2}-{list(self.env.agent_hive.stations.values())[i]}\n" for i in indices[0]]
+                            ao = self.env.sim.get_observation()
+                            o = ao.obs[ao.caller%1000]
+                            di =  self.env.agent_behaviors[agent].part_obs_to_dict(o[16:], "matrix")
+
+                            for ch in choices:
+                                print(ch)
+                            print(di)
+                            print()
+                            action = [int(input("ACTION"))] 
+                        else:
+                            while True:
+                                if keyboard.is_pressed("left"):
+                                    action = [
+                                        1,
+                                    ]
+                                    break
+                                elif keyboard.is_pressed("up"):
+                                    action = [
+                                        2,
+                                    ]
+                                    break
+                                elif keyboard.is_pressed("right"):
+                                    action = [
+                                        3,
+                                    ]
+                                    break
+                                elif keyboard.is_pressed("down"):
+                                    action = [
+                                        4,
+                                    ]
+                                    break
+                                elif keyboard.is_pressed("enter"):
+                                    action = [
+                                        0,
+                                    ]
+                                    break
+                            time.sleep(0.5)
                 self.history[agent]["action"].append(action)
                 before = time.time()
                 self.env.step(action)

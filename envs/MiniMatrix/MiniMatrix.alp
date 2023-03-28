@@ -10328,6 +10328,14 @@ else
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[reward_reduce]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
+				<Name><![CDATA[reward_balance]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[station_separate]]></Name>
 				<Type><![CDATA[boolean]]></Type>
 			</ConfigurationField>

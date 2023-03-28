@@ -108,6 +108,16 @@ def build_config(
             if not "reward_part_completed" in config_args
             else config_args["reward_part_completed"]
         ),
+        reward_reduce=float(
+            0
+            if not "reward_reduce" in config_args
+            else config_args["reward_reduce"]
+        ),
+        reward_balance=float(
+            0
+            if not "reward_balance" in config_args
+            else config_args["reward_balance"]
+        ),
         station_separate=False if not "station_separate" in config_args else config_args["station_separate"],
         station_availability=float(
             1 if not "availability" in config_args else config_args["availability"]

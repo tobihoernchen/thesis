@@ -196,7 +196,7 @@ class CleverMatrixDispatcher(ContextualAgent):
 
     def get_action(self, alpyne_obs, time):
         relevant_obs = alpyne_obs.obs[alpyne_obs.caller - 1000]
-        part_obs = np.array(relevant_obs[16:])
+        part_obs = np.array(relevant_obs[18:])
         part_info = self.part_obs_to_dict(part_obs, self.env_type)
         part_info = self.part.translate(part_info) if part_info is not None else None
         stations = []
@@ -535,7 +535,12 @@ class TrainingBehavior(ContextualAgent):
                 hwm = hwm + 8   
             if not self.dispatching:
                 d["distance"] = agv[hwm]
-                hwm += 1   
+                d["invalids"] = agv[hwm+1]
+                hwm += 2   
+            else:
+                d["perc_vb"] = agv[hwm]
+                d["perc_hc"] = agv[hwm+1]
+                hwm += 2   
             if self.dispatching and not isinstance(self, MultiDispAgent):
                 d["part_info"] = self.part_obs_to_dict(agv[hwm:], "matrix" if len(self.hive.nodes)>100 else "minimatrix")
         for i, station in enumerate(obs["stat"]):
@@ -558,6 +563,7 @@ class SingleAgent(TrainingBehavior):
         self.shufflerules = dict()
         self.dispatching = dispatching
         self.start_of_nodes_in_reach = start_of_nodes_in_reach
+        self.actions_len = None
 
     def convert_from_observation(self, alpyne_obs):
         self.shufflerules[alpyne_obs.caller] = srule = random.sample(
@@ -590,13 +596,16 @@ class SingleAgent(TrainingBehavior):
         return obs, reward, False, {}
 
     def convert_to_action(self, actions, agent):
+        if self.actions_len is None:
+            self.actions_len = len(actions)
         if self.dispatching:
             actions = [
                 list(self.hive.stations.keys())[action]
                 if action is not None and action < len(self.hive.stations)
                 else list(self.hive.stations.keys())[0]
                 for action in actions
-            ]
+            ] if actions is not None else [list(self.hive.stations.keys())[0]
+                for action in range(self.actions_len)]
         else:
             actions = [action if action is not None and  action < 5 else 0 for action in actions] if actions is not None else [0 for _ in range(len(self.action_space.nvec))]
         srule = self.shufflerules[int(agent)]
@@ -718,11 +727,12 @@ class MultiDispAgent(MultiAgent):
         self.env_type = None
 
     def convert_from_observation(self, alpyne_obs):
+        seperate = True
         if self.part is None:
             self.env_type = "matrix" if len(self.hive.stations) > 7 else "minimatrix"
             self.part = MatrixPart() if self.env_type == "matrix" else None
         _obs, _reward, _done, _info =  super().convert_from_observation(alpyne_obs)
-        part_obs = _obs["agvs"][:, 16:]
+        part_obs = _obs["agvs"][:, 18:]
 
         part_infos = [self.part_obs_to_dict(o, self.env_type) for o in part_obs]
         translated = [self.part.translate(info) if info is not None else None for info in part_infos ]
@@ -735,7 +745,7 @@ class MultiDispAgent(MultiAgent):
                 proc_values = [v / self.part.max_procedure for v in info["amount"]]
                 new_obs = variant + geo_bits + proc_values + [1 if info["rework"] else 0]
                 new_part_obs[i, :len(new_obs)] = np.array(new_obs)
-                if i == alpyne_obs.caller - 1000:
+                if i == 0:#alpyne_obs.caller - 1000:
                     if info["next_geo"] is not None:
                         possible_stations.append(f'{"v" if info["variant"].startswith("vb") else "h"}geo{info["next_geo"]}')
                     for proc, amount in zip(info["proc"], info["amount"]):
@@ -743,15 +753,56 @@ class MultiDispAgent(MultiAgent):
                             possible_stations.extend(self.part.proc_stat[proc])
                     if info["rework"]:
                         possible_stations.append("rework")
-            elif i == alpyne_obs.caller - 1000:
+            elif not seperate and i == 0:#alpyne_obs.caller - 1000:
                 possible_stations.extend(["vgeo1", "hgeo1"])
         possible_station_nodes = [self.part.stat_node[stat] for stat in possible_stations] + self.part.stat_node["puffer"]
-        _obs["agvs"][:, 16:] = new_part_obs
-        _obs["action_mask"] = np.array([1 if stat_node in possible_station_nodes else 0 for stat_node in self.hive.stations.keys()])
+        _obs["agvs"][:, 18:] = new_part_obs
+        if not seperate or len(possible_stations)>0:
+            _obs["action_mask"] = np.array([1 if stat_node in possible_station_nodes else 0 for stat_node in self.hive.stations.keys()])  
+        else:
+            _obs["action_mask"] = np.ones((len(self.hive.stations.keys())))
         
         return _obs, _reward, _done, _info
 
+class SingleDispAgent(SingleAgent):
+    def __init__(self, hive: HiveContext, max_fleetsize, start_of_nodes_in_reach, dispatching=False) -> None:
+        super().__init__(hive, max_fleetsize, start_of_nodes_in_reach, dispatching)
+        self.part = None
+        self.env_type = None
 
+    def convert_from_observation(self, alpyne_obs):
+        if self.part is None:
+            self.env_type = "matrix" if len(self.hive.stations) > 7 else "minimatrix"
+            self.part = MatrixPart() if self.env_type == "matrix" else None
+        _obs, _reward, _done, _info =  super().convert_from_observation(alpyne_obs)
+        part_obs = _obs["agvs"][:, 18:]
+
+        part_infos = [self.part_obs_to_dict(o, self.env_type) for o in part_obs]
+        translated = [self.part.translate(info) if info is not None else None for info in part_infos ]
+        new_part_obs = np.zeros(part_obs.shape)
+        possible_stations = {i:[] for i in range(len(translated))}
+        for i, info in enumerate(translated):
+            if info is not None:
+                variant = [info["variant"].startswith("vb"), info["variant"].endswith("1")]
+                geo_bits = [1 if i+1 == info["next_geo"] else 0 for i in range(self.part.n_geos)]
+                proc_values = [v / self.part.max_procedure for v in info["amount"]]
+                new_obs = variant + geo_bits + proc_values + [1 if info["rework"] else 0]
+                new_part_obs[i, :len(new_obs)] = np.array(new_obs)
+                if i == 0:#alpyne_obs.caller - 1000:
+                    if info["next_geo"] is not None:
+                        possible_stations[i].append(f'{"v" if info["variant"].startswith("vb") else "h"}geo{info["next_geo"]}')
+                    for proc, amount in zip(info["proc"], info["amount"]):
+                        if amount > 0:
+                            possible_stations[i].extend(self.part.proc_stat[proc])
+                    if info["rework"]:
+                        possible_stations[i].append("rework")
+            else:#alpyne_obs.caller - 1000:
+                possible_stations[i].extend(["vgeo1", "hgeo1"])
+        possible_station_nodes = {i:[self.part.stat_node[stat] for stat in ps] + self.part.stat_node["puffer"] for i, ps in possible_stations.items()}
+        _obs["agvs"][:, 18:] = new_part_obs
+        _obs["action_mask"] = np.array([[1 if stat_node in possible_station_nodes[i] else 0 for stat_node in self.hive.stations.keys()] for i in range(len(translated))])
+        
+        return _obs, _reward, _done, _info
 
 
 class Dummy(MultiAgent):

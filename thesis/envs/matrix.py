@@ -11,7 +11,8 @@ from .behaviors import (
     Dummy,
     MultiDispAgent,
     CleverMatrixDispatcher,
-    ApplyPolicyAgent
+    ApplyPolicyAgent,
+    SingleDispAgent
 )
 from ..utils.build_config import build_config
 from PIL import ImageDraw, Image
@@ -71,6 +72,7 @@ class Matrix(BaseAlpyneZoo):
             self.dispatching_hwm = 1000 + self.fleetsize
         self.agent_hive = None
         self.ma_disp_cls = MultiAgent if not transform_dispatching_partobs else MultiDispAgent
+        self.sa_disp_cls = SingleAgent if not transform_dispatching_partobs else SingleDispAgent
 
         self.client = None
         self.started = False
@@ -261,7 +263,7 @@ class Matrix(BaseAlpyneZoo):
                     agents.append(
                         ZooAgent(
                             "2001",
-                            SingleAgent(
+                            self.sa_disp_cls(
                                 self.agent_hive,
                                 self.max_fleetsize,
                                 6 if not self.config.obs_include_agv_target else 8,
