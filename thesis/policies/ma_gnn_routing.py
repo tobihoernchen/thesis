@@ -6,7 +6,7 @@ from ray.rllib.models import ModelCatalog
 import torch
 from .custom_blocks import MatrixGraph, MiniMatrixGraph, MatrixPositionEmbedder, FourierFeatureEmbedder, TransformerDecoderBlock
 from torch_geometric.data import Data, Batch
-from torch_geometric.nn import Sequential, GATv2Conv, GraphNorm,  GCNConv
+from torch_geometric.nn import Sequential, GATConv, GraphNorm
 from torch_geometric.utils import scatter, k_hop_subgraph
 
 
@@ -41,36 +41,15 @@ class GNNFeatureExtractor(nn.Module):
         if self.with_ff_embedding:
             self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
 
-
-        self.embedd_goal = nn.Sequential(
-            nn.Linear(4 + position_embedd_dim * 2 + ff_embedd_dim * 4, 2 * embed_dim),
-            activation(),
-            nn.Linear( 2 * embed_dim, 2 * embed_dim),
-            activation(),
-            nn.Linear( 2 * embed_dim, 2 * embed_dim),
-            activation(),
-            nn.Linear( 2 * embed_dim, embed_dim),
-            activation(),
-        )
-
-
-        self.embedd_node = nn.Sequential(
-            nn.Linear(16, embed_dim * 2),
-            activation(),
-            nn.Linear(embed_dim * 2, embed_dim*2),
-            activation(),
-            nn.Linear(embed_dim * 2, embed_dim*2),
-            activation(),
-            nn.Linear(embed_dim * 2, embed_dim),
-            activation(),
-        )
+        self.embedd_goal = self.get_embedder(4 + position_embedd_dim * 2 + ff_embedd_dim * 4, embed_dim, 1, activation, False)
+        self.embedd_node = self.get_embedder(16, embed_dim, len(self.basegraph.nodes), activation, False)
 
         node_convs = []
         for i in range(n_convolutions):
             node_convs.extend(
                 [
                     (
-                         GATv2Conv(embed_dim, embed_dim),
+                         GATConv(embed_dim, embed_dim, 4, False),
                         "x, edge_index -> x"
                     ),
                     GraphNorm(embed_dim),
@@ -98,12 +77,12 @@ class GNNFeatureExtractor(nn.Module):
         stat_coords = x["stat"][:, :, :2].reshape(x["stat"].shape[0], -1, 1, 2) 
         
         obs_main:torch.Tensor = x["agvs"][:, :1]
-        goal_features = obs_main[:, 0, 4:8]
+        goal_features = obs_main[:, :1, 4:8]
         if self.with_pos_embedding:
             goal_features = self.pos_encoder(goal_features, [0, 2])
         if self.with_ff_embedding:
             goal_features = self.ff_encoder(goal_features, [0, 2])
-        goal_features = self.embedd_goal(goal_features)
+        goal_features = self.embedd_goal(goal_features).squeeze(1)
 
         indices = self.basegraph.get_node_indices(coords)
         main_indices = indices[:, :1]
@@ -140,7 +119,7 @@ class GNNFeatureExtractor(nn.Module):
 
         convoluted = self.node_convolutions(
             batch.x, batch.edge_index
-        ) + batch.x
+        ) #+ batch.x
 
         convoluted_by_batch = convoluted.reshape(node_info.shape)
         convoluted_by_batch[:, -1] = 0
