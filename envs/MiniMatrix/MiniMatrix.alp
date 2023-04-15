@@ -10232,6 +10232,10 @@ else
 				<Type><![CDATA[boolean]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[fixed_fleets]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[routing_ma]]></Name>
 				<Type><![CDATA[boolean]]></Type>
 			</ConfigurationField>

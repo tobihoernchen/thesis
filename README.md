@@ -9,6 +9,12 @@ Master Thesis on Reinforcement Learning with Anylogic
 
 For the Python part, just run 'pip install -r requirements.txt'. 
 
+There's a tiny bug to RLLIB 2.1.0 which we will have to fix. in ~ray/rllib/policy/sample_batch.py on line 942 we will find:
+            data = tree.map_structure(lambda value: value[start:stop], self)
+which we will have to change to :
+            data = tree.map_structure(lambda value: value[int(start):int(stop)], self)
+
+
 You can get Anylogic from their [website](https://www.anylogic.com/downloads/). Any version works, but there are limitations to some versions as stated in the [Alpyne docs](https://t-wolfeadam.github.io/Alpyne/_build/html/intro_getstarted.html).
 
 JRE is also required, CUDA might be useful.

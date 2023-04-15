@@ -21,13 +21,12 @@ import gym.spaces
 
 class Matrix(BaseAlpyneZoo):
 
-    global_client = None
-
     def __init__(
         self,
         model_path: str = None,
         startport=51150,
         fleetsize: int = 1,
+        fleetsize_upper = None,
         max_fleetsize: int = 1,
         sim_config: dict = dict(),
         max_steps: int = None,
@@ -43,15 +42,17 @@ class Matrix(BaseAlpyneZoo):
         routing_policy:str = None,
         dispatching_policy:str = None,
         direction_reward = 0,
+        client = None,
     ):
-        self.fleetsize = fleetsize
+        self.fleetsize =self.fleetsize_under =fleetsize
+        self.fleetsize_upper = fleetsize_upper
         self.max_fleetsize = max_fleetsize
         self.max_steps = max_steps
         self.max_seconds = max_seconds
         self.stepcounter = 0
         self.routing_policy = routing_policy
         self.dispatching_policy = dispatching_policy
-        self.diection_reward = direction_reward
+        self.direction_reward = direction_reward
 
         self.metadata = dict(is_parallelizable=True)
         self.statistics = None
@@ -74,7 +75,7 @@ class Matrix(BaseAlpyneZoo):
         self.ma_disp_cls = MultiAgent if not transform_dispatching_partobs else MultiDispAgent
         self.sa_disp_cls = SingleAgent if not transform_dispatching_partobs else SingleDispAgent
 
-        self.client = None
+        self.client = client
         self.started = False
         self.model_path = model_path
         self.startport = startport
@@ -148,7 +149,7 @@ class Matrix(BaseAlpyneZoo):
                                     8,
                                     all_ma=self.all_ma,
                                     die_on_target=self.death_on_target,
-                                    direction_reward=self.diection_reward,
+                                    direction_reward=self.direction_reward,
                                 ),
                             )
                             for i in range(self.fleetsize)
@@ -166,7 +167,7 @@ class Matrix(BaseAlpyneZoo):
                                         8,
                                         all_ma=self.all_ma,
                                         die_on_target=self.death_on_target,
-                                        direction_reward=self.diection_reward,
+                                        direction_reward=self.direction_reward,
                                     ),
                                 )
                             )
@@ -286,11 +287,10 @@ class Matrix(BaseAlpyneZoo):
             self.config.seed = random.randint(0, 10000)
 
     def _start(self):
-        if self.global_client is None:
+        if self.client is None:
             port = self.startport
-            self.global_client = AlpyneClient(self.model_path, port=port, verbose=False)
+            self.client = AlpyneClient(self.model_path, blocking = True, port=port, verbose=False)
 
-        self.client = self.global_client
         self.run = self.client.create_reinforcement_learning(self.config)
         self.started = True
         super()._start(self.run)
@@ -306,6 +306,8 @@ class Matrix(BaseAlpyneZoo):
             self._start()
         self.stepcounter = 0
         self.seed(seed=seed)
+        if self.fleetsize_upper is not None:
+            self.config.fleetsize = self.fleetsize = random.randint(self.fleetsize_under, self.fleetsize_upper)
         if self.routing_ma and self.routing_agent_death:
             self.routing_hwm = self.fleetsize
             self.routing_aliases = {str(i): str(i) for i in range(self.fleetsize)}
@@ -341,6 +343,7 @@ class Matrix(BaseAlpyneZoo):
                 title: value
                 for title, value in zip(alpyne_obs.statTitles, alpyne_obs.statValues)
             }
+            self.statistics["fleetsize" ] = self.fleetsize
         agent_died = ("in_system" in info.keys() and not info["in_system"]) or (
             "at_target" in info.keys() and info["at_target"]
         )
@@ -366,7 +369,7 @@ class Matrix(BaseAlpyneZoo):
                             8,
                             all_ma=self.all_ma,
                             die_on_target=self.death_on_target,
-                            direction_reward=self.diection_reward,
+                            direction_reward=self.direction_reward,
                         ),
                     )
                 )
@@ -381,7 +384,7 @@ class Matrix(BaseAlpyneZoo):
                                 8,
                                 all_ma=self.all_ma,
                                 die_on_target=self.death_on_target,
-                                direction_reward=self.diection_reward,
+                                direction_reward=self.direction_reward,
                             ),
                         )
                     )

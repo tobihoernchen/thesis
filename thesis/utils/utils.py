@@ -28,7 +28,7 @@ from thesis.envs.matrix import Matrix
 from thesis.utils.callbacks import CustomCallback
 from thesis.policies.ma_action_dist import register_ma_action_dist
 
-from .double_trainer import DoubleTrainer
+from .double_trainer import DoubleTrainer, TripleTrainer
 
 
 def seed_all(seed=42):
@@ -41,7 +41,27 @@ class Experiment:
         self.trainer = None
         self.folder = folder
 
-    def experiment(self, path, env_args, agv_model, dispatcher_model, run_name, algo, env, n_intervals, batch_size = 1000, train_agv = True, train_dispatcher = True, backup_interval = 100, seed = 42, load_agv=None, lr = 1e-3, algo_params = {}):
+    def experiment(
+            self, 
+            path, 
+            env_args, 
+            agv_model, 
+            dispatcher_model, 
+            run_name, 
+            algo, 
+            env,
+            n_intervals, 
+            batch_size = 1000, 
+            train_agv = True, 
+            train_dispatcher = True, 
+            backup_interval = 100, 
+            seed = 42, 
+            load_agv=None, 
+            lr = 1e-3, 
+            algo_params = {},
+            n_envs = 8,
+            two_fleets = False,
+        ):
         seed_all(seed)
         config, logger_creator, checkpoint_dir = get_config(
             path = path,
@@ -57,6 +77,8 @@ class Experiment:
             type = algo,
             lr = lr,
             algo_params = algo_params,
+            n_envs=n_envs,
+            two_fleets = two_fleets,
         )
         self.trainer = None
         if algo=="ppo":
@@ -67,8 +89,10 @@ class Experiment:
             self.trainer = dqn.DQN(config, logger_creator=logger_creator)
         elif algo == "apex":
             self.trainer = apex_dqn.ApexDQN(config, logger_creator=logger_creator)
-        elif algo == "double":
+        elif algo == "double" and not two_fleets:
             self.trainer = DoubleTrainer(config, logger_creator=logger_creator)
+        elif algo == "double" and  two_fleets:
+            self.trainer = TripleTrainer(config, logger_creator=logger_creator)
         if load_agv is not None:
             self.trainer.restore(load_agv)
         self.checkpoint_dir = checkpoint_dir
@@ -108,6 +132,7 @@ def config_ma_policies(
     train_dispatcher=True,
     all_ma=False,
     type = None,
+    two_fleets = False,
 ):
     config = dict()
 
@@ -122,22 +147,42 @@ def config_ma_policies(
         config=agv_model
         )
     if dispatcher_model is not None:
-        policies["dispatcher"] = PolicySpec(
-            policy_class = PPOTorchPolicy if type=="double" else None,
-            config=dispatcher_model
-            )
+        if not two_fleets:
+            policies["dispatcher"] = PolicySpec(
+                policy_class = PPOTorchPolicy if type=="double" else None,
+                config=dispatcher_model
+                )
+        else:
+            policies["dispatcher1"] = PolicySpec(
+                policy_class = PPOTorchPolicy if type=="double" else None,
+                config=dispatcher_model
+                )
+            policies["dispatcher2"] = PolicySpec(
+                policy_class = PPOTorchPolicy if type=="double" else None,
+                config=dispatcher_model
+                )
 
     policies_to_train = []
     if train_agv:
         policies_to_train.append("agv")
     if dispatcher_model is not None and train_dispatcher:
-        policies_to_train.append("dispatcher")
-
-    def pmfn(agent_id, episode, worker, **kwargs):
-        if int(agent_id) >= 1000 and int(agent_id) != 2000:
-            return "dispatcher"
+        if not two_fleets:
+            policies_to_train.append("dispatcher")
         else:
-            return "agv"
+            policies_to_train.append("dispatcher1")
+            policies_to_train.append("dispatcher2")
+    if not two_fleets:
+        def pmfn(agent_id, episode, worker, **kwargs):
+            if int(agent_id) >= 1000 and int(agent_id) != 2000:
+                return "dispatcher"
+            else:
+                return "agv"
+    else:
+        def pmfn(agent_id, episode, worker, **kwargs):
+            if int(agent_id) >= 1000 and int(agent_id) != 2000:
+                return f"dispatcher{int(agent_id) % 2 + 1}"
+            else:
+                return "agv"
 
     config["multiagent"] = {
         "policies": policies,
@@ -233,6 +278,7 @@ def get_config(
     run_name = "-",
     algo_params = {},
     lr = 1e-3,
+    two_fleets = False
 ):
     if type == "ppo":
         config = ppo.DEFAULT_CONFIG.copy()
@@ -282,6 +328,7 @@ def get_config(
             train_dispatcher=train_dispatcher,
             all_ma=all_ma,
             type = type,
+            two_fleets = two_fleets
         ),
     )
 
@@ -307,6 +354,7 @@ def get_config(
                 env=env,
                 run_class=run_class,
                 algo_params = algo_params,
+                two_fleets = two_fleets,
             ),
             outfile,
             indent=3,

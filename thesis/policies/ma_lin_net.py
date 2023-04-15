@@ -22,7 +22,8 @@ class LinFE(nn.Module):
         ff_embedd_dim = 0,
         activation=nn.ReLU,
         dont_train_main = False,
-        dont_train_agvs = False
+        dont_train_agvs = False,
+        with_main_pos_noise = False,
     ) -> None:
 
         super().__init__()
@@ -38,6 +39,7 @@ class LinFE(nn.Module):
         self.with_agvs = with_agvs
         self.dont_train_main = dont_train_main
         self.dont_train_agvs = dont_train_agvs
+        self.with_main_pos_noise = with_main_pos_noise
 
         self.main_ff = nn.Sequential(
             nn.Linear(n_features + position_embedd_dim * 7 + ff_embedd_dim * 2 * 7, 2 * embed_dim),
@@ -93,6 +95,8 @@ class LinFE(nn.Module):
         main_data = obs["agvs"][:, 0:1]
         if self.with_pos_embedding:
             main_data = self.pos_encoder(main_data, range(2, 15, 2))
+        if self.with_main_pos_noise:
+            main_data[:, :, 2:16] = 0
         if self.with_ff_embedding:
             main_data = self.ff_encoder(main_data, range(2, 15, 2))
         features_main = self.main_ff(main_data).squeeze(dim=1)
@@ -165,6 +169,7 @@ class MALinPolicy(TorchModelV2, nn.Module):
             activation=nn.ReLU,
             dont_train_main = False,
             dont_train_agvs = False,
+            with_main_pos_noise = False,
         ).items():
             setattr(
                 self,
@@ -183,6 +188,7 @@ class MALinPolicy(TorchModelV2, nn.Module):
             ff_embedd_dim = self.ff_embedd_dim,
             dont_train_main = self.dont_train_main,
             dont_train_agvs = self.dont_train_agvs,
+            with_main_pos_noise = self.with_main_pos_noise,
         )
 
         n_concats = 1 + 2* self.with_agvs +  2 * self.with_stations

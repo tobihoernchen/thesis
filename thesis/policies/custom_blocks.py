@@ -88,6 +88,7 @@ class Graph(nn.Module):
     def init_paths(self):
         return []
 
+    @torch.no_grad()
     def get_node_indices(self, nodes: torch.Tensor):
         original_shape = nodes.shape
         points = nodes.reshape(-1, 2)
@@ -177,6 +178,7 @@ class FourierFeatureEmbedder(nn.Module):
         self.b = nn.Parameter(torch.randn(size, 2) * sigma, requires_grad=False)
         self.register_parameter("b", self.b)
 
+    @torch.no_grad()
     def forward(self, x: torch.Tensor, pos_cols):
         pos_cols = torch.Tensor([[p, p + 1] for p in pos_cols]).to(dtype=torch.long)
         orig_dim = x.shape

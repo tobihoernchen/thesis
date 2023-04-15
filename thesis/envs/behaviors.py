@@ -534,9 +534,10 @@ class TrainingBehavior(ContextualAgent):
                 ]
                 hwm = hwm + 8   
             if not self.dispatching:
-                d["distance"] = agv[hwm]
-                d["invalids"] = agv[hwm+1]
-                hwm += 2   
+                d["distance_next"] = agv[hwm]
+                d["distance_last"] = agv[hwm+1]
+                d["invalids"] = agv[hwm+2]
+                hwm += 3   
             else:
                 d["perc_vb"] = agv[hwm]
                 d["perc_hc"] = agv[hwm+1]

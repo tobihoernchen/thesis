@@ -1,12 +1,13 @@
 import json
-import ray.rllib.algorithms.dqn as dqn
+import ray.rllib.algorithms.ppo as ppo
+from ..utils.double_trainer import DoubleTrainer, TripleTrainer
 from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
-setup_ray(port=51160, unidirectional=False)
+setup_ray(port=51160, unidirectional=True)
 
-model_path = "../../models/matrix_routing/primal_8_20_2023-02-11_23-21-50"#trained_for_pypeline/new_all_pseudo"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
-checkpoint = 650
+model_path = "../../models/matrix_together/01_two_fleets_16_20_2023-04-03_07-09-58"#trained_for_pypeline/new_all_pseudo"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
+checkpoint = 800
 checkpoint_path = model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}"
 path = "D:/Master/Masterarbeit/thesis"
 with open(model_path + "/config.json") as json_file:
@@ -15,7 +16,7 @@ hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 1
-trainer = dqn.DQN(config, logger_creator=logger_creator)
+trainer = TripleTrainer(config, logger_creator=logger_creator)
 trainer.restore(checkpoint_path)
 
 env = trainer.workers.local_worker().env.env

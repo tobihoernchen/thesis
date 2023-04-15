@@ -25,8 +25,15 @@ init_pypeline();
 init_network();
 
 setDefaultRandomGenerator(new Random(seed));
-for(int i = 0; i<fleetsize; i++)
-	add_agvs();
+if(RL_fixed_fleets)
+	for(int i = 0; i<fleetsize; i++)
+		if(i%2 == 0)
+			add_agvs("VB");
+		else
+			add_agvs("HC");
+else
+	for(int i = 0; i<fleetsize; i++)
+		add_agvs("");
 ]]></StartupCode>
 			<Generic>false</Generic>
 			<GenericParameter>
@@ -1073,6 +1080,30 @@ for(int i = 0; i<fleetsize; i++)
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1680428597298</Id>
+					<Name><![CDATA[RL_fixed_fleets]]></Name>
+					<X>-420</X><Y>140</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[boolean]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[true]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1680428597296</Id>
+							<EditorContolType>CHECK_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
@@ -1181,6 +1212,8 @@ else
 	fleetsize = py.runResults("get_config('fleetsize')").
 		getFeedback(Integer.class);
 	RL_dispatch = py.runResults("get_config('dispatch')").
+		getFeedback(Boolean.class);	
+	RL_fixed_fleets = py.runResults("get_config('fixed_fleets')").
 		getFeedback(Boolean.class);
 	RL_routing_ma = py.runResults("get_config('routing_ma')").
 		getFeedback(Boolean.class);
@@ -1534,6 +1567,9 @@ return str;]]></Body>
 						</GenericParameterSubstituteReference>
 					</GenericParameterSubstitute>
 					<Parameters>
+						<Parameter>
+							<Name><![CDATA[fleet]]></Name>
+						</Parameter>
 					</Parameters>
 					<ReplicationFlag>true</ReplicationFlag>
 					<Replication Class="CodeValue">
@@ -13484,6 +13520,30 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1680428658408</Id>
+					<Name><![CDATA[fleet]]></Name>
+					<X>270</X><Y>40</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[String]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[""]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1680428658406</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 			</Variables>
 			<StatechartElements>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
@@ -14802,6 +14862,7 @@ double distance = main.toLengthUnits(((PointNode)currentNode).getXYZ().distance(
 if(distance / main.agvSpeed + 5 < duration)
 {
 	main.controller.addReward(main.RL_reward_duration, this, false);
+	main.controller.addReward(main.RL_reward_duration, this, true);
 	main.controller.getStatistic("liveLock", 1.0, false);
 }]]></Body>
 				</Function>
@@ -16063,7 +16124,7 @@ agv.updateTarget(net.getNode(target));]]></Body>
 						<Name><![CDATA[agv]]></Name>
 						<Type><![CDATA[Agv]]></Type>
 					</Parameter>
-					<Body><![CDATA[ addReward(abs(n_vb-n_hc) * main.RL_reward_balance, agv, true);
+					<Body><![CDATA[ addReward(max(abs(n_vb-n_hc)-1, 0) * main.RL_reward_balance, agv, true);
  return;
 ]]></Body>
 				</Function>
@@ -18284,7 +18345,8 @@ Agv last = lastfound;
 lastfound = found;
 if(found != null)
 {
-	if(found.contents().size() == 0)
+	if((!isGeo() || found.fleet == "" || found.fleet == partFamily) 
+	&& found.contents().size() == 0)
 		return found;
 	if(last != found)
 	{	
@@ -18313,7 +18375,8 @@ lastfound = found;
 
 if(found!= null)
 {
-	if(found.contents().size() == 1)
+	if((!isGeo() || found.fleet == "" || found.fleet == partFamily) 
+	&& found.contents().size() == 1)
 	{
 		Part prt = (Part)found.contents().get(0);
 		boolean valid = false;
@@ -19093,6 +19156,9 @@ send(msg, main.controller);]]></Body>
 				<Parameter>
 					<ParameterName><![CDATA[RL_reward_balance]]></ParameterName>
 				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_fixed_fleets]]></ParameterName>
+				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
 				<EnableZoomAndPanning>true</EnableZoomAndPanning>
@@ -19221,6 +19287,10 @@ else
 				<Type><![CDATA[boolean]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[fixed_fleets]]></Name>
+				<Type><![CDATA[boolean]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[routing_ma]]></Name>
 				<Type><![CDATA[boolean]]></Type>
 			</ConfigurationField>
@@ -19345,6 +19415,7 @@ root.runmode = runmode;
 root.fleetsize = fleetsize;
 root.seed = seed;
 root.RL_dispatch = dispatch;
+root.RL_fixed_fleets = fixed_fleets;
 root.RL_routing_ma = routing_ma;
 root.RL_dispatching_ma = dispatching_ma;
 root.RL_routing_interval = routing_interval;

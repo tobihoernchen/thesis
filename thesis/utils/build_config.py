@@ -10,6 +10,7 @@ def build_config(
         fleetsize=fleetsize,
         seed=0 if seed is None else seed,  # will be overwitten with every reset
         dispatch=True if not "dispatch" in config_args else config_args["dispatch"],
+        fixed_fleets=True if not "fixed_fleets" in config_args else config_args["fixed_fleets"],
         routing_ma=True
         if not "routing_ma" in config_args
         else config_args["routing_ma"],

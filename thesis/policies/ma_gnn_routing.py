@@ -24,7 +24,7 @@ class GNNFeatureExtractor(nn.Module):
         with_stations,
         position_embedd_dim = 2,
         ff_embedd_dim = 0,
-        activation=nn.ReLU,
+        activation=nn.LeakyReLU,
         n_convolutions=4,
     ) -> None:
         super().__init__()
@@ -41,7 +41,7 @@ class GNNFeatureExtractor(nn.Module):
         if self.with_ff_embedding:
             self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
 
-        self.embedd_goal = self.get_embedder(4 + position_embedd_dim * 2 + ff_embedd_dim * 4, embed_dim, 1, activation, False)
+        self.embedd_goal = self.get_embedder(4 + position_embedd_dim * 2 + ff_embedd_dim * 4+1, embed_dim, 1, activation, False)
         self.embedd_node = self.get_embedder(16, embed_dim, len(self.basegraph.nodes), activation, False)
 
         node_convs = []
@@ -52,10 +52,13 @@ class GNNFeatureExtractor(nn.Module):
                          GATConv(embed_dim, embed_dim, 4, False),
                         "x, edge_index -> x"
                     ),
-                    GraphNorm(embed_dim),
+                    (
+                        GraphNorm(embed_dim),
+                        "x, batch -> x"
+                    )
                 ]
             )
-        self.node_convolutions = Sequential("x, edge_index", node_convs)
+        self.node_convolutions = Sequential("x, edge_index, batch", node_convs)
 
 
 
@@ -72,12 +75,10 @@ class GNNFeatureExtractor(nn.Module):
 
     def forward(self, x):
         coords = x["agvs"][:, :, 2:16].reshape(x["agvs"].shape[0], -1, 7, 2) 
-        distance_percentage = x["agvs"][:, :, 16]
-        invalid_state = x["agvs"][:, :1, 17]
+        distance_percentage = x["agvs"][:, :, 16:18]
         stat_coords = x["stat"][:, :, :2].reshape(x["stat"].shape[0], -1, 1, 2) 
-        
         obs_main:torch.Tensor = x["agvs"][:, :1]
-        goal_features = obs_main[:, :1, 4:8]
+        goal_features = torch.cat([obs_main[:, :1, 4:8], obs_main[:, :1, 18:19]], -1)
         if self.with_pos_embedding:
             goal_features = self.pos_encoder(goal_features, [0, 2])
         if self.with_ff_embedding:
@@ -90,11 +91,11 @@ class GNNFeatureExtractor(nn.Module):
         stat_indices = self.basegraph.get_node_indices(stat_coords)
 
         src_main = torch.ones_like(main_indices, dtype = obs_main.dtype, device=obs_main.device)
-        src_main[:, :, 0] = -distance_percentage[:, :1] + 1
-        src_main[:, :, 1] = distance_percentage[:, :1]
+        src_main[:, :, 0] = distance_percentage[:, :1, 0] + 0.5 #distance_last
+        src_main[:, :, 1] = distance_percentage[:, :1, 1] + 0.5 #distance_next
         src_agvs = torch.ones_like(agv_indices, dtype = obs_main.dtype, device=obs_main.device)
-        src_agvs[:, :, 0] = -distance_percentage[:, 1:] + 1
-        src_agvs[:, :, 1] = distance_percentage[:, 1:]
+        src_agvs[:, :, 0] = distance_percentage[:, 1:, 0] + 0.5 #distance_last
+        src_agvs[:, :, 1] = distance_percentage[:, 1:, 1] + 0.5 #distance_next
         src_stat = torch.ones_like(stat_indices, dtype = obs_main.dtype, device=obs_main.device)
 
         node_info_main = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 7, device=obs_main.device)
@@ -118,7 +119,7 @@ class GNNFeatureExtractor(nn.Module):
         batch:Batch = Batch.from_data_list(graphs)
 
         convoluted = self.node_convolutions(
-            batch.x, batch.edge_index
+            batch.x, batch.edge_index, batch.batch
         ) #+ batch.x
 
         convoluted_by_batch = convoluted.reshape(node_info.shape)
@@ -128,7 +129,7 @@ class GNNFeatureExtractor(nn.Module):
             1,
             in_reach_indices.unsqueeze(-1).repeat(1, 1, convoluted_by_batch.shape[-1]),
         )
-        return torch.concat([filtered_in_reach.flatten(1), goal_features, invalid_state], dim = 1)
+        return torch.concat([filtered_in_reach.flatten(1), goal_features], dim = 1)
 
 
 
@@ -162,7 +163,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             with_stations=True,
             position_embedd_dim = 2,
             ff_embedd_dim = 0,
-            activation=nn.ReLU,
+            activation=nn.LeakyReLU,
             n_convolutions=4,
             env_type="matrix",
         ).items():
@@ -189,7 +190,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
 
 
         self.action_net = nn.Sequential(
-            nn.Linear(self.embed_dim * 5 +1, self.embed_dim * 4),
+            nn.Linear(self.embed_dim * 5, self.embed_dim * 4),
             self.activation(),
             nn.Linear(self.embed_dim * 4, self.embed_dim),
             self.activation(),
@@ -200,7 +201,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
         )
 
         self.value_net = nn.Sequential(
-            nn.Linear(self.embed_dim * 5 +1, self.embed_dim * 4),
+            nn.Linear(self.embed_dim * 5, self.embed_dim * 4),
             self.activation(),
             nn.Linear(self.embed_dim * 4, self.embed_dim * 4),
             self.activation(),
@@ -212,7 +213,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
 
     def forward(self, obsdict, state, seq_lengths):
         self.obs = obsdict["obs"]
-        self.features = self.fe(self.obs)
+        self.features:torch.Tensor = self.fe(self.obs)
         actions = self.action_net(self.features)
         # if self.discrete_action_space:
         #     action_out = actions

@@ -1,11 +1,15 @@
 from ray.rllib.algorithms.callbacks import DefaultCallbacks
 from ray.rllib.env.base_env import BaseEnv
-from typing import Dict
+from typing import Dict, Optional, TYPE_CHECKING
 from ray.rllib.policy.policy import Policy
 
 from ray.rllib.evaluation.episode import Episode
 from ray.rllib.utils.typing import PolicyID
+from ray.rllib.env.env_context import EnvContext
+from ray.rllib.utils.typing import  EnvType
 
+if TYPE_CHECKING:
+    from ray.rllib.evaluation import RolloutWorker
 
 class CustomCallback(DefaultCallbacks):
     def on_episode_end(
@@ -24,4 +28,24 @@ class CustomCallback(DefaultCallbacks):
             policies=policies,
             episode=episode,
             **kwargs
+        )
+    
+
+    def on_sub_environment_created(
+        self,
+        *,
+        worker: "RolloutWorker",
+        sub_environment: EnvType,
+        env_context: EnvContext,
+        env_index: Optional[int] = None,
+        **kwargs,
+    ) -> None:
+        if not "client" in env_context.keys():
+            env_context["client"] = sub_environment.env.client
+        return super().on_sub_environment_created(
+            worker=worker,
+            sub_environment = sub_environment,
+            env_context = env_context,
+            env_index = env_index,
+            **kwargs,
         )
