@@ -632,10 +632,10 @@ class MultiAgent(TrainingBehavior):
         self.die_on_target = die_on_target
         self.direction_reward = direction_reward
         if self.direction_reward != 0:
-            self.lane_coords_x_1 = [0.23076923076923078,0.893491124260355,0.9526627218934911, 0.4772727272727273]
-            self.lane_coords_x_2 = [0.20118343195266272,0.8461538461538461,0.9230769230769231, 0.42045454545454547]
-            self.lane_coords_y_1 = [0.5045871559633027, 0.76]
-            self.lane_coords_y_2 = [0.5504587155963303, 0.86]
+            self.lane_coords_x_1 = [0.23076923076923078,0.893491124260355,0.9526627218934911, 0.4772727272727273, 0.1732283464566929, 0.9763779527559056]
+            self.lane_coords_x_2 = [0.20118343195266272,0.8461538461538461,0.9230769230769231, 0.42045454545454547, 0.2125984251968504, 0.937007874015748]
+            self.lane_coords_y_1 = [0.5045871559633027, 0.76, 0.4819277108433735]
+            self.lane_coords_y_2 = [0.5504587155963303, 0.86, 0.5542168674698795]
 
     def convert_from_observation(self, alpyne_obs):
         self.shufflerules[alpyne_obs.caller] = srule = random.sample(

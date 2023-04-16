@@ -4,7 +4,7 @@
 	         AnyLogic Project File 
 *************************************************	         
 -->
-<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="8.7.12.202205250418" AlpVersion="8.7.5">
+<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="8.8.2.202303221144" AlpVersion="8.7.7">
 <Model>
 	<Id>1655914285249</Id>
 	<Name><![CDATA[Matrix]]></Name>
@@ -16,7 +16,6 @@
 		<ActiveObjectClass>
 			<Id>1655914285255</Id>
 			<Name><![CDATA[Main]]></Name>
-			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.BooleanArraySerializer;
 import com.anylogic.cloud.util.RandomUtils;
 import org.eclipse.jetty.util.Scanner.ScanCycleListener;]]></Import>
@@ -53,7 +52,6 @@ else
 			<SceneBackgroundColor/>
 			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
-	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
@@ -276,7 +274,7 @@ else
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[10]]></Code>
+							<Code><![CDATA[8]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656344279462</Id>
@@ -2077,93 +2075,6 @@ return str;]]></Body>
 					</Replication>
 					<CollectionType>ARRAY_LIST_BASED</CollectionType>
 					<InEnvironment>true</InEnvironment>	
-					<InitialLocationType>AT_ANIMATION_POSITION</InitialLocationType>
-					<XCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</XCode>
-					<YCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</YCode>
-					<ZCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</ZCode>
-					<ColumnCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</ColumnCode>
-					<RowCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</RowCode>
-					<LatitudeCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</LatitudeCode>
-					<LongitudeCode Class="CodeValue">
-						<Code><![CDATA[0]]></Code>
-					</LongitudeCode>
-					<LocationNameCode Class="CodeValue">
-						<Code><![CDATA[""]]></Code>
-					</LocationNameCode>
-					<InitializationType>SPECIFIED_NUMBER</InitializationType>
-					<InitializationDatabaseTableQuery>
-						<TableReference>
-						</TableReference>
-					</InitializationDatabaseTableQuery>
-					<InitializationDatabaseType>ONE_AGENT_PER_DATABASE_RECORD</InitializationDatabaseType>
-					<QuantityColumn>
-					</QuantityColumn>
-				</EmbeddedObject>
-				<EmbeddedObject>
-					<Id>1656943069102</Id>
-					<Name><![CDATA[py]]></Name>
-					<X>-120</X><Y>470</Y>
-					<Label><X>40</X><Y>20</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<ActiveObjectClass>
-						<PackageName><![CDATA[com.anylogic.libraries.pypeline]]></PackageName>
-						<ClassName><![CDATA[PyCommunicator]]></ClassName>
-					</ActiveObjectClass>
-					<GenericParameterSubstitute>
-						<GenericParameterSubstituteReference>
-							<PackageName><![CDATA[com.anylogic.libraries.pypeline]]></PackageName>
-							<ClassName><![CDATA[PyCommunicator]]></ClassName>
-							<ItemName><![CDATA[1569858524853]]></ItemName>
-						</GenericParameterSubstituteReference>
-					</GenericParameterSubstitute>
-					<Parameters>
-						<Parameter>
-							<Name><![CDATA[enable]]></Name>
-						</Parameter>
-						<Parameter>
-							<Name><![CDATA[loadLastWorkingConfig]]></Name>
-						</Parameter>
-						<Parameter>
-							<Name><![CDATA[pythonCommandType]]></Name>
-							<Value Class="CodeValue">
-								<Code><![CDATA[self.PYTHON_PATH]]></Code>
-							</Value>
-						</Parameter>
-						<Parameter>
-							<Name><![CDATA[pythonCommand]]></Name>
-						</Parameter>
-						<Parameter>
-							<Name><![CDATA[pythonExecPath]]></Name>
-							<Value Class="CodeValue">
-								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis3_9\\python.exe"]]></Code>
-							</Value>
-						</Parameter>
-						<Parameter>
-							<Name><![CDATA[throwErrorOnFailedAttempt]]></Name>
-						</Parameter>
-						<Parameter>
-							<Name><![CDATA[redirectPyOutput]]></Name>
-						</Parameter>
-					</Parameters>
-					<ReplicationFlag>false</ReplicationFlag>
-					<Replication Class="CodeValue">
-						<Code><![CDATA[100]]></Code>
-					</Replication>
-					<CollectionType>ARRAY_LIST_BASED</CollectionType>
 					<InitialLocationType>AT_ANIMATION_POSITION</InitialLocationType>
 					<XCode Class="CodeValue">
 						<Code><![CDATA[0]]></Code>
@@ -4237,6 +4148,93 @@ return str;]]></Body>
 					<QuantityColumn>
 					</QuantityColumn>
 				</EmbeddedObject>
+				<EmbeddedObject>
+					<Id>1681662311911</Id>
+					<Name><![CDATA[py]]></Name>
+					<X>-120</X><Y>480</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<ActiveObjectClass>
+						<PackageName><![CDATA[com.anylogic.libraries.pypeline]]></PackageName>
+						<ClassName><![CDATA[PyCommunicator]]></ClassName>
+					</ActiveObjectClass>
+					<GenericParameterSubstitute>
+						<GenericParameterSubstituteReference>
+							<PackageName><![CDATA[com.anylogic.libraries.pypeline]]></PackageName>
+							<ClassName><![CDATA[PyCommunicator]]></ClassName>
+							<ItemName><![CDATA[1569858524853]]></ItemName>
+						</GenericParameterSubstituteReference>
+					</GenericParameterSubstitute>
+					<Parameters>
+						<Parameter>
+							<Name><![CDATA[enable]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[loadLastWorkingConfig]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[pythonCommandType]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[self.PYTHON_PATH]]></Code>
+							</Value>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[pythonCommand]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[pythonExecPath]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis3_9\\python.exe"]]></Code>
+							</Value>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[throwErrorOnFailedAttempt]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[redirectPyOutput]]></Name>
+						</Parameter>
+					</Parameters>
+					<ReplicationFlag>false</ReplicationFlag>
+					<Replication Class="CodeValue">
+						<Code><![CDATA[100]]></Code>
+					</Replication>
+					<CollectionType>ARRAY_LIST_BASED</CollectionType>
+					<InitialLocationType>AT_ANIMATION_POSITION</InitialLocationType>
+					<XCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</XCode>
+					<YCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</YCode>
+					<ZCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</ZCode>
+					<ColumnCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</ColumnCode>
+					<RowCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</RowCode>
+					<LatitudeCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</LatitudeCode>
+					<LongitudeCode Class="CodeValue">
+						<Code><![CDATA[0]]></Code>
+					</LongitudeCode>
+					<LocationNameCode Class="CodeValue">
+						<Code><![CDATA[""]]></Code>
+					</LocationNameCode>
+					<InitializationType>SPECIFIED_NUMBER</InitializationType>
+					<InitializationDatabaseTableQuery>
+						<TableReference>
+						</TableReference>
+					</InitializationDatabaseTableQuery>
+					<InitializationDatabaseType>ONE_AGENT_PER_DATABASE_RECORD</InitializationDatabaseType>
+					<QuantityColumn>
+					</QuantityColumn>
+				</EmbeddedObject>
 			</EmbeddedObjects>
 
 			<Presentation>
@@ -4264,7 +4262,7 @@ return str;]]></Body>
 					<Lock>true</Lock>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
 					<EmbeddedIcon>false</EmbeddedIcon>
-					<Z>0</Z>
+					<Z>-1</Z>
 					<Width>729</Width>
 					<Height>427</Height>
 					<Rotation>0.0</Rotation>
@@ -4386,9 +4384,9 @@ return str;]]></Body>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>27</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>2</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>2</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -4498,9 +4496,9 @@ return str;]]></Body>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>27</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>2</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>2</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -4632,9 +4630,9 @@ return str;]]></Body>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>3</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-22</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-22</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -4744,9 +4742,9 @@ return str;]]></Body>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>3</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-22</Y><Z>0</Z></Point>
-						<Point><X>-5</X><Y>-92</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>-90</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -12425,7 +12423,7 @@ return str;]]></Body>
 				</Path>
 			</Presentation>
 
-					<Z>0.01</Z>
+					<Z>0</Z>
 				</Network>
 				<Control Type="Window3D">
 					<Id>1656176263765</Id>
@@ -12949,10 +12947,8 @@ return str;]]></Body>
 		<ActiveObjectClass>
 			<Id>1655915115251</Id>
 			<Name><![CDATA[Agv]]></Name>
-			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
-			<Import><![CDATA[import org.graalvm.compiler.replacements.nodes.arithmetic.IntegerAddExactNode;]]></Import>
 			<StartupCode><![CDATA[color = randomColor();
-roller_deck_agv.setColor("face", color);
+rectangle1.setFillColor(color);
 placeOnRandomNode(null);
 register();
 DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
@@ -12974,7 +12970,6 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 			<SceneBackgroundColor/>
 			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
-	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
@@ -13041,7 +13036,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Length>100</Length>
 				<Rotation>0</Rotation>
 				<ScaleType>BASED_ON_LENGTH</ScaleType>
-				<ModelLength>1</ModelLength>
+				<ModelLength>2</ModelLength>
 				<LengthUnits>METER</LengthUnits>
 				<Scale>10</Scale>
 				<InheritedFromParentAgentType>true</InheritedFromParentAgentType>
@@ -13097,7 +13092,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1657313007583</Id>
 					<Name><![CDATA[targetNode]]></Name>
-					<X>190</X><Y>280</Y>
+					<X>190</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13142,7 +13137,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1662720171667</Id>
 					<Name><![CDATA[requestPending]]></Name>
-					<X>190</X><Y>260</Y>
+					<X>190</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13241,6 +13236,37 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1681647426322</Id>
+					<Name><![CDATA[decisionOffset]]></Name>
+					<X>150</X><Y>70</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[0.4
+]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1681663444495</Id>
+					<Name><![CDATA[movingToNode]]></Name>
+					<X>190</X><Y>250</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[boolean]]></Type>        
+						<InitialValue Class="CodeValue">
+							<Code><![CDATA[false]]></Code>
+						</InitialValue>
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1680429401020</Id>
 					<Name><![CDATA[fleet]]></Name>
@@ -13275,7 +13301,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties Width="450" Height="270">
+					<Properties Width="450" Height="390">
 						<EntryAction><![CDATA[//runRLDispatching.restart();]]></EntryAction>
 						<ExitAction><![CDATA[//runRLDispatching.reset();]]></ExitAction>
 						<FillColor/>
@@ -13321,7 +13347,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068104988</Id>
 					<Name><![CDATA[getUnblocked]]></Name>
-					<X>570</X><Y>330</Y>
+					<X>570</X><Y>350</Y>
 					<Label><X>-66</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13332,7 +13358,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068092401</Id>
 					<Name><![CDATA[getBlocked]]></Name>
-					<X>570</X><Y>300</Y>
+					<X>570</X><Y>320</Y>
 					<Label><X>5</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13343,12 +13369,12 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655918031397</Id>
 					<Name><![CDATA[driving]]></Name>
-					<X>410</X><Y>300</Y>
+					<X>390</X><Y>280</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties Width="100" Height="30">
+					<Properties Width="120" Height="190">
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
@@ -13370,12 +13396,43 @@ requestPending = false;]]></EntryAction>
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056734573</Id>
 					<Name><![CDATA[blocked]]></Name>
-					<X>620</X><Y>300</Y>
+					<X>620</X><Y>320</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
+						<FillColor/>
+					</Properties>
+				</StatechartElement>
+				<StatechartElement Class="State" ParentState="driving" ParentStateId="1655918031397">
+					<Id>1681662729011</Id>
+					<Name><![CDATA[toNode]]></Name>
+					<X>400</X><Y>330</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties Width="100" Height="30">
+						<EntryAction><![CDATA[moveTo(lastNode);
+if(contents().size() == 1)
+	contents().get(0).moveTo(lastNode);]]></EntryAction>
+						<FillColor/>
+					</Properties>
+				</StatechartElement>
+				<StatechartElement Class="State" ParentState="driving" ParentStateId="1655918031397">
+					<Id>1681662741703</Id>
+					<Name><![CDATA[toPosition]]></Name>
+					<X>400</X><Y>420</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties Width="100" Height="30">
+						<EntryAction><![CDATA[movingToNode = false;
+moveTo(nextPathEndPoint());
+if(contents().size() == 1)
+	contents().get(0).moveTo(nextPathEndPoint());]]></EntryAction>
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
@@ -13397,23 +13454,22 @@ requestPending = false;]]></EntryAction>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919215869</Id>
 					<Name><![CDATA[newNextNode]]></Name>
-					<X>440</X><Y>250</Y>
+					<X>450</X><Y>250</Y>
 					<Label><X>5</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>50</Y></Point>
+						<Point><X>0</X><Y>30</Y></Point>
 					</Points>
-					<IconOffset>20.0</IconOffset>
+					<IconOffset>10.0</IconOffset>
 					<Properties Source="1655919201546" Target="1655918031397" Trigger="condition">
-						<Action><![CDATA[lastNode = currentNode;
+						<Action><![CDATA[stop();
+lastNode = currentNode;
 moving = true;
 driveStartTime = time();
-moveTo(nextPathEndPoint());
-if(contents().size() == 1)
-	contents().get(0).moveTo(nextPathEndPoint());
+movingToNode = true;
 	
 if(targetNode == nextNode)
 	sendArrival(true);
@@ -13443,20 +13499,20 @@ if(targetNode == lastNode)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919360333</Id>
 					<Name><![CDATA[atTarget]]></Name>
-					<X>440</X><Y>330</Y>
-					<Label><X>-48</X><Y>40</Y></Label>
+					<X>450</X><Y>450</Y>
+					<Label><X>-60</X><Y>90</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>0</X><Y>30</Y></Point>
-						<Point><X>-60</X><Y>30</Y></Point>
-						<Point><X>-60</X><Y>-110</Y></Point>
-						<Point><X>-30</X><Y>-110</Y></Point>
+						<Point><X>-70</X><Y>30</Y></Point>
+						<Point><X>-70</X><Y>-230</Y></Point>
+						<Point><X>-40</X><Y>-230</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1655918031397" Target="1655919201546" Trigger="arrival">
+					<Properties Source="1681662741703" Target="1655919201546" Trigger="arrival">
 						<Action><![CDATA[sendDurationReward();
 
 currentNode = nextNode;
@@ -13483,7 +13539,7 @@ if(((PointNode)nextNode).getRadius() == 10)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056770050</Id>
 					<Name><![CDATA[transition3]]></Name>
-					<X>582</X><Y>300</Y>
+					<X>582</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13521,7 +13577,7 @@ blockTime = time();]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056843027</Id>
 					<Name><![CDATA[transition4]]></Name>
-					<X>558</X><Y>330</Y>
+					<X>558</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13535,11 +13591,6 @@ blockTime = time();]]></Action>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[main.controller.agvHandleBlock(this, null);
-moveTo(nextPathEndPoint());
-
-if(contents().size() == 1)
-	contents().get(0).moveTo(nextPathEndPoint());
-	
 main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-blockTime, false);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -13640,7 +13691,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068115446</Id>
 					<Name><![CDATA[transition7]]></Name>
-					<X>510</X><Y>310</Y>
+					<X>510</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13672,7 +13723,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068144722</Id>
 					<Name><![CDATA[transition8]]></Name>
-					<X>570</X><Y>290</Y>
+					<X>570</X><Y>310</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13680,8 +13731,8 @@ if(contents().size() == 1)
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>0</X><Y>-10</Y></Point>
-						<Point><X>-70</X><Y>-10</Y></Point>
-						<Point><X>-70</X><Y>10</Y></Point>
+						<Point><X>-40</X><Y>-10</Y></Point>
+						<Point><X>-60</X><Y>-10</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068092401" Target="1655918031397" Trigger="timeout">
@@ -13704,7 +13755,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068184137</Id>
 					<Name><![CDATA[transition9]]></Name>
-					<X>570</X><Y>340</Y>
+					<X>570</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13738,7 +13789,7 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068215134</Id>
 					<Name><![CDATA[transition10]]></Name>
-					<X>620</X><Y>320</Y>
+					<X>620</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13967,6 +14018,81 @@ if((int)msg[1] > 0)
 						<DefaultTransition>true</DefaultTransition>
 						<FilterType><![CDATA[equalsTo]]></FilterType>
 						<EqualsExpression><![CDATA["unfixed"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="driving" ParentStateId="1655918031397">
+					<Id>1681662820575</Id>
+					<Name><![CDATA[transition2]]></Name>
+					<X>460</X><Y>360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>60</Y></Point>
+					</Points>
+					<IconOffset>10.0</IconOffset>
+					<Properties Source="1681662729011" Target="1681662741703" Trigger="arrival">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="InitialStatePointer" ParentState="driving" ParentStateId="1655918031397">
+					<Id>1681663088359</Id>
+					<Name><![CDATA[initialState1]]></Name>
+					<X>470</X><Y>300</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>30</Y></Point>
+					</Points>
+					<Properties Target="1681662729011">
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="driving" ParentStateId="1655918031397">
+					<Id>1681663584137</Id>
+					<Name><![CDATA[transition6]]></Name>
+					<X>480</X><Y>360</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>60</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1681662729011" Target="1681662741703" Trigger="condition">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[!movingToNode]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
@@ -14277,6 +14403,7 @@ if(main.RL_obs_include_distance && !dispatching)
 	dist_last = main.toLengthUnits(dist_last, main.unit);
 	double dist_next = ((PointNode)nextNode).getXYZ().distance(getXYZ());
 	dist_next = main.toLengthUnits(dist_next, main.unit);
+	traceln(dist_next);
 	obs[obs_hwm] = (distNorm - min(dist_last, distNorm))/distNorm;
 	obs[obs_hwm+1] = (distNorm - min(dist_next, distNorm))/distNorm;
 	obs[obs_hwm+2] = inval;
@@ -14379,7 +14506,7 @@ return atan2fast(dy, dx);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659360910396</Id>
 					<Name><![CDATA[updateTarget]]></Name>
-					<X>190</X><Y>300</Y>
+					<X>190</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14567,13 +14694,16 @@ if(currentNode != targetNode)
 					<Body><![CDATA[int i = 0;
 if(((PointNode)nextNode).getRadius() == 5)
 	return ((PointNode)nextNode).getXYZ();
-for(i = 0; i<currentNode.getConnectionsCount(); i++)
-	if(currentNode.getConnection(i).getOtherNode(currentNode) == nextNode)
+for(i = 0; i<lastNode.getConnectionsCount(); i++)
+	if(lastNode.getConnection(i).getOtherNode(lastNode) == nextNode)
 		break;
-IPath path = currentNode.getConnection(i);
-Point toMove = path.getStartPoint();
+Path path = (Path)lastNode.getConnection(i);
+
+Point toMove = path.getPointAtOffset(decisionOffset, main.unit, null);
 if(currentNode == path.getSource())
-	toMove = path.getEndPoint();
+{
+	toMove = path.getPointAtOffset(path.length(main.unit)-decisionOffset,main.unit, null);
+}
 return toMove;]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -14672,7 +14802,7 @@ return main.RL_reward_accepted_in_station * reward_factor;
 				<Rectangle>
 					<Id>1657313175079</Id>
 					<Name><![CDATA[rectangle]]></Name>
-					<X>0</X><Y>-100</Y>
+					<X>0</X><Y>-50</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14686,55 +14816,12 @@ return main.RL_reward_accepted_in_station * reward_factor;
 					<LineColor/>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>DASHED</LineStyle>
-					<Width>200</Width>
-					<Height>200</Height>
+					<Width>80</Width>
+					<Height>100</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>1006632704</FillColor>
 					<FillMaterial>null</FillMaterial>
 				</Rectangle>
-				<Figure3D>
-					<Id>1655915115315</Id>
-					<Name><![CDATA[roller_deck_agv]]></Name>
-					<X>0</X><Y>0</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>0</X><Y>0</Y><Z>0</Z>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<ResourceReference>
-						<PackageName><![CDATA[matrix]]></PackageName>
-						<ClassName><![CDATA[3d/roller_deck_agv.dae]]></ClassName>
-					</ResourceReference>
-					<ColorTable>
-						<ColorMapping>
-							<Name><![CDATA[wheels]]></Name>
-							<OriginalColor>-13816531</OriginalColor>
-						</ColorMapping>
-						<ColorMapping>
-							<Name><![CDATA[face]]></Name>
-							<OriginalColor>-1909283</OriginalColor>
-							<Color>-29696</Color>
-						</ColorMapping>
-						<ColorMapping>
-							<Name><![CDATA[display]]></Name>
-							<OriginalColor>-3473416</OriginalColor>
-						</ColorMapping>
-						<ColorMapping>
-							<Name><![CDATA[buttons]]></Name>
-							<OriginalColor>-57600</OriginalColor>
-						</ColorMapping>
-					</ColorTable>
-					<AutoScale>true</AutoScale>
-					<Scale>1.5</Scale>
-					<Rotation>0.0</Rotation>
-					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
-					<ApplyShading>true</ApplyShading>
-					<InternalLighting>OFF</InternalLighting>
-					<IgnoreSceneLights>false</IgnoreSceneLights>
-					<VisibleCode><![CDATA[inState(inSystem);]]></VisibleCode>
-				</Figure3D>
 				<Text>
 					<Id>1657313298481</Id>
 					<Name><![CDATA[text]]></Name>
@@ -14756,6 +14843,28 @@ return main.RL_reward_accepted_in_station * reward_factor;
 					</Font>
 					<Alignment>LEFT</Alignment>
 				</Text>
+				<Rectangle>
+					<Id>1681646551605</Id>
+					<Name><![CDATA[rectangle1]]></Name>
+					<X>-35</X><Y>-25</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>40</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor>-16777216</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>70</Width>
+					<Height>50</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-1</FillColor>
+					<FillMaterial>null</FillMaterial>
+				</Rectangle>
 			</Presentation>
 
 				</Level>
@@ -14766,7 +14875,6 @@ return main.RL_reward_accepted_in_station * reward_factor;
 		<ActiveObjectClass>
 			<Id>1656063853590</Id>
 			<Name><![CDATA[Controller]]></Name>
-			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<Import><![CDATA[import com.google.common.collect.ArrayListMultimap;]]></Import>
 			<StartupCode><![CDATA[getStatistic("block", 0.0, false);
 getStatistic("targetReached", 0.0, false);
@@ -14789,7 +14897,6 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 			<SceneBackgroundColor/>
 			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
-	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
@@ -15990,7 +16097,6 @@ sr - Station Register ("sr", Station, len(obs))]]></Text>
 		<ActiveObjectClass>
 			<Id>1656163936501</Id>
 			<Name><![CDATA[Part]]></Name>
-			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<StartupCode><![CDATA[initRespot();
 fillVarCode();
 if(partVariant == "V1")
@@ -16015,7 +16121,6 @@ startTime=time();]]></StartupCode>
 			<SceneBackgroundColor/>
 			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
-	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
@@ -16969,7 +17074,6 @@ if(partFamily == "HC")
 		<ActiveObjectClass>
 			<Id>1656177199656</Id>
 			<Name><![CDATA[Station]]></Name>
-			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<StartupCode><![CDATA[register();
 
 main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
@@ -16991,7 +17095,6 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 			<SceneBackgroundColor/>
 			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
-	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
 				<RotateAnimationTowardsMovement>true</RotateAnimationTowardsMovement>
 				<RotateAnimationVertically>false</RotateAnimationVertically>
@@ -17058,7 +17161,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<Length>100</Length>
 				<Rotation>0</Rotation>
 				<ScaleType>BASED_ON_LENGTH</ScaleType>
-				<ModelLength>10</ModelLength>
+				<ModelLength>20</ModelLength>
 				<LengthUnits>METER</LengthUnits>
 				<Scale>10</Scale>
 				<InheritedFromParentAgentType>true</InheritedFromParentAgentType>
@@ -18348,48 +18451,15 @@ send(msg, main.controller);]]></Body>
 
 			<Presentation>
 				<Figure3D>
-					<Id>1656177199679</Id>
-					<Name><![CDATA[table_2]]></Name>
-					<X>0</X><Y>0</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>0</X><Y>0</Y><Z>0</Z>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<ResourceReference>
-						<PackageName><![CDATA[matrix]]></PackageName>
-						<ClassName><![CDATA[3d/table_2.dae]]></ClassName>
-					</ResourceReference>
-					<ColorTable>
-						<ColorMapping>
-							<Name><![CDATA[material0]]></Name>
-							<OriginalColor>-10526881</OriginalColor>
-						</ColorMapping>
-						<ColorMapping>
-							<Name><![CDATA[material1]]></Name>
-							<OriginalColor>-3619384</OriginalColor>
-						</ColorMapping>
-					</ColorTable>
-					<AutoScale>true</AutoScale>
-					<Scale>0.7</Scale>
-					<Rotation>0.0</Rotation>
-					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
-					<ApplyShading>true</ApplyShading>
-					<InternalLighting>OFF</InternalLighting>
-					<IgnoreSceneLights>false</IgnoreSceneLights>
-				</Figure3D>
-				<Figure3D>
 					<Id>1656178783216</Id>
 					<Name><![CDATA[robot_1]]></Name>
-					<X>10</X><Y>-12</Y>
+					<X>7</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>10</X><Y>-12</Y><Z>0</Z>
+					<X>7</X><Y>-10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18406,7 +18476,7 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>90.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
@@ -18416,13 +18486,13 @@ send(msg, main.controller);]]></Body>
 				<Figure3D>
 					<Id>1656178802359</Id>
 					<Name><![CDATA[robot_2]]></Name>
-					<X>-7</X><Y>-12</Y>
+					<X>-6</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>-7</X><Y>-12</Y><Z>0</Z>
+					<X>-6</X><Y>-10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18439,7 +18509,7 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>90.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
@@ -18449,13 +18519,13 @@ send(msg, main.controller);]]></Body>
 				<Figure3D>
 					<Id>1656178805815</Id>
 					<Name><![CDATA[robot_3]]></Name>
-					<X>-8</X><Y>11</Y>
+					<X>-7</X><Y>10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>-8</X><Y>11</Y><Z>0</Z>
+					<X>-7</X><Y>10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18472,7 +18542,7 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>270.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
@@ -18482,13 +18552,13 @@ send(msg, main.controller);]]></Body>
 				<Figure3D>
 					<Id>1656178812263</Id>
 					<Name><![CDATA[robot_4]]></Name>
-					<X>9</X><Y>11</Y>
+					<X>6</X><Y>10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>9</X><Y>11</Y><Z>0</Z>
+					<X>6</X><Y>10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18505,7 +18575,7 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>270.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
@@ -18515,7 +18585,7 @@ send(msg, main.controller);]]></Body>
 				<Wall>
 					<Id>1656178850311</Id>
 					<Name><![CDATA[wall]]></Name>
-					<X>-17</X><Y>-18</Y>
+					<X>-15</X><Y>-15</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -18530,20 +18600,20 @@ send(msg, main.controller);]]></Body>
 					<Closed>false</Closed>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>11</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>11</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>25</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>13</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 				</Wall>
 				<Text>
@@ -18685,6 +18755,28 @@ send(msg, main.controller);]]></Body>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
 					<VisibleCode><![CDATA[inState(downtime)]]></VisibleCode>
 				</Figure3D>
+				<Rectangle>
+					<Id>1681574624568</Id>
+					<Name><![CDATA[rectangle]]></Name>
+					<X>-5</X><Y>-5</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>3</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor/>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>10</Width>
+					<Height>10</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-4144960</FillColor>
+					<FillMaterial>null</FillMaterial>
+				</Rectangle>
 			</Presentation>
 
 				</Level>
@@ -18742,7 +18834,6 @@ send(msg, main.controller);]]></Body>
 		<SimulationExperiment ActiveObjectClassId="1655914285255">
 			<Id>1655914285270</Id>
 			<Name><![CDATA[Simulation]]></Name>
-			<ClientAreaTopLeft><X>0</X><Y>0</Y></ClientAreaTopLeft>
 			<CommandLineArguments><![CDATA[]]></CommandLineArguments>
 			<MaximumMemory>512</MaximumMemory>
 			<RandomNumberGenerationType>fixedSeed</RandomNumberGenerationType>
@@ -19183,19 +19274,11 @@ root.station_io_quote = station_io_quote;
 	</Experiments>
 	<ModelResources>
 		<Resource>
-			<Path><![CDATA[3d/roller_deck_agv.dae]]></Path>
-			<ReferencedFromUserCode>false</ReferencedFromUserCode>
-		</Resource>
-		<Resource>
 			<Path><![CDATA[3d/computer_on.dae]]></Path>
 			<ReferencedFromUserCode>false</ReferencedFromUserCode>
 		</Resource>
 		<Resource>
 			<Path><![CDATA[3d/washer.dae]]></Path>
-			<ReferencedFromUserCode>false</ReferencedFromUserCode>
-		</Resource>
-		<Resource>
-			<Path><![CDATA[3d/table_2.dae]]></Path>
 			<ReferencedFromUserCode>false</ReferencedFromUserCode>
 		</Resource>
 		<Resource>
@@ -19231,7 +19314,7 @@ root.station_io_quote = station_io_quote;
 		<LibraryName><![CDATA[com.anylogic.libraries.pypeline]]></LibraryName>
 		<VersionMajor>1</VersionMajor>
 		<VersionMinor>7</VersionMinor>
-		<VersionBuild>0</VersionBuild>
+		<VersionBuild>1</VersionBuild>
     </RequiredLibraryReference>
 </Model>
 </AnyLogicWorkspace>
