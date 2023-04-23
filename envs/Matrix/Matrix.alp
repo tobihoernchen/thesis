@@ -161,7 +161,7 @@ else
 				<Variable Class="PlainVariable">
 					<Id>1657465070128</Id>
 					<Name><![CDATA[nodeCount]]></Name>
-					<X>-260</X><Y>550</Y>
+					<X>-260</X><Y>570</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -173,7 +173,7 @@ else
 				<Variable Class="PlainVariable">
 					<Id>1657471379249</Id>
 					<Name><![CDATA[maxX]]></Name>
-					<X>-420</X><Y>570</Y>
+					<X>-420</X><Y>590</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -185,7 +185,7 @@ else
 				<Variable Class="PlainVariable">
 					<Id>1657471381238</Id>
 					<Name><![CDATA[maxY]]></Name>
-					<X>-260</X><Y>570</Y>
+					<X>-260</X><Y>590</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -197,7 +197,7 @@ else
 				<Variable Class="PlainVariable">
 					<Id>1659625806429</Id>
 					<Name><![CDATA[firstRLcall]]></Name>
-					<X>-260</X><Y>610</Y>
+					<X>-260</X><Y>630</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -212,7 +212,7 @@ else
 				<Variable Class="PlainVariable">
 					<Id>1667145895341</Id>
 					<Name><![CDATA[RL_pypeline_path]]></Name>
-					<X>-420</X><Y>490</Y>
+					<X>-420</X><Y>510</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -227,7 +227,7 @@ else
 				<Variable Class="PlainVariable">
 					<Id>1667145898322</Id>
 					<Name><![CDATA[RL_pypeline_name]]></Name>
-					<X>-420</X><Y>510</Y>
+					<X>-420</X><Y>530</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1104,6 +1104,30 @@ else
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1681807279665</Id>
+					<Name><![CDATA[RL_reward_pass]]></Name>
+					<X>-420</X><Y>480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[0]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1681807279663</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 				<Variable Class="CollectionVariable">
 					<Id>1657313515685</Id>
 					<Name><![CDATA[vbVariants]]></Name>
@@ -1185,7 +1209,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656346938043</Id>
 					<Name><![CDATA[take_action_debug]]></Name>
-					<X>-420</X><Y>530</Y>
+					<X>-420</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1230,7 +1254,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656943173118</Id>
 					<Name><![CDATA[init_pypeline]]></Name>
-					<X>-260</X><Y>490</Y>
+					<X>-260</X><Y>510</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1288,7 +1312,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656953880415</Id>
 					<Name><![CDATA[take_action_pypeline]]></Name>
-					<X>-260</X><Y>510</Y>
+					<X>-260</X><Y>530</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1389,7 +1413,7 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657458590124</Id>
 					<Name><![CDATA[node2obs]]></Name>
-					<X>-420</X><Y>590</Y>
+					<X>-420</X><Y>610</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1445,13 +1469,14 @@ else
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1657471403592</Id>
 					<Name><![CDATA[init_network]]></Name>
-					<X>-420</X><Y>550</Y>
+					<X>-420</X><Y>570</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[INetwork net = getNetworks()[0];
 nodeCount = net.getNodeCount();
+
 for(int i=0; i<nodeCount; i++)
 {
 	INode node = net.getNode(i);
@@ -1470,7 +1495,7 @@ for(int i=0; i<nodeCount; i++)
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1659625665194</Id>
 					<Name><![CDATA[getNetworkContext]]></Name>
-					<X>-420</X><Y>610</Y>
+					<X>-420</X><Y>630</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1515,7 +1540,7 @@ return context;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659716736727</Id>
 					<Name><![CDATA[toStr2]]></Name>
-					<X>-200</X><Y>530</Y>
+					<X>-200</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1537,7 +1562,7 @@ return str;]]></Body>
 					<ReturnType><![CDATA[String]]></ReturnType>
 					<Id>1659959662180</Id>
 					<Name><![CDATA[toStr1]]></Name>
-					<X>-260</X><Y>530</Y>
+					<X>-260</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -1816,6 +1841,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -1930,7 +1958,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA[30]]></Code>
+								<Code><![CDATA[70]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>
@@ -2114,7 +2142,7 @@ return str;]]></Body>
 				<EmbeddedObject>
 					<Id>1656943069102</Id>
 					<Name><![CDATA[py]]></Name>
-					<X>-120</X><Y>470</Y>
+					<X>-120</X><Y>490</Y>
 					<Label><X>40</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -2233,6 +2261,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -2340,6 +2371,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -2447,6 +2481,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -3624,6 +3661,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -3734,6 +3774,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -3841,6 +3884,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -3948,6 +3994,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -4055,6 +4104,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -4162,6 +4214,9 @@ return str;]]></Body>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[geoDuration]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA[70]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[isFirst]]></Name>
@@ -5059,10 +5114,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667839969484" TargetId="1667839969488">
+				<Path SourceId="1667839969488" TargetId="1667839969484">
 					<Id>1667839969486</Id>
 					<Name><![CDATA[path58]]></Name>
-					<X>170</X><Y>200</Y>
+					<X>195</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5080,9 +5135,9 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
@@ -5263,10 +5318,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667839969496" TargetId="1667839969502">
+				<Path SourceId="1667839969502" TargetId="1667839969496">
 					<Id>1667839969500</Id>
 					<Name><![CDATA[path62]]></Name>
-					<X>160</X><Y>240</Y>
+					<X>175</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5284,14 +5339,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-10</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-35</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -5529,10 +5584,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840161097" TargetId="1667840161093">
+				<Path SourceId="1667840161093" TargetId="1667840161097">
 					<Id>1667840161095</Id>
 					<Name><![CDATA[path68]]></Name>
-					<X>245</X><Y>200</Y>
+					<X>270</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5550,9 +5605,9 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
@@ -5755,10 +5810,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840161093" TargetId="1667840165056">
+				<Path SourceId="1667840165056" TargetId="1667840161093">
 					<Id>1667840743266</Id>
 					<Name><![CDATA[path6]]></Name>
-					<X>290</X><Y>200</Y>
+					<X>295</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5776,11 +5831,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-55</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-50</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -5811,10 +5866,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840165056" TargetId="1667840165052">
+				<Path SourceId="1667840165052" TargetId="1667840165056">
 					<Id>1667840165054</Id>
 					<Name><![CDATA[path76]]></Name>
-					<X>315</X><Y>200</Y>
+					<X>345</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5832,11 +5887,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>30</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6051,10 +6106,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840165044" TargetId="1667840165068">
+				<Path SourceId="1667840165068" TargetId="1667840165044">
 					<Id>1667840165070</Id>
 					<Name><![CDATA[path81]]></Name>
-					<X>305</X><Y>240</Y>
+					<X>325</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6072,14 +6127,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>20</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-5</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>20</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>-35</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6317,10 +6372,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840172311" TargetId="1667840172307">
+				<Path SourceId="1667840172307" TargetId="1667840172311">
 					<Id>1667840172309</Id>
 					<Name><![CDATA[path92]]></Name>
-					<X>390</X><Y>200</Y>
+					<X>415</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6338,9 +6393,9 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
@@ -6373,10 +6428,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840165052" TargetId="1667840172311">
+				<Path SourceId="1667840172311" TargetId="1667840165052">
 					<Id>1667840724591</Id>
 					<Name><![CDATA[path4]]></Name>
-					<X>365</X><Y>200</Y>
+					<X>370</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6394,11 +6449,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-55</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-50</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6543,10 +6598,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840172307" TargetId="1667840175867">
+				<Path SourceId="1667840175867" TargetId="1667840172307">
 					<Id>1667840692342</Id>
 					<Name><![CDATA[path2]]></Name>
-					<X>435</X><Y>200</Y>
+					<X>440</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6564,11 +6619,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6599,10 +6654,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840175867" TargetId="1667840175863">
+				<Path SourceId="1667840175863" TargetId="1667840175867">
 					<Id>1667840175865</Id>
 					<Name><![CDATA[path116]]></Name>
-					<X>460</X><Y>200</Y>
+					<X>485</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6620,11 +6675,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>24.876000000000005</X><Y>2.4879999999999995</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-26.60300000000001</X><Y>-2.7879999999999967</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-1.6030000000000086</X><Y>-2.7879999999999967</Y><Z>0</Z></Point>
+						<Point><X>-0.12399999999999523</X><Y>2.4879999999999995</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6839,10 +6894,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840175855" TargetId="1667840175879">
+				<Path SourceId="1667840175879" TargetId="1667840175855">
 					<Id>1667840175881</Id>
 					<Name><![CDATA[path121]]></Name>
-					<X>450</X><Y>240</Y>
+					<X>465</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6860,14 +6915,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-10</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-35</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -7105,10 +7160,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840179565" TargetId="1667840179561">
+				<Path SourceId="1667840179561" TargetId="1667840179565">
 					<Id>1667840179563</Id>
 					<Name><![CDATA[path148]]></Name>
-					<X>530</X><Y>200</Y>
+					<X>560</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7126,11 +7181,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>24.876000000000005</X><Y>2.4879999999999995</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>30</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>3.3969999999999914</X><Y>-2.7879999999999967</Y><Z>0</Z></Point>
+						<Point><X>-26.60300000000001</X><Y>-2.7879999999999967</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5.123999999999995</X><Y>2.4879999999999995</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -7161,10 +7216,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840175863" TargetId="1667840179565">
+				<Path SourceId="1667840179565" TargetId="1667840175863">
 					<Id>1667840676110</Id>
 					<Name><![CDATA[path]]></Name>
-					<X>505</X><Y>200</Y>
+					<X>510</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7182,11 +7237,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -7292,10 +7347,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840179553" TargetId="1667840179577">
+				<Path SourceId="1667840179577" TargetId="1667840179553">
 					<Id>1667840179579</Id>
 					<Name><![CDATA[path153]]></Name>
-					<X>520</X><Y>240</Y>
+					<X>540</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7313,14 +7368,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>20</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-5</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>20</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>-35</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -7488,10 +7543,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840172299" TargetId="1667840172323">
+				<Path SourceId="1667840172323" TargetId="1667840172299">
 					<Id>1667840172325</Id>
 					<Name><![CDATA[path97]]></Name>
-					<X>380</X><Y>240</Y>
+					<X>395</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7509,14 +7564,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-10</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-35</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -7684,10 +7739,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840161085" TargetId="1667840161109">
+				<Path SourceId="1667840161109" TargetId="1667840161085">
 					<Id>1667840161111</Id>
 					<Name><![CDATA[path73]]></Name>
-					<X>235</X><Y>240</Y>
+					<X>250</X><Y>250</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7705,14 +7760,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-10</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>15</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>10</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-15</X><Y>-35</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -8737,10 +8792,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840602112" TargetId="1667840602116">
+				<Path SourceId="1667840602116" TargetId="1667840602112">
 					<Id>1667840602114</Id>
 					<Name><![CDATA[path194]]></Name>
-					<X>605</X><Y>200</Y>
+					<X>610</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8758,11 +8813,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -8793,10 +8848,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840602120" TargetId="1667840602116">
+				<Path SourceId="1667840602116" TargetId="1667840602120">
 					<Id>1667840602118</Id>
 					<Name><![CDATA[path195]]></Name>
-					<X>620</X><Y>165</Y>
+					<X>620</X><Y>190</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8814,9 +8869,9 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
@@ -8961,10 +9016,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840593407" TargetId="1667840593411">
+				<Path SourceId="1667840593411" TargetId="1667840593407">
 					<Id>1667840593409</Id>
 					<Name><![CDATA[path190]]></Name>
-					<X>605</X><Y>130</Y>
+					<X>610</X><Y>130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -8982,11 +9037,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9017,10 +9072,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840593415" TargetId="1667840593411">
+				<Path SourceId="1667840593411" TargetId="1667840593415">
 					<Id>1667840593413</Id>
 					<Name><![CDATA[path191]]></Name>
-					<X>620</X><Y>90</Y>
+					<X>620</X><Y>120</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9038,11 +9093,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>30</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-30</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9185,10 +9240,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840239357" TargetId="1667840239361">
+				<Path SourceId="1667840239361" TargetId="1667840239357">
 					<Id>1667840239359</Id>
 					<Name><![CDATA[path186]]></Name>
-					<X>605</X><Y>55</Y>
+					<X>610</X><Y>55</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9206,11 +9261,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9241,10 +9296,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840239365" TargetId="1667840239361">
+				<Path SourceId="1667840239361" TargetId="1667840239365">
 					<Id>1667840239363</Id>
 					<Name><![CDATA[path187]]></Name>
-					<X>620</X><Y>20</Y>
+					<X>620</X><Y>45</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9262,9 +9317,9 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
@@ -9297,10 +9352,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840239369" TargetId="1667840239365">
+				<Path SourceId="1667840239365" TargetId="1667840239369">
 					<Id>1667840239367</Id>
 					<Name><![CDATA[path188]]></Name>
-					<X>605</X><Y>10</Y>
+					<X>610</X><Y>10</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9318,11 +9373,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9448,10 +9503,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840239361" TargetId="1667840239375">
+				<Path SourceId="1667840239375" TargetId="1667840239361">
 					<Id>1667840983379</Id>
 					<Name><![CDATA[path35]]></Name>
-					<X>630</X><Y>55</Y>
+					<X>635</X><Y>35</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9469,14 +9524,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-25</X><Y>-0.03200000000000003</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>19.968</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9487,10 +9542,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840239361" TargetId="1667840593415">
+				<Path SourceId="1667840593415" TargetId="1667840239361">
 					<Id>1667840962409</Id>
 					<Name><![CDATA[path33]]></Name>
-					<X>620</X><Y>65</Y>
+					<X>620</X><Y>70</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9508,11 +9563,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-45</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-40</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-30</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9618,10 +9673,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840593411" TargetId="1667840593403">
+				<Path SourceId="1667840593403" TargetId="1667840593411">
 					<Id>1667841042435</Id>
 					<Name><![CDATA[path37]]></Name>
-					<X>630</X><Y>130</Y>
+					<X>635</X><Y>110</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9639,14 +9694,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>-12</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9657,10 +9712,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840593411" TargetId="1667840602120">
+				<Path SourceId="1667840602120" TargetId="1667840593411">
 					<Id>1667841064060</Id>
 					<Name><![CDATA[path39]]></Name>
-					<X>620</X><Y>140</Y>
+					<X>620</X><Y>145</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9678,11 +9733,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-0.4170000000000016</X><Y>-63.25999999999999</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>-0.4170000000000016</X><Y>-58.25999999999999</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-30</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9788,10 +9843,85 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840602116" TargetId="1667840602108">
+				<Path SourceId="1667840602108" TargetId="1667840602116">
 					<Id>1667841155543</Id>
 					<Name><![CDATA[path200]]></Name>
-					<X>630</X><Y>200</Y>
+					<X>635</X><Y>185</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<Z>0</Z>
+					<LineColor>-14774017</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineWidth>1</LineWidth>
+					<PathType>dashedLine</PathType>
+					
+					<Width Class="UnitValue">
+						<Value Class="Double">1</Value>
+						<Unit Class="LengthUnits"><![CDATA[METER]]></Unit>
+					</Width>
+					<Points>
+						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>15</Y><Z>0</Z></Point>
+					</Points>
+					<Bidirectional>true</Bidirectional>
+					<SpeedLimit>false</SpeedLimit>
+					<SpeedLimitValue Class="CodeUnitValue">
+						<Code><![CDATA[10.0]]></Code>
+						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
+					</SpeedLimitValue>
+					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
+					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
+				</Path>
+				<Path SourceId="1667840615409" TargetId="1667840602116">
+					<Id>1667841145857</Id>
+					<Name><![CDATA[path199]]></Name>
+					<X>620</X><Y>220</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<Z>0</Z>
+					<LineColor>-14774017</LineColor>
+					<LineMaterial>null</LineMaterial>
+					<LineWidth>1</LineWidth>
+					<PathType>dashedLine</PathType>
+					
+					<Width Class="UnitValue">
+						<Value Class="Double">1</Value>
+						<Unit Class="LengthUnits"><![CDATA[METER]]></Unit>
+					</Width>
+					<Points>
+						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-1</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-35</Y><Z>0</Z></Point>
+					</Points>
+					<Bidirectional>true</Bidirectional>
+					<SpeedLimit>false</SpeedLimit>
+					<SpeedLimitValue Class="CodeUnitValue">
+						<Code><![CDATA[10.0]]></Code>
+						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
+					</SpeedLimitValue>
+					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
+					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
+				</Path>
+				<Path SourceId="1667840602112" TargetId="1667840179561">
+					<Id>1667841192017</Id>
+					<Name><![CDATA[path259]]></Name>
+					<X>585</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9810,85 +9940,10 @@ return str;]]></Body>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>-10</Y><Z>0</Z></Point>
-					</Points>
-					<Bidirectional>true</Bidirectional>
-					<SpeedLimit>false</SpeedLimit>
-					<SpeedLimitValue Class="CodeUnitValue">
-						<Code><![CDATA[10.0]]></Code>
-						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
-					</SpeedLimitValue>
-					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
-					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
-				</Path>
-				<Path SourceId="1667840602116" TargetId="1667840615409">
-					<Id>1667841145857</Id>
-					<Name><![CDATA[path199]]></Name>
-					<X>620</X><Y>210</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<Z>0</Z>
-					<LineColor>-14774017</LineColor>
-					<LineMaterial>null</LineMaterial>
-					<LineWidth>1</LineWidth>
-					<PathType>dashedLine</PathType>
-					
-					<Width Class="UnitValue">
-						<Value Class="Double">1</Value>
-						<Unit Class="LengthUnits"><![CDATA[METER]]></Unit>
-					</Width>
-					<Points>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>9</Y><Z>0</Z></Point>
-					</Points>
-					<Bidirectional>true</Bidirectional>
-					<SpeedLimit>false</SpeedLimit>
-					<SpeedLimitValue Class="CodeUnitValue">
-						<Code><![CDATA[10.0]]></Code>
-						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
-					</SpeedLimitValue>
-					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
-					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
-				</Path>
-				<Path SourceId="1667840179561" TargetId="1667840602112">
-					<Id>1667841192017</Id>
-					<Name><![CDATA[path259]]></Name>
-					<X>580</X><Y>200</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<Z>0</Z>
-					<LineColor>-14774017</LineColor>
-					<LineMaterial>null</LineMaterial>
-					<LineWidth>1</LineWidth>
-					<PathType>dashedLine</PathType>
-					
-					<Width Class="UnitValue">
-						<Value Class="Double">1</Value>
-						<Unit Class="LengthUnits"><![CDATA[METER]]></Unit>
-					</Width>
-					<Points>
-						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -9975,10 +10030,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840615409" TargetId="1667840615404">
+				<Path SourceId="1667840615404" TargetId="1667840615409">
 					<Id>1667840615407</Id>
 					<Name><![CDATA[path203]]></Name>
-					<X>620</X><Y>240</Y>
+					<X>620</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -9996,11 +10051,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10031,10 +10086,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840615400" TargetId="1667840615404">
+				<Path SourceId="1667840615404" TargetId="1667840615400">
 					<Id>1667840615402</Id>
 					<Name><![CDATA[path202]]></Name>
-					<X>605</X><Y>270</Y>
+					<X>610</X><Y>270</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10052,11 +10107,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10182,10 +10237,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840615404" TargetId="1667840615396">
+				<Path SourceId="1667840615396" TargetId="1667840615404">
 					<Id>1667841231241</Id>
 					<Name><![CDATA[path263]]></Name>
-					<X>630</X><Y>270</Y>
+					<X>635</X><Y>255</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10203,14 +10258,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>-7</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10221,10 +10276,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840615404" TargetId="1667840627091">
+				<Path SourceId="1667840627091" TargetId="1667840615404">
 					<Id>1667841242263</Id>
 					<Name><![CDATA[path264]]></Name>
-					<X>620</X><Y>280</Y>
+					<X>620</X><Y>285</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10242,11 +10297,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10277,10 +10332,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840627091" TargetId="1667840627087">
+				<Path SourceId="1667840627087" TargetId="1667840627091">
 					<Id>1667840627089</Id>
 					<Name><![CDATA[path215]]></Name>
-					<X>620</X><Y>305</Y>
+					<X>620</X><Y>335</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10298,11 +10353,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>30</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-30</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10333,10 +10388,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840627083" TargetId="1667840627087">
+				<Path SourceId="1667840627087" TargetId="1667840627083">
 					<Id>1667840627085</Id>
 					<Name><![CDATA[path214]]></Name>
-					<X>605</X><Y>345</Y>
+					<X>610</X><Y>345</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10354,11 +10409,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10481,10 +10536,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840627095" TargetId="1667840615400">
+				<Path SourceId="1667840615400" TargetId="1667840627095">
 					<Id>1667841251518</Id>
 					<Name><![CDATA[path265]]></Name>
-					<X>595</X><Y>285</Y>
+					<X>595</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10502,11 +10557,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>55</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>50</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>30</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10685,10 +10740,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840631514" TargetId="1667840631470">
+				<Path SourceId="1667840631470" TargetId="1667840631514">
 					<Id>1667840631512</Id>
 					<Name><![CDATA[path239]]></Name>
-					<X>620</X><Y>380</Y>
+					<X>620</X><Y>405</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10706,9 +10761,9 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
@@ -10777,10 +10832,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840627087" TargetId="1667840631514">
+				<Path SourceId="1667840631514" TargetId="1667840627087">
 					<Id>1667841274327</Id>
 					<Name><![CDATA[path267]]></Name>
-					<X>620</X><Y>355</Y>
+					<X>620</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10798,11 +10853,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>-0.009999999999990905</X><Y>-44.900000000000006</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>-0.009999999999990905</X><Y>-39.900000000000006</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-30</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10872,10 +10927,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840627087" TargetId="1667840627079">
+				<Path SourceId="1667840627079" TargetId="1667840627087">
 					<Id>1667841294712</Id>
 					<Name><![CDATA[path269]]></Name>
-					<X>630</X><Y>345</Y>
+					<X>635</X><Y>325</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10893,14 +10948,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>-12</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -10970,10 +11025,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840631470" TargetId="1667840631474">
+				<Path SourceId="1667840631474" TargetId="1667840631470">
 					<Id>1667841395466</Id>
 					<Name><![CDATA[path271]]></Name>
-					<X>630</X><Y>415</Y>
+					<X>635</X><Y>400</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -10991,14 +11046,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>-20</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>5</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-15</X><Y>-7</Y><Z>0</Z></Point>
+						<Point><X>-20</X><Y>8</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>-25</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-5</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>20</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>-30</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -11065,10 +11120,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667840179561" TargetId="1667845140103">
+				<Path SourceId="1667845140103" TargetId="1667840179561">
 					<Id>1667845292863</Id>
 					<Name><![CDATA[path83]]></Name>
-					<X>570</X><Y>190</Y>
+					<X>570</X><Y>185</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11086,11 +11141,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -11345,10 +11400,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667845205663" TargetId="1667845133190">
+				<Path SourceId="1667845133190" TargetId="1667845205663">
 					<Id>1667845364755</Id>
 					<Name><![CDATA[path99]]></Name>
-					<X>520</X><Y>160</Y>
+					<X>520</X><Y>165</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11366,11 +11421,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -11401,10 +11456,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667845205665" TargetId="1667845205663">
+				<Path SourceId="1667845205663" TargetId="1667845205665">
 					<Id>1667845317011</Id>
 					<Name><![CDATA[path86]]></Name>
-					<X>520</X><Y>135</Y>
+					<X>520</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11422,11 +11477,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -11457,10 +11512,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667845205667" TargetId="1667845205665">
+				<Path SourceId="1667845205665" TargetId="1667845205667">
 					<Id>1667845308433</Id>
 					<Name><![CDATA[path85]]></Name>
-					<X>520</X><Y>110</Y>
+					<X>520</X><Y>115</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11478,11 +11533,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -11513,10 +11568,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667845205669" TargetId="1667845205667">
+				<Path SourceId="1667845205667" TargetId="1667845205669">
 					<Id>1667845300452</Id>
 					<Name><![CDATA[path84]]></Name>
-					<X>520</X><Y>85</Y>
+					<X>520</X><Y>90</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -11534,11 +11589,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-5</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>20</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -12430,7 +12485,7 @@ return str;]]></Body>
 				<Control Type="Window3D">
 					<Id>1656176263765</Id>
 					<Name><![CDATA[window3d]]></Name>
-					<X>0</X><Y>640</Y>
+					<X>0</X><Y>450</Y>
 					<Width>750</Width>
 					<Height>370</Height>
 					<MakeDefaultViewArea>true</MakeDefaultViewArea>
@@ -12467,7 +12522,7 @@ return str;]]></Body>
 				<EmbeddedObjectPresentation>
 					<Id>1667841547347</Id>
 					<Name><![CDATA[hgeo3_presentation]]></Name>
-					<X>50</X><Y>180</Y>
+					<X>50</X><Y>175</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -12543,7 +12598,7 @@ return str;]]></Body>
 				<EmbeddedObjectPresentation>
 					<Id>1667842241047</Id>
 					<Name><![CDATA[fls_1_presentation1]]></Name>
-					<X>470</X><Y>290</Y>
+					<X>475</X><Y>290</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -12638,7 +12693,7 @@ return str;]]></Body>
 				<EmbeddedObjectPresentation>
 					<Id>1667842698561</Id>
 					<Name><![CDATA[wps_1_presentation1]]></Name>
-					<X>180</X><Y>290</Y>
+					<X>185</X><Y>290</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -12907,7 +12962,7 @@ return str;]]></Body>
 				<EmbeddedObjectPresentation>
 					<Id>1656247398105</Id>
 					<Name><![CDATA[hgeo2_presentation]]></Name>
-					<X>50</X><Y>110</Y>
+					<X>50</X><Y>105</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13052,7 +13107,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1655919176262</Id>
 					<Name><![CDATA[nextNode]]></Name>
-					<X>190</X><Y>210</Y>
+					<X>260</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13067,7 +13122,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1656005672098</Id>
 					<Name><![CDATA[currentNode]]></Name>
-					<X>190</X><Y>190</Y>
+					<X>260</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13082,7 +13137,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1656865716141</Id>
 					<Name><![CDATA[maxPartObsSize]]></Name>
-					<X>40</X><Y>110</Y>
+					<X>120</X><Y>120</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13097,7 +13152,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1657313007583</Id>
 					<Name><![CDATA[targetNode]]></Name>
-					<X>190</X><Y>350</Y>
+					<X>260</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13112,7 +13167,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1657614796234</Id>
 					<Name><![CDATA[lastNode]]></Name>
-					<X>190</X><Y>170</Y>
+					<X>260</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13127,7 +13182,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1659361109690</Id>
 					<Name><![CDATA[color]]></Name>
-					<X>40</X><Y>90</Y>
+					<X>120</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13142,7 +13197,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1662720171667</Id>
 					<Name><![CDATA[requestPending]]></Name>
-					<X>190</X><Y>330</Y>
+					<X>380</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13157,7 +13212,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1664022677337</Id>
 					<Name><![CDATA[index]]></Name>
-					<X>180</X><Y>90</Y>
+					<X>120</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13169,7 +13224,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1667756757874</Id>
 					<Name><![CDATA[moving]]></Name>
-					<X>180</X><Y>110</Y>
+					<X>380</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13184,7 +13239,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1671785114984</Id>
 					<Name><![CDATA[blockTime]]></Name>
-					<X>270</X><Y>90</Y>
+					<X>380</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13199,7 +13254,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1675443671522</Id>
 					<Name><![CDATA[n_invalid]]></Name>
-					<X>270</X><Y>110</Y>
+					<X>380</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13214,7 +13269,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1676032636384</Id>
 					<Name><![CDATA[driveStartTime]]></Name>
-					<X>270</X><Y>70</Y>
+					<X>380</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13229,7 +13284,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1676205318319</Id>
 					<Name><![CDATA[distNorm]]></Name>
-					<X>40</X><Y>70</Y>
+					<X>120</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13244,7 +13299,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1681711132382</Id>
 					<Name><![CDATA[decisionOffset]]></Name>
-					<X>190</X><Y>290</Y>
+					<X>120</X><Y>100</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13258,8 +13313,8 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				</Variable>
 				<Variable Class="PlainVariable">
 					<Id>1681717635129</Id>
-					<Name><![CDATA[movingToNode]]></Name>
-					<X>190</X><Y>310</Y>
+					<Name><![CDATA[hasJumped]]></Name>
+					<X>480</X><Y>60</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13274,7 +13329,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1681731835270</Id>
 					<Name><![CDATA[decPos]]></Name>
-					<X>190</X><Y>250</Y>
+					<X>480</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13289,7 +13344,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1681737696304</Id>
 					<Name><![CDATA[nodePos]]></Name>
-					<X>190</X><Y>270</Y>
+					<X>480</X><Y>40</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13304,7 +13359,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<Variable Class="Parameter">
 					<Id>1680429401020</Id>
 					<Name><![CDATA[fleet]]></Name>
-					<X>270</X><Y>40</Y>
+					<X>120</X><Y>20</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13330,12 +13385,12 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
 					<Id>1656057083242</Id>
 					<Name><![CDATA[inSystem]]></Name>
-					<X>330</X><Y>130</Y>
+					<X>100</X><Y>320</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties Width="450" Height="420">
+					<Properties Width="450" Height="310">
 						<EntryAction><![CDATA[//runRLDispatching.restart();]]></EntryAction>
 						<ExitAction><![CDATA[//runRLDispatching.reset();]]></ExitAction>
 						<FillColor/>
@@ -13344,7 +13399,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
 					<Id>1656057274069</Id>
 					<Name><![CDATA[outSideSystem]]></Name>
-					<X>830</X><Y>130</Y>
+					<X>600</X><Y>320</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13356,7 +13411,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
 					<Id>1656071070696</Id>
 					<Name><![CDATA[setBackOnTrack]]></Name>
-					<X>830</X><Y>220</Y>
+					<X>600</X><Y>410</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13369,7 +13424,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656163405042</Id>
 					<Name><![CDATA[fixed]]></Name>
-					<X>555</X><Y>190</Y>
+					<X>390</X><Y>380</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13381,7 +13436,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068104988</Id>
 					<Name><![CDATA[getUnblocked]]></Name>
-					<X>570</X><Y>390</Y>
+					<X>340</X><Y>580</Y>
 					<Label><X>-66</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13392,30 +13447,30 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068092401</Id>
 					<Name><![CDATA[getBlocked]]></Name>
-					<X>570</X><Y>360</Y>
-					<Label><X>5</X><Y>-10</Y></Label>
+					<X>310</X><Y>550</Y>
+					<Label><X>65</X><Y>-85</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
+					<ShowLabel>false</ShowLabel>
 					<Properties>	
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655918031397</Id>
 					<Name><![CDATA[driving]]></Name>
-					<X>390</X><Y>300</Y>
+					<X>180</X><Y>490</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties Width="120" Height="240">
+					<Properties Width="100" Height="90">
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919201546</Id>
 					<Name><![CDATA[idle]]></Name>
-					<X>410</X><Y>190</Y>
+					<X>180</X><Y>380</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13431,51 +13486,19 @@ requestPending = false;
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056734573</Id>
 					<Name><![CDATA[blocked]]></Name>
-					<X>620</X><Y>360</Y>
+					<X>390</X><Y>530</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Properties Width="100" Height="30">
+					<Properties Width="100" Height="50">
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
-				<StatechartElement Class="State" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681711024603</Id>
-					<Name><![CDATA[toNode]]></Name>
-					<X>400</X><Y>400</Y>
-					<Label><X>10</X><Y>10</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties Width="80" Height="30">
-						<EntryAction><![CDATA[stop();
-moveTo(lastNode, nodePos);
-if(contents().size() == 1)
-	contents().get(0).moveTo(lastNode, nodePos);]]></EntryAction>
-						<FillColor/>
-					</Properties>
-				</StatechartElement>
-				<StatechartElement Class="State" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681711034890</Id>
-					<Name><![CDATA[toDecPoint]]></Name>
-					<X>400</X><Y>500</Y>
-					<Label><X>10</X><Y>10</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Properties Width="80" Height="30">
-						<EntryAction><![CDATA[stop();
-moveTo(decPos);
-if(contents().size() == 1)
-	contents().get(0).moveTo(decPos);]]></EntryAction>
-						<FillColor/>
-					</Properties>
-				</StatechartElement>
-				<StatechartElement Class="Branch" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681723684085</Id>
+				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
+					<Id>1682057901563</Id>
 					<Name><![CDATA[branch]]></Name>
-					<X>450</X><Y>370</Y>
+					<X>360</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13486,7 +13509,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="EntryPoint" ParentState="ROOT_NODE">
 					<Id>1655918025794</Id>
 					<Name><![CDATA[statechart]]></Name>
-					<X>420</X><Y>100</Y>
+					<X>190</X><Y>290</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13501,7 +13524,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919215869</Id>
 					<Name><![CDATA[newNextNode]]></Name>
-					<X>430</X><Y>250</Y>
+					<X>200</X><Y>440</Y>
 					<Label><X>5</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13525,7 +13548,14 @@ else if(((PointNode)nextNode).getRadius() != 10)
 main.controller.addReward(main.RL_reward_reduce, this, true);
 if(targetNode == currentNode)
 	requestDispatch();
-]]></Action>
+
+stop();
+moveTo(decPos);
+if(contents().size() == 1)
+{
+	contents().get(0).stop();
+	contents().get(0).moveTo(decPos);
+}]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[0.05]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -13545,21 +13575,21 @@ if(targetNode == currentNode)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919360333</Id>
 					<Name><![CDATA[atTarget]]></Name>
-					<X>400</X><Y>510</Y>
+					<X>180</X><Y>520</Y>
 					<Label><X>-60</X><Y>-235</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>-40</X><Y>0</Y></Point>
-						<Point><X>-40</X><Y>-290</Y></Point>
-						<Point><X>10</X><Y>-290</Y></Point>
+						<Point><X>-50</X><Y>0</Y></Point>
+						<Point><X>-50</X><Y>-110</Y></Point>
+						<Point><X>0</X><Y>-110</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1681711034890" Target="1655919201546" Trigger="arrival">
+					<Properties Source="1655918031397" Target="1655919201546" Trigger="arrival">
 						<Action><![CDATA[sendDurationReward();
-movingToNode = true;
+hasJumped = false;
 currentNode = nextNode;
 //if(currentNode == targetNode)
 //	requestDispatch();
@@ -13584,7 +13614,7 @@ if(((PointNode)nextNode).getRadius() == 10)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056770050</Id>
 					<Name><![CDATA[transition3]]></Name>
-					<X>582</X><Y>360</Y>
+					<X>372</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13592,11 +13622,9 @@ if(((PointNode)nextNode).getRadius() == 10)
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>18</X><Y>0</Y></Point>
-						<Point><X>18</X><Y>10</Y></Point>
-						<Point><X>38</X><Y>10</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656068092401" Target="1656056734573" Trigger="condition">
+					<Properties Source="1682057901563" Target="1656056734573" Trigger="condition">
 						<Action><![CDATA[stop();
 
 if(contents().size() == 1)
@@ -13622,21 +13650,29 @@ blockTime = time();]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056843027</Id>
 					<Name><![CDATA[transition4]]></Name>
-					<X>558</X><Y>390</Y>
+					<X>328</X><Y>580</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>-15</X><Y>0</Y></Point>
-						<Point><X>-15</X><Y>-10</Y></Point>
+						<Point><X>-18</X><Y>0</Y></Point>
+						<Point><X>-18</X><Y>-10</Y></Point>
 						<Point><X>-48</X><Y>-10</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656068104988" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[main.controller.agvHandleBlock(this, null);
-main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-blockTime, false);]]></Action>
+main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-blockTime, false);
+
+stop();
+moveTo(decPos);
+if(contents().size() == 1)
+{
+	contents().get(0).stop();
+	contents().get(0).moveTo(decPos);
+}]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -13656,7 +13692,7 @@ main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-b
 				<StatechartElement Class="InitialStatePointer" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656057112607</Id>
 					<Name><![CDATA[initialState]]></Name>
-					<X>440</X><Y>150</Y>
+					<X>210</X><Y>340</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13667,13 +13703,13 @@ main.controller.getStatistic("_blocksec_agv" + Integer.toString(index), time()-b
 					</Points>
 					<Properties Target="1655919201546">
 					<Action><![CDATA[placeOnRandomNode((PointNode)nextNode);
-movingToNode = false;]]></Action>
+hasJumped = false;]]></Action>
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1656057288899</Id>
 					<Name><![CDATA[downtime]]></Name>
-					<X>780</X><Y>140</Y>
+					<X>550</X><Y>330</Y>
 					<Label><X>5</X><Y>-20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13707,7 +13743,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1656057354505</Id>
 					<Name><![CDATA[transition5]]></Name>
-					<X>830</X><Y>160</Y>
+					<X>600</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13737,7 +13773,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068115446</Id>
 					<Name><![CDATA[transition7]]></Name>
-					<X>510</X><Y>370</Y>
+					<X>280</X><Y>530</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13745,8 +13781,8 @@ if(contents().size() == 1)
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>10</X><Y>0</Y></Point>
-						<Point><X>11</X><Y>-10</Y></Point>
-						<Point><X>48</X><Y>-10</Y></Point>
+						<Point><X>10</X><Y>20</Y></Point>
+						<Point><X>18</X><Y>20</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655918031397" Target="1656068092401" Trigger="timeout">
@@ -13769,18 +13805,17 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068144722</Id>
 					<Name><![CDATA[transition8]]></Name>
-					<X>570</X><Y>350</Y>
+					<X>322</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-20</Y></Point>
-						<Point><X>-60</X><Y>-20</Y></Point>
+						<Point><X>26</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656068092401" Target="1655918031397" Trigger="timeout">
+					<Properties Source="1656068092401" Target="1682057901563" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -13800,7 +13835,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068184137</Id>
 					<Name><![CDATA[transition9]]></Name>
-					<X>570</X><Y>400</Y>
+					<X>340</X><Y>590</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13834,7 +13869,7 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068215134</Id>
 					<Name><![CDATA[transition10]]></Name>
-					<X>620</X><Y>380</Y>
+					<X>390</X><Y>570</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13866,7 +13901,7 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656070315464</Id>
 					<Name><![CDATA[RequestNewCommand]]></Name>
-					<X>455</X><Y>190</Y>
+					<X>225</X><Y>380</Y>
 					<Label><X>10</X><Y>-45</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13900,7 +13935,7 @@ moving = false;]]></Action>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1656071084356</Id>
 					<Name><![CDATA[RemovedByPersonell]]></Name>
-					<X>780</X><Y>230</Y>
+					<X>550</X><Y>420</Y>
 					<Label><X>10</X><Y>-15</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13935,7 +13970,7 @@ main.controller.agvHandleBlock(this, null);]]></Action>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1656071162678</Id>
 					<Name><![CDATA[transition12]]></Name>
-					<X>830</X><Y>250</Y>
+					<X>600</X><Y>440</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13965,7 +14000,7 @@ main.controller.agvHandleBlock(this, null);]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656157757583</Id>
 					<Name><![CDATA[ReceiveNewCommand]]></Name>
-					<X>475</X><Y>190</Y>
+					<X>245</X><Y>380</Y>
 					<Label><X>11</X><Y>-30</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14007,14 +14042,14 @@ if((int)msg[1] > 0)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656163443930</Id>
 					<Name><![CDATA[transition]]></Name>
-					<X>510</X><Y>200</Y>
+					<X>280</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>45</X><Y>0</Y></Point>
+						<Point><X>110</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1656163405042" Trigger="message">
@@ -14038,14 +14073,14 @@ if((int)msg[1] > 0)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656163468911</Id>
 					<Name><![CDATA[transition1]]></Name>
-					<X>555</X><Y>220</Y>
+					<X>390</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>-45</X><Y>0</Y></Point>
+						<Point><X>-110</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656163405042" Target="1655919201546" Trigger="message">
@@ -14066,21 +14101,67 @@ if((int)msg[1] > 0)
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681711045797</Id>
+				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
+					<Id>1682023617612</Id>
+					<Name><![CDATA[skipNodeEnd]]></Name>
+					<X>310</X><Y>540</Y>
+					<Label><X>-50</X><Y>-80</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>-20</Y></Point>
+						<Point><X>-30</X><Y>-20</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1656068092401" Target="1655918031397" Trigger="condition">
+						<Action><![CDATA[stop();
+jumpTo(nodePos);
+if(contents().size() == 1)
+{
+	contents().get(0).stop();
+	contents().get(0).jumpTo(nodePos);
+}
+hasJumped = true;
+stop();
+moveTo(decPos);
+if(contents().size() == 1)
+{
+	contents().get(0).stop();
+	contents().get(0).moveTo(decPos);
+}]]></Action>
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[!hasJumped && distanceTo(nodePos, main.unit)<0.11]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>false</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
+					<Id>1682057921531</Id>
 					<Name><![CDATA[transition2]]></Name>
-					<X>450</X><Y>430</Y>
+					<X>360</X><Y>540</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>70</Y></Point>
+						<Point><X>0</X><Y>-30</Y></Point>
+						<Point><X>-80</X><Y>-30</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1681711024603" Target="1681711034890" Trigger="arrival">
-						<Action><![CDATA[movingToNode = false;]]></Action>
+					<Properties Source="1682057901563" Target="1655918031397" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -14097,89 +14178,12 @@ if((int)msg[1] > 0)
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
-				<StatechartElement Class="InitialStatePointer" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681711067629</Id>
-					<Name><![CDATA[initialState1]]></Name>
-					<X>450</X><Y>320</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>40</Y></Point>
-					</Points>
-					<Properties Target="1681723684085">
-					</Properties>	
-				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681711076155</Id>
-					<Name><![CDATA[transition6]]></Name>
-					<X>450</X><Y>380</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>20</Y></Point>
-					</Points>
-					<IconOffset>20.0</IconOffset>
-					<Properties Source="1681723684085" Target="1681711024603" Trigger="condition">
-						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
-						</Timeout>
-						<Condition><![CDATA[movingToNode]]></Condition>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
-						</Rate>
-						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>false</DefaultTransition>
-						<FilterType><![CDATA[unconditionally]]></FilterType>
-						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
-					</Properties>	
-				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="driving" ParentStateId="1655918031397">
-					<Id>1681714863287</Id>
-					<Name><![CDATA[transition11]]></Name>
-					<X>462</X><Y>370</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>38</X><Y>0</Y></Point>
-						<Point><X>38</X><Y>140</Y></Point>
-						<Point><X>18</X><Y>140</Y></Point>
-					</Points>
-					<IconOffset>20.0</IconOffset>
-					<Properties Source="1681723684085" Target="1681711034890" Trigger="condition">
-						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
-						</Timeout>
-						<Condition><![CDATA[!movingToNode]]></Condition>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
-						</Rate>
-						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
-						<FilterType><![CDATA[unconditionally]]></FilterType>
-						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
-					</Properties>	
-				</StatechartElement>
 			</StatechartElements>
 			<Events>
 				<Event>
 					<Id>1664473107408</Id>
 					<Name><![CDATA[DispatchTimeout]]></Name>
-					<X>40</X><Y>550</Y>
+					<X>120</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14214,7 +14218,7 @@ if((int)msg[1] > 0)
 					<ReturnType><![CDATA[Agv]]></ReturnType>
 					<Id>1655915400770</Id>
 					<Name><![CDATA[scannerFree]]></Name>
-					<X>40</X><Y>170</Y>
+					<X>480</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14250,7 +14254,7 @@ return null;]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1655917969278</Id>
 					<Name><![CDATA[placeOnRandomNode]]></Name>
-					<X>40</X><Y>130</Y>
+					<X>120</X><Y>160</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14331,7 +14335,7 @@ for(int i = 0; i<n_nodes; i++)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1655919445246</Id>
 					<Name><![CDATA[drive]]></Name>
-					<X>40</X><Y>190</Y>
+					<X>380</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14348,7 +14352,7 @@ statechart.onChange();]]></Body>
 					<ReturnType><![CDATA[INode[]]]></ReturnType>
 					<Id>1656005808471</Id>
 					<Name><![CDATA[nodesInReach]]></Name>
-					<X>170</X><Y>420</Y>
+					<X>480</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14405,7 +14409,7 @@ return possible;]]></Body>
 					<ReturnType><![CDATA[double[]]]></ReturnType>
 					<Id>1656340504539</Id>
 					<Name><![CDATA[getObservation]]></Name>
-					<X>40</X><Y>420</Y>
+					<X>260</X><Y>160</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14511,7 +14515,7 @@ return obs;
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1656341531671</Id>
 					<Name><![CDATA[register]]></Name>
-					<X>100</X><Y>90</Y>
+					<X>120</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14524,7 +14528,7 @@ deliver(msg, main.controller);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657614949638</Id>
 					<Name><![CDATA[angle]]></Name>
-					<X>280</X><Y>420</Y>
+					<X>480</X><Y>160</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14550,7 +14554,7 @@ return atan2fast(dy, dx);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1658135052612</Id>
 					<Name><![CDATA[sendDistanceReward]]></Name>
-					<X>40</X><Y>450</Y>
+					<X>600</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14583,7 +14587,7 @@ return atan2fast(dy, dx);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659360910396</Id>
 					<Name><![CDATA[updateTarget]]></Name>
-					<X>190</X><Y>370</Y>
+					<X>380</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14603,7 +14607,7 @@ if(targetNode != null)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659957476820</Id>
 					<Name><![CDATA[sendArrival]]></Name>
-					<X>40</X><Y>470</Y>
+					<X>600</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14628,7 +14632,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659965699519</Id>
 					<Name><![CDATA[sendBlock]]></Name>
-					<X>40</X><Y>490</Y>
+					<X>600</X><Y>240</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14642,7 +14646,7 @@ main.controller.getStatistic("block", 1.0, false);
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1661168639765</Id>
 					<Name><![CDATA[sendInvalid]]></Name>
-					<X>40</X><Y>510</Y>
+					<X>600</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14658,17 +14662,15 @@ main.controller.getStatistic("taken_invalid", 1.0, false);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1662482870380</Id>
 					<Name><![CDATA[requestCommand]]></Name>
-					<X>40</X><Y>210</Y>
+					<X>260</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[//Rewards - Sinnvoll wenn RoutingOnNode
-if(main.RL_routing_ma)
+					<Body><![CDATA[if(main.RL_routing_ma)
 {
 	sendDistanceReward();
 }
-//Frage nach nächstem Ziel
 main.controller.sendAgvCommand(this);]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -14676,7 +14678,7 @@ main.controller.sendAgvCommand(this);]]></Body>
 					<ReturnType><![CDATA[boolean]]></ReturnType>
 					<Id>1662720886243</Id>
 					<Name><![CDATA[fix]]></Name>
-					<X>40</X><Y>230</Y>
+					<X>380</X><Y>160</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14690,7 +14692,7 @@ return inState(fixed);]]></Body>
 					<ReturnType><![CDATA[boolean]]></ReturnType>
 					<Id>1662720891843</Id>
 					<Name><![CDATA[unfix]]></Name>
-					<X>40</X><Y>250</Y>
+					<X>380</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14704,7 +14706,7 @@ return !inState(fixed);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1663417720014</Id>
 					<Name><![CDATA[take_action]]></Name>
-					<X>40</X><Y>270</Y>
+					<X>260</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14725,6 +14727,9 @@ if(direction > 0)
 			return;
 		}
 }
+//check for pass
+sendPassReward();
+
 if(currentNode != targetNode)
 	sendInvalid();]]></Body>
 				</Function>
@@ -14733,7 +14738,7 @@ if(currentNode != targetNode)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1663417842902</Id>
 					<Name><![CDATA[reset]]></Name>
-					<X>40</X><Y>290</Y>
+					<X>380</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14745,7 +14750,7 @@ if(currentNode != targetNode)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1664017076183</Id>
 					<Name><![CDATA[requestDispatch]]></Name>
-					<X>40</X><Y>570</Y>
+					<X>260</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14763,7 +14768,7 @@ if(currentNode != targetNode)
 					<ReturnType><![CDATA[Position]]></ReturnType>
 					<Id>1668347583902</Id>
 					<Name><![CDATA[nextPathEndPoint]]></Name>
-					<X>190</X><Y>230</Y>
+					<X>480</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14784,7 +14789,7 @@ if(currentNode == path.getSource())
 	rotation = path.getEndPosition().rotation;
 	if(((PointNode)nextNode).getRadius() != 5)
 		toMoveDec = path.getPointAtOffset(path.length(main.unit) - decisionOffset, main.unit, null);
-	toMoveNode = path.getStartPoint();
+	toMoveNode = path.getPointAtOffset(0.01, main.unit, null);
 
 }
 else
@@ -14792,7 +14797,7 @@ else
 	rotation = path.getStartPosition().rotation + PI;
 	if(((PointNode)nextNode).getRadius() != 5)
 		toMoveDec = path.getPointAtOffset(decisionOffset, main.unit, null);
-	toMoveNode = path.getEndPoint();
+	toMoveNode = path.getPointAtOffset(path.length(main.unit) - 0.01, main.unit, null);
 }
 
 decPos = new Position(toMoveDec, rotation, 0);
@@ -14803,7 +14808,7 @@ nodePos = new Position(toMoveNode, rotation, 0);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1676029587824</Id>
 					<Name><![CDATA[sendDurationReward]]></Name>
-					<X>190</X><Y>450</Y>
+					<X>600</X><Y>140</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14822,7 +14827,7 @@ if(distance / main.agvSpeed + 5 < duration)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1676122426205</Id>
 					<Name><![CDATA[getAcceptanceReward]]></Name>
-					<X>190</X><Y>470</Y>
+					<X>600</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14832,6 +14837,27 @@ if(main.RL_reward_reached_target_by_time)
 		reward_factor = 0.5 + 0.5*DispatchTimeout.getRest() / main.RL_dispatching_interval;
 return main.RL_reward_accepted_in_station * reward_factor;
 ]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>VOID</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1681806757842</Id>
+					<Name><![CDATA[sendPassReward]]></Name>
+					<X>600</X><Y>160</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[boolean gotPassed = false;
+for(Agv a : main.agvs)
+	if(a != this && a.currentNode == nextNode)
+		if(distanceTo(a, main.unit) < 5)
+			gotPassed = true;
+if(gotPassed)
+{
+	main.controller.addReward(main.RL_reward_pass, this, false);
+	main.controller.getStatistic("passed", 1.0, false);
+}]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -14917,7 +14943,7 @@ return main.RL_reward_accepted_in_station * reward_factor;
 				<Text>
 					<Id>1657313298481</Id>
 					<Name><![CDATA[text]]></Name>
-					<X>0</X><Y>-80</Y>
+					<X>0</X><Y>-60</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14957,6 +14983,97 @@ return main.RL_reward_accepted_in_station * reward_factor;
 					<FillColor>-1</FillColor>
 					<FillMaterial>null</FillMaterial>
 				</Rectangle>
+				<Text>
+					<Id>1682059834443</Id>
+					<Name><![CDATA[text3]]></Name>
+					<X>120</X><Y>-20</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[startup
+]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>14</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>1682059856375</Id>
+					<Name><![CDATA[text4]]></Name>
+					<X>260</X><Y>-20</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[movement
+
+]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>14</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>1682059866023</Id>
+					<Name><![CDATA[text5]]></Name>
+					<X>380</X><Y>-20</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[movement-helpers
+
+]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>14</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
+				<Text>
+					<Id>1682059879659</Id>
+					<Name><![CDATA[text6]]></Name>
+					<X>600</X><Y>-20</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<Rotation>0.0</Rotation>
+					<Color>-16777216</Color>
+					<Text><![CDATA[rewards
+
+]]></Text>
+					<Font>
+						<Name>SansSerif</Name>
+						<Size>14</Size>
+						<Style>1</Style>
+					</Font>
+					<Alignment>LEFT</Alignment>
+				</Text>
 			</Presentation>
 
 				</Level>
@@ -15068,7 +15185,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1656341832975</Id>
 					<Name><![CDATA[obs_size_routing]]></Name>
-					<X>300</X><Y>330</Y>
+					<X>190</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15083,7 +15200,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1657469793437</Id>
 					<Name><![CDATA[obs_size_dispatching]]></Name>
-					<X>300</X><Y>350</Y>
+					<X>190</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15098,7 +15215,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1659970712115</Id>
 					<Name><![CDATA[caller_i]]></Name>
-					<X>300</X><Y>370</Y>
+					<X>190</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15113,7 +15230,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1679900469079</Id>
 					<Name><![CDATA[n_vb]]></Name>
-					<X>770</X><Y>370</Y>
+					<X>660</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15128,7 +15245,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="PlainVariable">
 					<Id>1679900490750</Id>
 					<Name><![CDATA[n_hc]]></Name>
-					<X>770</X><Y>390</Y>
+					<X>660</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15173,7 +15290,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="CollectionVariable">
 					<Id>1656343232899</Id>
 					<Name><![CDATA[directions]]></Name>
-					<X>300</X><Y>390</Y>
+					<X>190</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15203,7 +15320,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="CollectionVariable">
 					<Id>1659956890638</Id>
 					<Name><![CDATA[agvRewards]]></Name>
-					<X>250</X><Y>210</Y>
+					<X>470</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15218,7 +15335,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="CollectionVariable">
 					<Id>1662280140132</Id>
 					<Name><![CDATA[statTitles]]></Name>
-					<X>250</X><Y>230</Y>
+					<X>470</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15233,7 +15350,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="CollectionVariable">
 					<Id>1662280153695</Id>
 					<Name><![CDATA[statValues]]></Name>
-					<X>340</X><Y>230</Y>
+					<X>560</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15248,7 +15365,7 @@ getStatistic("wrongTarget", 0.0, false);]]></StartupCode>
 				<Variable Class="CollectionVariable">
 					<Id>1664016147000</Id>
 					<Name><![CDATA[agvRewardsDisp]]></Name>
-					<X>340</X><Y>210</Y>
+					<X>560</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15438,7 +15555,7 @@ if(obs_size_routing<(int)msg[2] + 1)
 				<Event>
 					<Id>1656345578254</Id>
 					<Name><![CDATA[runRLGeneral]]></Name>
-					<X>180</X><Y>330</Y>
+					<X>70</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15484,7 +15601,7 @@ else if(main.runmode == 3 && !main.RL_dispatch && !main.RL_routing_ma)
 				<Event>
 					<Id>1657470001830</Id>
 					<Name><![CDATA[runRLRouting]]></Name>
-					<X>180</X><Y>350</Y>
+					<X>70</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15529,7 +15646,7 @@ else if(main.runmode == 3 && main.RL_dispatch && !main.RL_routing_ma)
 				<Event>
 					<Id>1657470025283</Id>
 					<Name><![CDATA[runRLDispatching]]></Name>
-					<X>180</X><Y>370</Y>
+					<X>70</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15693,7 +15810,7 @@ else
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1656342239806</Id>
 					<Name><![CDATA[getObservation]]></Name>
-					<X>450</X><Y>330</Y>
+					<X>340</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15710,7 +15827,7 @@ return getObservationRouting();
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657315848043</Id>
 					<Name><![CDATA[action_agvs]]></Name>
-					<X>630</X><Y>350</Y>
+					<X>520</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15728,7 +15845,7 @@ directions.addAll(nextnodes_list);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1657316067696</Id>
 					<Name><![CDATA[action_targets]]></Name>
-					<X>630</X><Y>390</Y>
+					<X>520</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15749,7 +15866,7 @@ for(int i = 0; i<main.agvs.size(); i++)
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1657469380019</Id>
 					<Name><![CDATA[getObservationRouting]]></Name>
-					<X>450</X><Y>370</Y>
+					<X>340</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15773,7 +15890,7 @@ return obs;]]></Body>
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1657469381778</Id>
 					<Name><![CDATA[getObservationDispatching]]></Name>
-					<X>450</X><Y>390</Y>
+					<X>340</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15806,7 +15923,7 @@ return obs;]]></Body>
 					<ReturnType><![CDATA[double[][]]]></ReturnType>
 					<Id>1657469416865</Id>
 					<Name><![CDATA[getObservationGeneral]]></Name>
-					<X>450</X><Y>350</Y>
+					<X>340</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15860,7 +15977,7 @@ return i;]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659961376911</Id>
 					<Name><![CDATA[getReward]]></Name>
-					<X>770</X><Y>330</Y>
+					<X>660</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15892,7 +16009,7 @@ return reward;]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1659968952230</Id>
 					<Name><![CDATA[action_agv]]></Name>
-					<X>630</X><Y>330</Y>
+					<X>520</X><Y>260</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15914,7 +16031,7 @@ directions.set(i_agv, node);]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1661678555200</Id>
 					<Name><![CDATA[addReward]]></Name>
-					<X>160</X><Y>210</Y>
+					<X>380</X><Y>200</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15962,7 +16079,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1663417178200</Id>
 					<Name><![CDATA[getStatistic]]></Name>
-					<X>160</X><Y>235</Y>
+					<X>380</X><Y>225</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -15998,7 +16115,7 @@ else
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1664015471927</Id>
 					<Name><![CDATA[dispatch]]></Name>
-					<X>180</X><Y>390</Y>
+					<X>70</X><Y>320</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -16024,7 +16141,7 @@ else if(main.runmode == 3 && main.RL_dispatch)
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1664018241153</Id>
 					<Name><![CDATA[action_target]]></Name>
-					<X>630</X><Y>370</Y>
+					<X>520</X><Y>300</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -16046,7 +16163,7 @@ agv.updateTarget(net.getNode(target));]]></Body>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1679900434106</Id>
 					<Name><![CDATA[addBalanceReward]]></Name>
-					<X>770</X><Y>350</Y>
+					<X>660</X><Y>280</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -16160,7 +16277,7 @@ agv.updateTarget(net.getNode(target));]]></Body>
 				<Text>
 					<Id>1662280016881</Id>
 					<Name><![CDATA[text]]></Name>
-					<X>760</X><Y>50</Y>
+					<X>530</X><Y>0</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -16782,51 +16899,92 @@ if(partFamily == "HC")
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[if(partVariant == "V1")
+					<Body><![CDATA[if(partFamily == "VB" && partVariant == "V1")
 {
-	Object[] rsp1 = {"WPS", 20, 1, 3, 3 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp1 = {"WPS", 29, 1, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp1);
-	Object[] rsp2 = {"WPS", 17, 2, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp2 = {"HSN2", 18, 1, 2, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp2);
-	Object[] rsp3 = {"WPS", 10, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp3 = {"HSN1", 11, 2, 4, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp3);
-	Object[] rsp4 = {"WPS", 15, 3, 4, 4 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp4 = {"HSN2", 18, 2, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp4);
-	Object[] rsp5 = {"HSN1", 18, 1, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp5 = {"WPS", 29, 3, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp5);
-	Object[] rsp6 = {"HSN1", 7, 2, 3, 3 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp6 = {"HSN1", 11, 3, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp6);
-	Object[] rsp7 = {"HSN2", 20, 3, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp7 = {"FLS", 4, 4, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp7);
-	Object[] rsp8 = {"FLS", 12, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp8 = {"IMP", 20, 4, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp8);
-	Object[] rsp9 = {"FLS", 16, 2, 3, 3 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp9 = {"FLS", 4, 5, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp9);
-	Object[] rsp10 = {"IMP", 50, 2, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp10 = {"HSN2", 18, 5, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp10);
+	Object[] rsp11 = {"WPS", 29, 5, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp11);
 }
-else
+else if(partFamily == "VB" && partVariant == "V2")
 {
-	Object[] rsp1 = {"WPS", 20, 1, 3, 3 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp1 = {"WPS", 29, 1, 3, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp1);
-	Object[] rsp2 = {"WPS", 17, 2, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp2 = {"HSN2", 18, 1, 3, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp2);
-	Object[] rsp3 = {"WPS", 10, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp3 = {"HSN1", 11, 2, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp3);
-	Object[] rsp4 = {"WPS", 15, 3, 4, 4 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp4 = {"WPS", 18, 3, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp4);
-	Object[] rsp5 = {"HSN1", 18, 1, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp5 = {"FLS", 4, 4, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp5);
-	Object[] rsp6 = {"HSN2", 7, 2, 3, 3 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp6 = {"IMP", 20, 4, 5, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp6);
-	Object[] rsp7 = {"HSN2", 20, 3, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp7 = {"FLS", 4, 5, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp7);
-	Object[] rsp8 = {"FLS", 12, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp8 = {"HSN2", 18, 5, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp8);
-	Object[] rsp9 = {"FLS", 6, 2, 3, 3 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	Object[] rsp9 = {"WPS", 46, 5, 6, 6 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
 	respot.add(rsp9);
-	Object[] rsp10 = {"IMP", 50, 2, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
-	respot.add(rsp10);
+}
+
+else if(partFamily == "HC" && partVariant == "V1")
+{
+	Object[] rsp1 = {"HSN1", 22, 1, 4, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp1);
+	Object[] rsp2 = {"FLS", 9, 1, 3, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp2);
+	Object[] rsp3 = {"WPS", 29, 2, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp3);
+	Object[] rsp4 = {"HSN2", 18, 2, 3, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp4);
+	Object[] rsp5 = {"WPS", 29, 3, 4, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp5);
+	Object[] rsp6 = {"HSN1", 22, 3, 4, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp6);
+	Object[] rsp7 = {"HSN2", 18, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp7);
+	Object[] rsp8 = {"IMP", 13, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp8);
+}
+else if(partFamily == "HC" && partVariant == "V2")
+{
+	Object[] rsp1 = {"HSN1", 22, 1, 2, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp1);
+	Object[] rsp2 = {"FLS", 9, 1, 3, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp2);
+	Object[] rsp3 = {"WPS", 29, 2, 3, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp3);
+	Object[] rsp4 = {"HSN2", 6, 2, 4, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp4);
+	Object[] rsp5 = {"WPS", 29, 3, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp5);
+	Object[] rsp6 = {"HSN2", 18, 3, 4, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp6);
+	Object[] rsp7 = {"HSN1", 22, 3, 4, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp7);
+	Object[] rsp8 = {"IMP", 13, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp8);
+	Object[] rsp9 = {"WPS", 34, 4, 5, 5 }; //Verfahren, Anzahl, nach, vor, NacharbeitVor
+	respot.add(rsp9);
 }]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
@@ -17259,7 +17417,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<Length>100</Length>
 				<Rotation>0</Rotation>
 				<ScaleType>BASED_ON_LENGTH</ScaleType>
-				<ModelLength>10</ModelLength>
+				<ModelLength>20</ModelLength>
 				<LengthUnits>METER</LengthUnits>
 				<Scale>10</Scale>
 				<InheritedFromParentAgentType>true</InheritedFromParentAgentType>
@@ -18549,48 +18707,15 @@ send(msg, main.controller);]]></Body>
 
 			<Presentation>
 				<Figure3D>
-					<Id>1656177199679</Id>
-					<Name><![CDATA[table_2]]></Name>
-					<X>0</X><Y>0</Y>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<PublicFlag>true</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>0</X><Y>0</Y><Z>0</Z>
-					<Label><X>0</X><Y>-10</Y></Label>
-					<ResourceReference>
-						<PackageName><![CDATA[matrix]]></PackageName>
-						<ClassName><![CDATA[3d/table_2.dae]]></ClassName>
-					</ResourceReference>
-					<ColorTable>
-						<ColorMapping>
-							<Name><![CDATA[material0]]></Name>
-							<OriginalColor>-10526881</OriginalColor>
-						</ColorMapping>
-						<ColorMapping>
-							<Name><![CDATA[material1]]></Name>
-							<OriginalColor>-3619384</OriginalColor>
-						</ColorMapping>
-					</ColorTable>
-					<AutoScale>true</AutoScale>
-					<Scale>0.7</Scale>
-					<Rotation>0.0</Rotation>
-					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
-					<ApplyShading>true</ApplyShading>
-					<InternalLighting>OFF</InternalLighting>
-					<IgnoreSceneLights>false</IgnoreSceneLights>
-				</Figure3D>
-				<Figure3D>
 					<Id>1656178783216</Id>
 					<Name><![CDATA[robot_1]]></Name>
-					<X>10</X><Y>-12</Y>
+					<X>7</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>10</X><Y>-12</Y><Z>0</Z>
+					<X>7</X><Y>-10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18607,23 +18732,24 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>90.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
 					<InternalLighting>OFF</InternalLighting>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[!inState(working)]]></VisibleCode>
 				</Figure3D>
 				<Figure3D>
 					<Id>1656178802359</Id>
 					<Name><![CDATA[robot_2]]></Name>
-					<X>-7</X><Y>-12</Y>
+					<X>-6</X><Y>-10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>-7</X><Y>-12</Y><Z>0</Z>
+					<X>-6</X><Y>-10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18640,23 +18766,24 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>90.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
 					<InternalLighting>OFF</InternalLighting>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[!inState(working)]]></VisibleCode>
 				</Figure3D>
 				<Figure3D>
 					<Id>1656178805815</Id>
 					<Name><![CDATA[robot_3]]></Name>
-					<X>-8</X><Y>11</Y>
+					<X>-7</X><Y>10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>-8</X><Y>11</Y><Z>0</Z>
+					<X>-7</X><Y>10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18673,23 +18800,24 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>270.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
 					<InternalLighting>OFF</InternalLighting>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[!inState(working)]]></VisibleCode>
 				</Figure3D>
 				<Figure3D>
 					<Id>1656178812263</Id>
 					<Name><![CDATA[robot_4]]></Name>
-					<X>9</X><Y>11</Y>
+					<X>6</X><Y>10</Y>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
-					<X>9</X><Y>11</Y><Z>0</Z>
+					<X>6</X><Y>10</Y><Z>0</Z>
 					<Label><X>0</X><Y>-10</Y></Label>
 					<ResourceReference>
 						<PackageName><![CDATA[matrix]]></PackageName>
@@ -18706,17 +18834,18 @@ send(msg, main.controller);]]></Body>
 						</ColorMapping>
 					</ColorTable>
 					<AutoScale>true</AutoScale>
-					<Scale>1.0</Scale>
+					<Scale>2.0</Scale>
 					<Rotation>270.0</Rotation>
 					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
 					<ApplyShading>true</ApplyShading>
 					<InternalLighting>OFF</InternalLighting>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[!inState(working)]]></VisibleCode>
 				</Figure3D>
 				<Wall>
 					<Id>1656178850311</Id>
 					<Name><![CDATA[wall]]></Name>
-					<X>-17</X><Y>-18</Y>
+					<X>-15</X><Y>-15</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -18731,20 +18860,20 @@ send(msg, main.controller);]]></Body>
 					<Closed>false</Closed>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>11</Y><Z>0</Z></Point>
-						<Point><X>25</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>36</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>11</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>33</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>8</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>25</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>30</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>5</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>30</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>5</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 						<Point><X>25</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>13</X><Y>0</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
 					</Points>
 				</Wall>
 				<Text>
@@ -18886,6 +19015,164 @@ send(msg, main.controller);]]></Body>
 					<IgnoreSceneLights>false</IgnoreSceneLights>
 					<VisibleCode><![CDATA[inState(downtime)]]></VisibleCode>
 				</Figure3D>
+				<Rectangle>
+					<Id>1681766760310</Id>
+					<Name><![CDATA[rectangle]]></Name>
+					<X>-5</X><Y>-5</Y>
+					<Label><X>10</X><Y>10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<EmbeddedIcon>false</EmbeddedIcon>
+					<Z>0</Z>
+					<ZHeight>4</ZHeight>
+					<LineWidth>1</LineWidth>
+					<LineColor/>
+					<LineMaterial>null</LineMaterial>
+					<LineStyle>SOLID</LineStyle>
+					<Width>10</Width>
+					<Height>10</Height>
+					<Rotation>0.0</Rotation>
+					<FillColor>-4144960</FillColor>
+					<FillMaterial>null</FillMaterial>
+				</Rectangle>
+				<Figure3D>
+					<Id>1682060194611</Id>
+					<Name><![CDATA[robot_5]]></Name>
+					<X>3</X><Y>-5</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<X>3</X><Y>-5</Y><Z>0</Z>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<ResourceReference>
+						<PackageName><![CDATA[matrix]]></PackageName>
+						<ClassName><![CDATA[3d/robot_1.dae]]></ClassName>
+					</ResourceReference>
+					<ColorTable>
+						<ColorMapping>
+							<Name><![CDATA[MA___Beige_1]]></Name>
+							<OriginalColor>-6600659</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[MA__96_96_96]]></Name>
+							<OriginalColor>-10526881</OriginalColor>
+						</ColorMapping>
+					</ColorTable>
+					<AutoScale>true</AutoScale>
+					<Scale>2.0</Scale>
+					<Rotation>90.0</Rotation>
+					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
+					<ApplyShading>true</ApplyShading>
+					<InternalLighting>OFF</InternalLighting>
+					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[inState(working)]]></VisibleCode>
+				</Figure3D>
+				<Figure3D>
+					<Id>1682060234952</Id>
+					<Name><![CDATA[robot_6]]></Name>
+					<X>-2</X><Y>-5</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<X>-2</X><Y>-5</Y><Z>0</Z>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<ResourceReference>
+						<PackageName><![CDATA[matrix]]></PackageName>
+						<ClassName><![CDATA[3d/robot_1.dae]]></ClassName>
+					</ResourceReference>
+					<ColorTable>
+						<ColorMapping>
+							<Name><![CDATA[MA___Beige_1]]></Name>
+							<OriginalColor>-6600659</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[MA__96_96_96]]></Name>
+							<OriginalColor>-10526881</OriginalColor>
+						</ColorMapping>
+					</ColorTable>
+					<AutoScale>true</AutoScale>
+					<Scale>2.0</Scale>
+					<Rotation>90.0</Rotation>
+					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
+					<ApplyShading>true</ApplyShading>
+					<InternalLighting>OFF</InternalLighting>
+					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[inState(working)]]></VisibleCode>
+				</Figure3D>
+				<Figure3D>
+					<Id>1682060240219</Id>
+					<Name><![CDATA[robot_7]]></Name>
+					<X>-3</X><Y>5</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<X>-3</X><Y>5</Y><Z>0</Z>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<ResourceReference>
+						<PackageName><![CDATA[matrix]]></PackageName>
+						<ClassName><![CDATA[3d/robot_1.dae]]></ClassName>
+					</ResourceReference>
+					<ColorTable>
+						<ColorMapping>
+							<Name><![CDATA[MA___Beige_1]]></Name>
+							<OriginalColor>-6600659</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[MA__96_96_96]]></Name>
+							<OriginalColor>-10526881</OriginalColor>
+						</ColorMapping>
+					</ColorTable>
+					<AutoScale>true</AutoScale>
+					<Scale>2.0</Scale>
+					<Rotation>270.0</Rotation>
+					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
+					<ApplyShading>true</ApplyShading>
+					<InternalLighting>OFF</InternalLighting>
+					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[inState(working)]]></VisibleCode>
+				</Figure3D>
+				<Figure3D>
+					<Id>1682060242779</Id>
+					<Name><![CDATA[robot_8]]></Name>
+					<X>2</X><Y>5</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<X>2</X><Y>5</Y><Z>0</Z>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<ResourceReference>
+						<PackageName><![CDATA[matrix]]></PackageName>
+						<ClassName><![CDATA[3d/robot_1.dae]]></ClassName>
+					</ResourceReference>
+					<ColorTable>
+						<ColorMapping>
+							<Name><![CDATA[MA___Beige_1]]></Name>
+							<OriginalColor>-6600659</OriginalColor>
+						</ColorMapping>
+						<ColorMapping>
+							<Name><![CDATA[MA__96_96_96]]></Name>
+							<OriginalColor>-10526881</OriginalColor>
+						</ColorMapping>
+					</ColorTable>
+					<AutoScale>true</AutoScale>
+					<Scale>2.0</Scale>
+					<Rotation>270.0</Rotation>
+					<AxisOrder>XYZ_AXIS_ORDER</AxisOrder>
+					<ApplyShading>true</ApplyShading>
+					<InternalLighting>OFF</InternalLighting>
+					<IgnoreSceneLights>false</IgnoreSceneLights>
+					<VisibleCode><![CDATA[inState(working)]]></VisibleCode>
+				</Figure3D>
 			</Presentation>
 
 				</Level>
@@ -18901,8 +19188,8 @@ send(msg, main.controller);]]></Body>
 	<RelativeAccuracy>1.0E-5</RelativeAccuracy>
 	<TimeAccuracy>1.0E-5</TimeAccuracy>
 	<Frame>
-		<Width>1000</Width>
-		<Height>600</Height>
+		<Width>800</Width>
+		<Height>660</Height>
 	</Frame>
 	<Database>
 		<Logging>false</Logging>
@@ -19085,6 +19372,9 @@ send(msg, main.controller);]]></Body>
 				</Parameter>
 				<Parameter>
 					<ParameterName><![CDATA[RL_fixed_fleets]]></ParameterName>
+				</Parameter>
+				<Parameter>
+					<ParameterName><![CDATA[RL_reward_pass]]></ParameterName>
 				</Parameter>
 			</Parameters>			
 			<PresentationProperties>
@@ -19274,6 +19564,10 @@ else
 				<Type><![CDATA[double]]></Type>
 			</ConfigurationField>
 			<ConfigurationField>
+				<Name><![CDATA[reward_pass]]></Name>
+				<Type><![CDATA[double]]></Type>
+			</ConfigurationField>
+			<ConfigurationField>
 				<Name><![CDATA[obs_include_nodes_in_reach]]></Name>
 				<Type><![CDATA[boolean]]></Type>
 			</ConfigurationField>
@@ -19361,6 +19655,7 @@ root.RL_reward_reached_target_by_time = reward_reached_target_by_time;
 root.RL_reward_wrong_target = reward_wrong_target;
 root.RL_reward_removed_for_block = reward_removed_for_block;
 root.RL_reward_invalid = reward_invalid;
+root.RL_reward_pass = reward_pass;
 root.RL_reward_duration = reward_duration;
 root.RL_obs_include_nodes_in_reach = obs_include_nodes_in_reach;
 root.RL_obs_include_agv_target = obs_include_agv_target;
@@ -19389,10 +19684,6 @@ root.station_io_quote = station_io_quote;
 		</Resource>
 		<Resource>
 			<Path><![CDATA[3d/washer.dae]]></Path>
-			<ReferencedFromUserCode>false</ReferencedFromUserCode>
-		</Resource>
-		<Resource>
-			<Path><![CDATA[3d/table_2.dae]]></Path>
 			<ReferencedFromUserCode>false</ReferencedFromUserCode>
 		</Resource>
 		<Resource>

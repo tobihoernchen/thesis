@@ -8,6 +8,7 @@ import plotly.express as px
 import pandas as pd
 import keyboard
 import ipywidgets as widgets
+from ..envs.part_variants import MatrixPart
 
 
 class RewardCheck:
@@ -61,8 +62,6 @@ class RewardCheck:
                         action = [random.randint(0, max_action) for i in range(10)]
                     else:
                         clear_output()
-                        if dispatch_mode:
-                            print(self.env.agent_behaviors[agent].convert_from_observation(self.env.run.get_observation())[0]["action_mask"])
                         print(
                             f"AGENT {agent} --- STEP {step_counter} --- REWARD {last[1]}"
                         )
@@ -74,12 +73,14 @@ class RewardCheck:
                             choices = [f"{i:2}-{list(self.env.agent_hive.stations.values())[i]}\n" for i in indices[0]]
                             ao = self.env.sim.get_observation()
                             o = ao.obs[ao.caller%1000]
-                            di =  self.env.agent_behaviors[agent].part_obs_to_dict(o[16:], "matrix")
+                            di =  self.env.agent_behaviors[agent].part_obs_to_dict(o[18:], "matrix")
 
                             for ch in choices:
                                 print(ch)
                             print(di)
-                            print()
+                            if di is not None:
+                                print(MatrixPart().translate(di))
+                            time.sleep(1)
                             action = [int(input("ACTION"))] 
                         else:
                             while True:

@@ -105,8 +105,8 @@ class ContextualAgent(ZooAgentBehavior):
                 part_info = {
                     "variant": ["vb_1", "vb_2", "hc_1", "hc_2"][list(part_obs[:4]).index(1)],
                     "state": ["g01", "g12", "g23", "g34", "g45", "g56", "g6d", "finalState"][list(part_obs[4:12]).index(1)],
-                    "respots": [part_obs[12 + 2 * i] for i in range(10)],
-                    "nio": [part_obs[13 + 2 * i] for i in range(10)]
+                    "respots": [part_obs[12 + 2 * i] for i in range(11)],
+                    "nio": [part_obs[13 + 2 * i] for i in range(11)]
                 }
             else:
                 part_info = {

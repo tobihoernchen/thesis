@@ -10,30 +10,56 @@ class MatrixPart(PartVariant):
         self.max_procedure = 100
         self.n_geos = 6
         self.setup = {
-            "V1":[
-                ["WPS", 20, 1, 3,3 ],
-                ["WPS", 17, 2, 5, 5],
-                ["WPS", 10, 4, 5, 5],
-                ["WPS", 15, 3, 4, 4],
-                ["HSN1", 18, 1, 5, 5],
-                ["HSN1", 7, 2, 3, 3],
-                ["HSN2", 20, 3, 5, 5],
-                ["FLS", 12, 4, 5, 5],
-                ["FLS", 16, 2, 3, 3],
-                ["IMP", 50, 2, 5, 5],
-            ],
-            "V2":[
-                ["WPS", 20, 1, 3,3 ],
-                ["WPS", 17, 2, 5, 5],
-                ["WPS", 10, 4, 5, 5],
-                ["WPS", 15, 3, 4, 4],
-                ["HSN1", 18, 1, 5, 5],
-                ["HSN2", 7, 2, 3, 3],
-                ["HSN2", 20, 3, 5, 5],
-                ["FLS", 12, 4, 5, 5],
-                ["FLS", 6, 2, 3, 3],
-                ["IMP", 50, 2, 5, 5],
-            ]
+            "VB":{
+                "V1":[
+                    ["WPS", 29, 1, 5,6 ],
+                    ["HSN2", 18, 1, 2, 6],
+                    ["HSN1", 11, 2, 4, 6],
+                    ["HSN2", 18, 2, 6, 6],
+                    ["WPS", 29, 3, 5, 6],
+                    ["HSN1", 11, 3, 5, 6],
+                    ["FLS", 4, 4, 6, 6],
+                    ["IMP", 20, 4, 5, 6],
+                    ["FLS", 4, 5, 6, 6],
+                    ["HSN2", 18, 5, 6, 6],
+                    ["WPS", 29, 5, 6, 6],
+                ],
+                "V2":[
+                    ["WPS", 29, 1, 3, 6],
+                    ["HSN2", 18, 1, 3, 6],
+                    ["HSN1", 11, 2, 5, 6],
+                    ["WPS", 18, 3, 6, 6],
+                    ["FLS", 4, 4, 5, 6],
+                    ["IMP", 20, 4, 5, 6],
+                    ["FLS", 4, 5, 6, 6],
+                    ["HSN2", 18, 5, 6, 6],
+                    ["WPS", 46, 5, 6, 6],
+                ]
+            },
+            "HC":{
+                "V1":[
+                    ["HSN1", 22, 1, 4, 5],
+                    ["FLS", 9, 1, 3, 5],
+                    ["WPS", 29, 2, 5, 5],
+                    ["HSN2", 18, 2, 3, 5],
+                    ["WPS", 29, 3, 4, 5],
+                    ["HSN1", 22, 3, 4, 5],
+                    ["HSN2", 18, 4, 5, 5],
+                    ["IMP", 13, 4, 5, 5],
+                ],
+                "V2":[
+                    ["HSN1", 22, 1, 2, 5],
+                    ["FLS", 9, 1, 3, 5],
+                    ["WPS", 29, 2, 3, 5],
+                    ["HSN2", 6, 2, 4, 5],
+                    ["WPS", 29, 3, 5, 5],
+                    ["HSN2", 18, 3, 4, 5],
+                    ["HSN1", 22, 3, 4, 5],
+                    ["IMP", 13, 4, 5, 5],
+                    ["WPS", 34, 4, 5, 5],
+                ]
+            }
+
         }
 
         self.procedures = [
@@ -53,18 +79,18 @@ class MatrixPart(PartVariant):
         }
 
         self.stat_node = {
-            "vgeo1":72,
-            "vgeo2":73,
-            "vgeo3":74,
-            "vgeo4":79,
-            "vgeo5":88,
-            "vgeo6":89,
-            "hgeo1":59,
+            "vgeo1":67,
+            "vgeo2":68,
+            "vgeo3":69,
+            "vgeo4":74,
+            "vgeo5":83,
+            "vgeo6":84,
+            "hgeo1":104,
             "hgeo2":9,
             "hgeo3":4,
             "hgeo4":49,
             "hgeo5":54,
-            "puffer": [100,101,102,103,104],
+            "puffer": [95,96,97,98,99],
             "hsn2_1": 44 ,
             "fls_1": 19 ,
             "hsn2_2":42,
@@ -82,7 +108,8 @@ class MatrixPart(PartVariant):
         before_geo = int(part_obs["state"][-1])
         after_geo = before_geo -1
         variant = "V" + part_obs["variant"][-1]
-        all_respots = self.setup[variant]
+        family = part_obs["variant"][:2].upper()
+        all_respots = self.setup[family][variant]
         open_respots = [respot for respot, done in zip(all_respots, part_obs["respots"]) if not done]
         nio_respots = [respot for respot, nio in zip(all_respots, part_obs["nio"]) if nio]
         possible_respots = [respot for respot in open_respots if respot[2] <= after_geo]

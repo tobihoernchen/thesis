@@ -6,7 +6,7 @@ from ray.rllib.models import ModelCatalog
 import torch
 from .custom_blocks import MatrixGraph, MiniMatrixGraph, MatrixPositionEmbedder, FourierFeatureEmbedder, TransformerDecoderBlock
 from torch_geometric.data import Data, Batch
-from torch_geometric.nn import Sequential, GATConv, GraphNorm
+from torch_geometric.nn import Sequential, GATv2Conv, GraphNorm
 from torch_geometric.utils import scatter, k_hop_subgraph
 
 
@@ -49,7 +49,7 @@ class GNNFeatureExtractor(nn.Module):
             node_convs.extend(
                 [
                     (
-                         GATConv(embed_dim, embed_dim, 4, False),
+                         GATv2Conv(embed_dim, embed_dim, 4, False),
                         "x, edge_index -> x"
                     ),
                     (

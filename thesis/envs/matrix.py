@@ -300,7 +300,7 @@ class Matrix(BaseAlpyneZoo):
         config=None,
         seed=None,
         return_info=False,
-        options=None,
+        options={},
     ) -> "BaseAlpyneZoo.PyObservationType":
         if not self.started:
             self._start()
@@ -329,7 +329,7 @@ class Matrix(BaseAlpyneZoo):
         #     return_val = super().reset(self.config, seed, return_info, options)
         #     return self.observation_space("dummy").sample(), 0, False, {}
         else:
-            return super().reset(self.config, seed, return_info, options)
+            return super().reset(self.config, seed, return_info, options, dont_collect = options.get("dont_collect", False))
 
     def action_space(self, agent) -> gym.spaces.Space:
         return super().action_space(agent)

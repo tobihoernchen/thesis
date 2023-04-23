@@ -29,7 +29,7 @@ from thesis.utils.callbacks import CustomCallback
 from thesis.policies.ma_action_dist import register_ma_action_dist
 
 from .double_trainer import DoubleTrainer, TripleTrainer
-
+from time import sleep
 
 def seed_all(seed=42):
     torch.manual_seed(seed)
@@ -80,7 +80,9 @@ class Experiment:
             n_envs=n_envs,
             two_fleets = two_fleets,
         )
-        self.trainer = None
+        if self.trainer is not None:
+            self.trainer = None
+            time.sleep(60)
         if algo=="ppo":
             self.trainer =  ppo.PPO(config, logger_creator=logger_creator)
         elif algo == "a2c":
@@ -101,6 +103,7 @@ class Experiment:
             for i in range(backup_interval):
                 self.trainer.train()    
             self.trainer.save(checkpoint_dir)
+        
 
     def keep_training(self, n_intervals):
         for j in range(n_intervals):
@@ -385,7 +388,7 @@ def setup_matrix_for_ray(path, unidirectional=False, port=None):
     env_fn = lambda config: Matrix(
         startport=51150 + config.worker_index if port is None else port,
         model_path=path,
-        max_seconds=60 * 60,
+        max_seconds= config.pop("max_seconds", 60 * 60) ,
         **config,
     )
     register_env("matrix", lambda config: PettingZooEnv(env_fn(config)))
