@@ -6,8 +6,8 @@ from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
 setup_ray(port=51160, unidirectional=False)
-pseudo = True
-model_path = "../../models/matrix_routing/08_reward_pass_8_20_2023-04-19_18-46-21"#trained_for_pypeline/new_all_pseudo"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
+pseudo = False
+model_path = "../../models/matrix_routing/08_reward_pass_1_8_20_2023-04-25_22-24-52"#trained_for_pypeline/new_all_pseudo"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
 checkpoint = 400
 checkpoint_path = model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}"
 path = "D:/Master/Masterarbeit/thesis"
@@ -15,7 +15,7 @@ with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)
 hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
-hparams["env_args"]["fleetsize"] = 8
+#hparams["env_args"]["fleetsize"] = 8
 if pseudo:
     hparams["env_args"]["pseudo_dispatcher"] = True
     hparams["env_args"]["pseudo_dispatcher_clever"] = True

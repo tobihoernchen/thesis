@@ -8,7 +8,7 @@ from .custom_blocks import MatrixGraph, MiniMatrixGraph, MatrixPositionEmbedder,
 from torch_geometric.data import Data, Batch
 from torch_geometric.nn import Sequential, GATv2Conv, GraphNorm
 from torch_geometric.utils import scatter, k_hop_subgraph
-
+from torch_scatter import scatter
 
 def register_gnn_model():
     ModelCatalog.register_custom_model("gnn_model", GNNRoutingNet)
@@ -42,7 +42,7 @@ class GNNFeatureExtractor(nn.Module):
             self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
 
         self.embedd_goal = self.get_embedder(4 + position_embedd_dim * 2 + ff_embedd_dim * 4+1, embed_dim, 1, activation, False)
-        self.embedd_node = self.get_embedder(16, embed_dim, len(self.basegraph.nodes), activation, False)
+        self.embedd_node = self.get_embedder(22, embed_dim, len(self.basegraph.nodes), activation, False)
 
         node_convs = []
         for i in range(n_convolutions):
@@ -74,8 +74,9 @@ class GNNFeatureExtractor(nn.Module):
 
 
     def forward(self, x):
-        coords = x["agvs"][:, :, 2:16].reshape(x["agvs"].shape[0], -1, 7, 2) 
+        coords:torch.Tensor = x["agvs"][:, :, 2:16].reshape(x["agvs"].shape[0], -1, 7, 2) 
         distance_percentage = x["agvs"][:, :, 16:18]
+        moving = x["agvs"][:, :, 1]
         stat_coords = x["stat"][:, :, :2].reshape(x["stat"].shape[0], -1, 1, 2) 
         obs_main:torch.Tensor = x["agvs"][:, :1]
         goal_features = torch.cat([obs_main[:, :1, 4:8], obs_main[:, :1, 18:19]], -1)
@@ -86,29 +87,28 @@ class GNNFeatureExtractor(nn.Module):
         goal_features = self.embedd_goal(goal_features).squeeze(1)
 
         indices = self.basegraph.get_node_indices(coords)
+        indices = torch.concat([indices, indices[:,:,0:1].repeat(1,1,2), indices[:,:,1:2]], dim=-1).to(dtype=torch.int64)
         main_indices = indices[:, :1]
         agv_indices = indices[:, 1:]
         stat_indices = self.basegraph.get_node_indices(stat_coords)
 
         src_main = torch.ones_like(main_indices, dtype = obs_main.dtype, device=obs_main.device)
-        src_main[:, :, 0] = distance_percentage[:, :1, 0] + 0.5 #distance_last
-        src_main[:, :, 1] = distance_percentage[:, :1, 1] + 0.5 #distance_next
+        src_main[:, :, 7] = moving[:, :1]  #moving
+        src_main[:, :, 8] = distance_percentage[:, :1, 0]  #distance_last
+        src_main[:, :, 9] = distance_percentage[:, :1, 1]  #distance_next
         src_agvs = torch.ones_like(agv_indices, dtype = obs_main.dtype, device=obs_main.device)
-        src_agvs[:, :, 0] = distance_percentage[:, 1:, 0] + 0.5 #distance_last
-        src_agvs[:, :, 1] = distance_percentage[:, 1:, 1] + 0.5 #distance_next
+        src_agvs[:, :, 7] = moving[:, 1:]  #moving
+        src_agvs[:, :, 8] = distance_percentage[:, 1:, 0]  #distance_last
+        src_agvs[:, :, 9] = distance_percentage[:, 1:, 1]  #distance_next
         src_stat = torch.ones_like(stat_indices, dtype = obs_main.dtype, device=obs_main.device)
 
-        node_info_main = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 7, device=obs_main.device)
-        node_info_agvs = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 7, device=obs_main.device)
-        node_info_stat = torch.zeros(obs_main.shape[0], self.basegraph.nodes.shape[0], 1, device=obs_main.device)
-
-        node_info_main.scatter_(1, main_indices, src_main, reduce = "add")
-        node_info_agvs.scatter_(1, agv_indices, src_agvs, reduce = "add")
-        node_info_stat.scatter_(1, stat_indices, src_stat, reduce = "add")
+        node_info_main= scatter(src_main, main_indices, dim=1,dim_size = len(self.basegraph.nodes), reduce = "add")
+        node_info_agvs = scatter(src_agvs, agv_indices, dim=1,dim_size = len(self.basegraph.nodes),   reduce = "add")
+        node_info_stat = scatter(src_stat, stat_indices, dim=1,dim_size = len(self.basegraph.nodes),   reduce = "add")
 
         distances = torch.norm(self.basegraph.nodes[None, :].repeat(obs_main.shape[0], 1, 1) - obs_main[:, :, 6:8], dim=2)
-        node_info = self.embedd_node(torch.clamp(torch.concat([node_info_main, node_info_agvs, node_info_stat, distances.unsqueeze(-1)], dim = 2).detach(), 0.0, 1.0))
-
+        node_info = torch.concat([node_info_main, node_info_agvs, node_info_stat, distances.unsqueeze(-1)], dim = 2).detach()
+        node_info = self.embedd_node(node_info)
         in_reach_indices = self.basegraph.get_node_indices(
             obs_main[:, :, 8:16].reshape(-1, 4, 2)
         )

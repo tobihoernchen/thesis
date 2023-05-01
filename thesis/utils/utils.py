@@ -81,7 +81,8 @@ class Experiment:
             two_fleets = two_fleets,
         )
         if self.trainer is not None:
-            self.trainer = None
+            for pol in self.trainer.workers.local_worker().policy_dict.keys():
+                self.trainer.workers.local_worker().get_policy(pol).model.cpu()
             time.sleep(60)
         if algo=="ppo":
             self.trainer =  ppo.PPO(config, logger_creator=logger_creator)

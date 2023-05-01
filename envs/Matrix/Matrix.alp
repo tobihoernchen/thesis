@@ -252,7 +252,7 @@ else
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[0]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -276,7 +276,7 @@ else
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[6]]></Code>
+							<Code><![CDATA[8]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656344279462</Id>
@@ -5398,14 +5398,14 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
+						<Point><X>-22.361</X><Y>11.18</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
 						<Point><X>-25</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>-20</X><Y>10</Y><Z>0</Z></Point>
 						<Point><X>5</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>-7</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>2.361</X><Y>-1.18</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -13292,7 +13292,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
 						<Type><![CDATA[double]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[2]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -13436,7 +13436,7 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068104988</Id>
 					<Name><![CDATA[getUnblocked]]></Name>
-					<X>340</X><Y>580</Y>
+					<X>340</X><Y>600</Y>
 					<Label><X>-66</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13444,21 +13444,10 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 					<Properties>	
 					</Properties>	
 				</StatechartElement>
-				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
-					<Id>1656068092401</Id>
-					<Name><![CDATA[getBlocked]]></Name>
-					<X>310</X><Y>550</Y>
-					<Label><X>65</X><Y>-85</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<Properties>	
-					</Properties>	
-				</StatechartElement>
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655918031397</Id>
 					<Name><![CDATA[driving]]></Name>
-					<X>180</X><Y>490</Y>
+					<X>180</X><Y>510</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13486,7 +13475,7 @@ requestPending = false;
 				<StatechartElement Class="State" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056734573</Id>
 					<Name><![CDATA[blocked]]></Name>
-					<X>390</X><Y>530</Y>
+					<X>390</X><Y>550</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13498,7 +13487,18 @@ requestPending = false;
 				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1682057901563</Id>
 					<Name><![CDATA[branch]]></Name>
-					<X>360</X><Y>550</Y>
+					<X>340</X><Y>570</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="inSystem" ParentStateId="1656057083242">
+					<Id>1682583130188</Id>
+					<Name><![CDATA[branch1]]></Name>
+					<X>200</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13524,17 +13524,17 @@ requestPending = false;
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919215869</Id>
 					<Name><![CDATA[newNextNode]]></Name>
-					<X>200</X><Y>440</Y>
+					<X>200</X><Y>490</Y>
 					<Label><X>5</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>50</Y></Point>
+						<Point><X>0</X><Y>20</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1655919201546" Target="1655918031397" Trigger="condition">
+					<Properties Source="1682583130188" Target="1655918031397" Trigger="condition">
 						<Action><![CDATA[moving = true;
 driveStartTime = time();
 lastNode = currentNode;
@@ -13566,7 +13566,7 @@ if(contents().size() == 1)
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
 						</Rate>
 						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
+						<DefaultTransition>false</DefaultTransition>
 						<FilterType><![CDATA[unconditionally]]></FilterType>
 						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
@@ -13575,7 +13575,7 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1655919360333</Id>
 					<Name><![CDATA[atTarget]]></Name>
-					<X>180</X><Y>520</Y>
+					<X>180</X><Y>540</Y>
 					<Label><X>-60</X><Y>-235</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13583,8 +13583,8 @@ if(contents().size() == 1)
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>-50</X><Y>0</Y></Point>
-						<Point><X>-50</X><Y>-110</Y></Point>
-						<Point><X>0</X><Y>-110</Y></Point>
+						<Point><X>-50</X><Y>-130</Y></Point>
+						<Point><X>0</X><Y>-130</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655918031397" Target="1655919201546" Trigger="arrival">
@@ -13614,14 +13614,14 @@ if(((PointNode)nextNode).getRadius() == 10)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056770050</Id>
 					<Name><![CDATA[transition3]]></Name>
-					<X>372</X><Y>550</Y>
+					<X>352</X><Y>570</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>18</X><Y>0</Y></Point>
+						<Point><X>38</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1682057901563" Target="1656056734573" Trigger="condition">
@@ -13650,7 +13650,7 @@ blockTime = time();]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656056843027</Id>
 					<Name><![CDATA[transition4]]></Name>
-					<X>328</X><Y>580</Y>
+					<X>328</X><Y>600</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13773,19 +13773,37 @@ if(contents().size() == 1)
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068115446</Id>
 					<Name><![CDATA[transition7]]></Name>
-					<X>280</X><Y>530</Y>
+					<X>280</X><Y>570</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>10</X><Y>0</Y></Point>
-						<Point><X>10</X><Y>20</Y></Point>
-						<Point><X>18</X><Y>20</Y></Point>
+						<Point><X>48</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1655918031397" Target="1656068092401" Trigger="timeout">
+					<Properties Source="1655918031397" Target="1682057901563" Trigger="timeout">
+						<Action><![CDATA[if(!hasJumped && distanceTo(nodePos, main.unit)<0.11)
+{
+	stop();
+	setXYZ((Point)nodePos);
+	setRotation(nodePos.rotation);
+	if(contents().size() == 1)
+	{
+		contents().get(0).stop();
+		contents().get(0).setXYZ((Point)nodePos);
+		contents().get(0).setRotation(nodePos.rotation);
+	}
+	hasJumped = true;
+	stop();
+	moveTo(decPos);
+	if(contents().size() == 1)
+	{
+		contents().get(0).stop();
+		contents().get(0).moveTo(decPos);
+	}
+}]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[0.1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -13803,39 +13821,9 @@ if(contents().size() == 1)
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
-					<Id>1656068144722</Id>
-					<Name><![CDATA[transition8]]></Name>
-					<X>322</X><Y>550</Y>
-					<Label><X>10</X><Y>0</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>false</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>26</X><Y>0</Y></Point>
-					</Points>
-					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656068092401" Target="1682057901563" Trigger="timeout">
-						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
-						</Timeout>
-						<Condition><![CDATA[true]]></Condition>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
-						</Rate>
-						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
-						<FilterType><![CDATA[unconditionally]]></FilterType>
-						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
-					</Properties>	
-				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068184137</Id>
 					<Name><![CDATA[transition9]]></Name>
-					<X>340</X><Y>590</Y>
+					<X>340</X><Y>610</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13869,7 +13857,7 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656068215134</Id>
 					<Name><![CDATA[transition10]]></Name>
-					<X>390</X><Y>570</Y>
+					<X>390</X><Y>590</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -13901,19 +13889,17 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656070315464</Id>
 					<Name><![CDATA[RequestNewCommand]]></Name>
-					<X>225</X><Y>380</Y>
-					<Label><X>10</X><Y>-45</Y></Label>
+					<X>200</X><Y>440</Y>
+					<Label><X>-70</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-50</Y></Point>
-						<Point><X>10</X><Y>-50</Y></Point>
-						<Point><X>10</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>30</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1655919201546" Target="1655919201546" Trigger="timeout">
+					<Properties Source="1655919201546" Target="1682583130188" Trigger="timeout">
 						<Action><![CDATA[requestPending = true;
 moving = false;]]></Action>
 						<Timeout Class="CodeUnitValue">
@@ -13998,48 +13984,6 @@ main.controller.agvHandleBlock(this, null);]]></Action>
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
-					<Id>1656157757583</Id>
-					<Name><![CDATA[ReceiveNewCommand]]></Name>
-					<X>245</X><Y>380</Y>
-					<Label><X>11</X><Y>-30</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-35</Y></Point>
-						<Point><X>10</X><Y>-35</Y></Point>
-						<Point><X>10</X><Y>0</Y></Point>
-					</Points>
-					<IconOffset>20.0</IconOffset>
-					<Properties Source="1655919201546" Target="1655919201546" Trigger="message">
-						<Action><![CDATA[//Fahre zum vorgegebenen Knoten wenn er erreichbar ist
-
-INode[] possible = nodesInReach(currentNode, lastNode);
-if((int)msg[1] > 0)
-{
-	int index = (int)msg[1]-1;
-	if(possible.length > (index))
-		if(possible[index] != null)
-			drive(possible[index]);
-}]]></Action>
-						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
-						</Timeout>
-						<Condition><![CDATA[true]]></Condition>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
-						</Rate>
-						<MessageType><![CDATA[Object[]]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
-						<FilterType><![CDATA[satisfies]]></FilterType>
-						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[(String)msg[0] == "ac"]]></SatisfiesExpression>
-					</Properties>	
-				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1656163443930</Id>
 					<Name><![CDATA[transition]]></Name>
 					<X>280</X><Y>390</Y>
@@ -14102,55 +14046,9 @@ if((int)msg[1] > 0)
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
-					<Id>1682023617612</Id>
-					<Name><![CDATA[skipNodeEnd]]></Name>
-					<X>310</X><Y>540</Y>
-					<Label><X>-50</X><Y>-80</Y></Label>
-					<PublicFlag>false</PublicFlag>
-					<PresentationFlag>true</PresentationFlag>
-					<ShowLabel>true</ShowLabel>
-					<Points>
-						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-20</Y></Point>
-						<Point><X>-30</X><Y>-20</Y></Point>
-					</Points>
-					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656068092401" Target="1655918031397" Trigger="condition">
-						<Action><![CDATA[stop();
-jumpTo(nodePos);
-if(contents().size() == 1)
-{
-	contents().get(0).stop();
-	contents().get(0).jumpTo(nodePos);
-}
-hasJumped = true;
-stop();
-moveTo(decPos);
-if(contents().size() == 1)
-{
-	contents().get(0).stop();
-	contents().get(0).moveTo(decPos);
-}]]></Action>
-						<Timeout Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
-						</Timeout>
-						<Condition><![CDATA[!hasJumped && distanceTo(nodePos, main.unit)<0.11]]></Condition>
-						<Rate Class="CodeUnitValue">
-							<Code><![CDATA[1]]></Code>
-							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
-						</Rate>
-						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>false</DefaultTransition>
-						<FilterType><![CDATA[unconditionally]]></FilterType>
-						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
-						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
-					</Properties>	
-				</StatechartElement>
-				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
 					<Id>1682057921531</Id>
 					<Name><![CDATA[transition2]]></Name>
-					<X>360</X><Y>540</Y>
+					<X>340</X><Y>560</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14158,10 +14056,41 @@ if(contents().size() == 1)
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
 						<Point><X>0</X><Y>-30</Y></Point>
-						<Point><X>-80</X><Y>-30</Y></Point>
+						<Point><X>-60</X><Y>-30</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1682057901563" Target="1655918031397" Trigger="timeout">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
+					<Id>1682583140906</Id>
+					<Name><![CDATA[transition6]]></Name>
+					<X>212</X><Y>480</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>48</X><Y>0</Y></Point>
+						<Point><X>48</X><Y>-40</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1682583130188" Target="1655919201546" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -14373,16 +14302,16 @@ for(int i = 0; i<n_connections; i++)
 	INode start = node;
 	IPath path = start.getConnection(i);
 	INode end = path.getOtherNode(start);
+	Point direction = path.getTarget() == start ? path.getEndPoint() : path.getStartPoint();
 	if(!path.isBidirectional() && path.getTarget() == start)
 		continue;
 	if(end != oldNode)
 	{
-		double angle = angle(start, end);
+		double angle = angle(((PointNode)start).getXYZ(), direction);
 		Object[] nodeAnglePair = {
-			path.getOtherNode(node), 
+			end, 
 			angle
 		};
-		
 		nodeAnglePairs.add(nodeAnglePair);
 	}
 }
@@ -14534,15 +14463,14 @@ deliver(msg, main.controller);]]></Body>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Parameter>
-						<Name><![CDATA[Istart]]></Name>
-						<Type><![CDATA[INode]]></Type>
+						<Name><![CDATA[start]]></Name>
+						<Type><![CDATA[Point]]></Type>
 					</Parameter>
 					<Parameter>
-						<Name><![CDATA[Iend]]></Name>
-						<Type><![CDATA[INode]]></Type>
+						<Name><![CDATA[end]]></Name>
+						<Type><![CDATA[Point]]></Type>
 					</Parameter>
-					<Body><![CDATA[PointNode start = (PointNode) Istart;
-PointNode end = (PointNode) Iend;
+					<Body><![CDATA[
 double result = 0.0;
 double dx = end.getX() - start.getX();
 double dy = end.getY() - start.getY();
@@ -14788,7 +14716,7 @@ if(currentNode == path.getSource())
 {
 	rotation = path.getEndPosition().rotation;
 	if(((PointNode)nextNode).getRadius() != 5)
-		toMoveDec = path.getPointAtOffset(path.length(main.unit) - decisionOffset, main.unit, null);
+		toMoveDec = path.getPointAtOffset(max(path.length(main.unit) - decisionOffset,0), main.unit, null);
 	toMoveNode = path.getPointAtOffset(0.01, main.unit, null);
 
 }
@@ -14796,7 +14724,7 @@ else
 {
 	rotation = path.getStartPosition().rotation + PI;
 	if(((PointNode)nextNode).getRadius() != 5)
-		toMoveDec = path.getPointAtOffset(decisionOffset, main.unit, null);
+		toMoveDec = path.getPointAtOffset(min(decisionOffset, path.length(main.unit)), main.unit, null);
 	toMoveNode = path.getPointAtOffset(path.length(main.unit) - 0.01, main.unit, null);
 }
 
@@ -14850,9 +14778,8 @@ return main.RL_reward_accepted_in_station * reward_factor;
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[boolean gotPassed = false;
 for(Agv a : main.agvs)
-	if(a != this && a.currentNode == nextNode)
-		if(distanceTo(a, main.unit) < 5)
-			gotPassed = true;
+	if(a != this && a.moving && a.currentNode == nextNode)
+		gotPassed = true;
 if(gotPassed)
 {
 	main.controller.addReward(main.RL_reward_pass, this, false);
@@ -14920,7 +14847,7 @@ if(gotPassed)
 				<Rectangle>
 					<Id>1657313175079</Id>
 					<Name><![CDATA[rectangle]]></Name>
-					<X>0</X><Y>-50</Y>
+					<X>0</X><Y>-55</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -14934,8 +14861,8 @@ if(gotPassed)
 					<LineColor/>
 					<LineMaterial>null</LineMaterial>
 					<LineStyle>DASHED</LineStyle>
-					<Width>80</Width>
-					<Height>100</Height>
+					<Width>85</Width>
+					<Height>110</Height>
 					<Rotation>0.0</Rotation>
 					<FillColor>1006632704</FillColor>
 					<FillMaterial>null</FillMaterial>
@@ -17754,7 +17681,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656246758345</Id>
 					<Name><![CDATA[branch]]></Name>
-					<X>150</X><Y>440</Y>
+					<X>180</X><Y>450</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -17777,7 +17704,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656245842874</Id>
 					<Name><![CDATA[dropoff]]></Name>
-					<X>400</X><Y>360</Y>
+					<X>440</X><Y>360</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -17789,7 +17716,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656180090755</Id>
 					<Name><![CDATA[branch1]]></Name>
-					<X>445</X><Y>465</Y>
+					<X>480</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -17800,7 +17727,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<StatechartElement Class="State" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656180059996</Id>
 					<Name><![CDATA[waitForDropoff]]></Name>
-					<X>400</X><Y>520</Y>
+					<X>440</X><Y>520</Y>
 					<Label><X>10</X><Y>10</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -17858,6 +17785,61 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 					<Properties Type="shallow">	
 					</Properties>	
 				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583285337</Id>
+					<Name><![CDATA[branch2]]></Name>
+					<X>180</X><Y>490</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583320019</Id>
+					<Name><![CDATA[branch3]]></Name>
+					<X>480</X><Y>420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583412526</Id>
+					<Name><![CDATA[branch4]]></Name>
+					<X>400</X><Y>540</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583438021</Id>
+					<Name><![CDATA[branch5]]></Name>
+					<X>400</X><Y>370</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Branch" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583488170</Id>
+					<Name><![CDATA[branch6]]></Name>
+					<X>180</X><Y>420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Properties>	
+					</Properties>	
+				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656177750063</Id>
 					<Name><![CDATA[doWork]]></Name>
@@ -17868,10 +17850,10 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>40</X><Y>0</Y></Point>
+						<Point><X>28</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>10.0</IconOffset>
-					<Properties Source="1656177740154" Target="1656180059996" Trigger="timeout">
+					<Properties Source="1656177740154" Target="1682583412526" Trigger="timeout">
 						<Action><![CDATA[if(isGeo())
 {
 	send(this.getName().substring(1),myPart);
@@ -17928,17 +17910,17 @@ main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656180095790</Id>
 					<Name><![CDATA[fixAgv2]]></Name>
-					<X>445</X><Y>455</Y>
+					<X>480</X><Y>470</Y>
 					<Label><X>-45</X><Y>-35</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-65</Y></Point>
+						<Point><X>0</X><Y>-40</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656180090755" Target="1656245842874" Trigger="timeout">
+					<Properties Source="1656180090755" Target="1682583320019" Trigger="timeout">
 						<Action><![CDATA[if(myAgv == null)
 {
 	Agv a = findEmptyAgv();
@@ -17970,14 +17952,14 @@ main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656180103613</Id>
 					<Name><![CDATA[transition5]]></Name>
-					<X>445</X><Y>520</Y>
+					<X>480</X><Y>520</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-45</Y></Point>
+						<Point><X>0</X><Y>-30</Y></Point>
 					</Points>
 					<IconOffset>10.0</IconOffset>
 					<Properties Source="1656180059996" Target="1656180090755" Trigger="timeout">
@@ -18000,15 +17982,15 @@ main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656180116681</Id>
 					<Name><![CDATA[transition6]]></Name>
-					<X>457</X><Y>465</Y>
+					<X>492</X><Y>480</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>13</X><Y>0</Y></Point>
-						<Point><X>13</X><Y>55</Y></Point>
+						<Point><X>18</X><Y>0</Y></Point>
+						<Point><X>18</X><Y>40</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656180090755" Target="1656180059996" Trigger="timeout">
@@ -18031,17 +18013,18 @@ main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656180187613</Id>
 					<Name><![CDATA[newPart]]></Name>
-					<X>290</X><Y>390</Y>
+					<X>192</X><Y>420</Y>
 					<Label><X>0</X><Y>60</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>130</Y></Point>
+						<Point><X>98</X><Y>0</Y></Point>
+						<Point><X>98</X><Y>100</Y></Point>
 					</Points>
 					<IconOffset>10.0</IconOffset>
-					<Properties Source="1656177729805" Target="1656177740154" Trigger="condition">
+					<Properties Source="1682583488170" Target="1656177740154" Trigger="condition">
 						<Action><![CDATA[myPart = main.add_parts(partFamily, getPartVariant());
 myPart.jumpTo(getPosition().x, getPosition().y);
 main.controller.getStatistic("newPart", 1.0, false);]]></Action>
@@ -18055,7 +18038,7 @@ main.controller.getStatistic("newPart", 1.0, false);]]></Action>
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
 						</Rate>
 						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
+						<DefaultTransition>false</DefaultTransition>
 						<FilterType><![CDATA[unconditionally]]></FilterType>
 						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
@@ -18064,17 +18047,17 @@ main.controller.getStatistic("newPart", 1.0, false);]]></Action>
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656245860540</Id>
 					<Name><![CDATA[give_and_release]]></Name>
-					<X>400</X><Y>370</Y>
+					<X>440</X><Y>370</Y>
 					<Label><X>-55</X><Y>-20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>-30</X><Y>0</Y></Point>
+						<Point><X>-28</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>10.0</IconOffset>
-					<Properties Source="1656245842874" Target="1656177729805" Trigger="timeout">
+					<Properties Source="1656245842874" Target="1682583438021" Trigger="timeout">
 						<Action><![CDATA[myAgv.addAgentToContents(myPart);
 myPart.jumpTo(myAgv.getPosition().x, myAgv.getPosition().y);
 myPart = null;
@@ -18100,19 +18083,19 @@ myAgv = null;]]></Action>
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656246602444</Id>
 					<Name><![CDATA[destroyPart]]></Name>
-					<X>420</X><Y>520</Y>
+					<X>400</X><Y>530</Y>
 					<Label><X>-65</X><Y>-50</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-40</Y></Point>
-						<Point><X>-70</X><Y>-40</Y></Point>
-						<Point><X>-70</X><Y>-130</Y></Point>
+						<Point><X>0</X><Y>-50</Y></Point>
+						<Point><X>-50</X><Y>-50</Y></Point>
+						<Point><X>-50</X><Y>-140</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656180059996" Target="1656177729805" Trigger="condition">
+					<Properties Source="1682583412526" Target="1656177729805" Trigger="condition">
 						<Action><![CDATA[send("destroy", myPart);
 
 main.controller.getStatistic("jobDone", 1.0, false);
@@ -18130,7 +18113,7 @@ main.controller.addReward(main.RL_reward_part_completed, myAgv, true);
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
 						</Rate>
 						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
+						<DefaultTransition>false</DefaultTransition>
 						<FilterType><![CDATA[unconditionally]]></FilterType>
 						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
@@ -18139,17 +18122,17 @@ main.controller.addReward(main.RL_reward_part_completed, myAgv, true);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656246690052</Id>
 					<Name><![CDATA[transition7]]></Name>
-					<X>150</X><Y>390</Y>
+					<X>180</X><Y>390</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>40</Y></Point>
+						<Point><X>0</X><Y>20</Y></Point>
 					</Points>
 					<IconOffset>10.0</IconOffset>
-					<Properties Source="1656177729805" Target="1656246758345" Trigger="timeout">
+					<Properties Source="1656177729805" Target="1682583488170" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[0.5]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -18169,15 +18152,15 @@ main.controller.addReward(main.RL_reward_part_completed, myAgv, true);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656246763223</Id>
 					<Name><![CDATA[transition8]]></Name>
-					<X>162</X><Y>440</Y>
+					<X>168</X><Y>450</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>8</X><Y>0</Y></Point>
-						<Point><X>8</X><Y>-50</Y></Point>
+						<Point><X>-18</X><Y>0</Y></Point>
+						<Point><X>-18</X><Y>-60</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656246758345" Target="1656177729805" Trigger="timeout">
@@ -18200,17 +18183,17 @@ main.controller.addReward(main.RL_reward_part_completed, myAgv, true);
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656246783659</Id>
 					<Name><![CDATA[fixAgv]]></Name>
-					<X>150</X><Y>450</Y>
+					<X>180</X><Y>460</Y>
 					<Label><X>-40</X><Y>15</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>70</Y></Point>
+						<Point><X>0</X><Y>20</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656246758345" Target="1656246657328" Trigger="timeout">
+					<Properties Source="1656246758345" Target="1682583285337" Trigger="timeout">
 						<Action><![CDATA[Agv a = findFullAgv();
 if(a.fix())
 {
@@ -18352,22 +18335,84 @@ if(separateAgvPart || isLast)
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1662724098490</Id>
 					<Name><![CDATA[transition2]]></Name>
-					<X>180</X><Y>520</Y>
+					<X>168</X><Y>490</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-130</Y></Point>
+						<Point><X>-28</X><Y>0</Y></Point>
+						<Point><X>-28</X><Y>-100</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656246657328" Target="1656177729805" Trigger="condition">
+					<Properties Source="1682583285337" Target="1656177729805" Trigger="condition">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
 						<Condition><![CDATA[myAgv == null]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>false</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1662724619548</Id>
+					<Name><![CDATA[transition3]]></Name>
+					<X>492</X><Y>420</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>28</X><Y>0</Y></Point>
+						<Point><X>28</X><Y>100</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1682583320019" Target="1656180059996" Trigger="condition">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[myAgv == null]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>false</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583297464</Id>
+					<Name><![CDATA[transition4]]></Name>
+					<X>180</X><Y>500</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>20</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1682583285337" Target="1656246657328" Trigger="timeout">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
 						<Rate Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
@@ -18380,24 +18425,114 @@ if(separateAgvPart || isLast)
 					</Properties>	
 				</StatechartElement>
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
-					<Id>1662724619548</Id>
-					<Name><![CDATA[transition3]]></Name>
-					<X>480</X><Y>390</Y>
+					<Id>1682583332422</Id>
+					<Name><![CDATA[transition9]]></Name>
+					<X>480</X><Y>410</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>130</Y></Point>
+						<Point><X>0</X><Y>-20</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1656245842874" Target="1656180059996" Trigger="condition">
+					<Properties Source="1682583320019" Target="1656245842874" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
-						<Condition><![CDATA[myAgv == null]]></Condition>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583428573</Id>
+					<Name><![CDATA[transition10]]></Name>
+					<X>412</X><Y>540</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>28</X><Y>0</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1682583412526" Target="1656180059996" Trigger="timeout">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583444224</Id>
+					<Name><![CDATA[transition11]]></Name>
+					<X>388</X><Y>370</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>-18</X><Y>0</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1682583438021" Target="1656177729805" Trigger="timeout">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1682583493661</Id>
+					<Name><![CDATA[transition12]]></Name>
+					<X>180</X><Y>430</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>10</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1682583488170" Target="1656246758345" Trigger="timeout">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
 						<Rate Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
