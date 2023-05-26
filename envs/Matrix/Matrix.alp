@@ -252,7 +252,7 @@ else
 						<UnitType><![CDATA[NONE]]></UnitType>
 						<SdArray>false</SdArray>
 						<DefaultValue Class="CodeValue">
-							<Code><![CDATA[0]]></Code>
+							<Code><![CDATA[3]]></Code>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1656161191954</Id>
@@ -1269,8 +1269,8 @@ else
 		getFeedback(Integer.class);
 	RL_dispatch = py.runResults("get_config('dispatch')").
 		getFeedback(Boolean.class);
-	RL_fixed_fleets = py.runResults("get_config('fixed_fleets')").
-		getFeedback(Boolean.class);
+	//RL_fixed_fleets = py.runResults("get_config('fixed_fleets')").
+	//	getFeedback(Boolean.class);
 	RL_routing_ma = py.runResults("get_config('routing_ma')").
 		getFeedback(Boolean.class);
 	RL_dispatching_ma = py.runResults("get_config('dispatching_ma')").
@@ -5282,10 +5282,10 @@ return str;]]></Body>
 						<Unit Class="SpeedUnits"><![CDATA[MPS]]></Unit>
 					</SpeedLimitValue>
 				</PointNode>
-				<Path SourceId="1667839969484" TargetId="1667839969496">
+				<Path SourceId="1667839969496" TargetId="1667839969484">
 					<Id>1667839969498</Id>
 					<Name><![CDATA[path61]]></Name>
-					<X>160</X><Y>210</Y>
+					<X>160</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5303,11 +5303,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -5676,10 +5676,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840161097" TargetId="1667840161085">
+				<Path SourceId="1667840161085" TargetId="1667840161097">
 					<Id>1667840161099</Id>
 					<Name><![CDATA[path69]]></Name>
-					<X>235</X><Y>210</Y>
+					<X>235</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -5697,11 +5697,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6070,10 +6070,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840165056" TargetId="1667840165044">
+				<Path SourceId="1667840165044" TargetId="1667840165056">
 					<Id>1667840165058</Id>
 					<Name><![CDATA[path77]]></Name>
-					<X>305</X><Y>210</Y>
+					<X>305</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6091,11 +6091,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6464,10 +6464,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840172311" TargetId="1667840172299">
+				<Path SourceId="1667840172299" TargetId="1667840172311">
 					<Id>1667840172313</Id>
 					<Name><![CDATA[path93]]></Name>
-					<X>380</X><Y>210</Y>
+					<X>380</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6485,11 +6485,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -6858,10 +6858,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840175867" TargetId="1667840175855">
+				<Path SourceId="1667840175855" TargetId="1667840175867">
 					<Id>1667840175869</Id>
 					<Name><![CDATA[path117]]></Name>
-					<X>450</X><Y>210</Y>
+					<X>450</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -6879,11 +6879,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -7252,10 +7252,10 @@ return str;]]></Body>
 					<LimitNumberOfTransporters>false</LimitNumberOfTransporters>
 					<LimitNumberOfTransportersValue>10</LimitNumberOfTransportersValue>
 				</Path>
-				<Path SourceId="1667840179565" TargetId="1667840179553">
+				<Path SourceId="1667840179553" TargetId="1667840179565">
 					<Id>1667840179567</Id>
 					<Name><![CDATA[path149]]></Name>
-					<X>520</X><Y>210</Y>
+					<X>520</X><Y>220</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -7273,11 +7273,11 @@ return str;]]></Body>
 					</Width>
 					<Points>
 						<Point><X>0</X><Y>0</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>25</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>10</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
-						<Point><X>0</X><Y>-15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-25</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>-10</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
+						<Point><X>0</X><Y>15</Y><Z>0</Z></Point>
 					</Points>
 					<Bidirectional>true</Bidirectional>
 					<SpeedLimit>false</SpeedLimit>
@@ -13465,7 +13465,8 @@ DispatchTimeout.restart(0.1, SECOND);]]></StartupCode>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="60">
-						<EntryAction><![CDATA[if(requestPending)
+						<EntryAction><![CDATA[moving = false;
+if(requestPending)
 	requestCommand();
 requestPending = false;
 ]]></EntryAction>
@@ -13591,8 +13592,6 @@ if(contents().size() == 1)
 						<Action><![CDATA[sendDurationReward();
 hasJumped = false;
 currentNode = nextNode;
-//if(currentNode == targetNode)
-//	requestDispatch();
 if(((PointNode)nextNode).getRadius() == 10)
 	requestPending = true;]]></Action>
 						<Timeout Class="CodeUnitValue">
@@ -13784,7 +13783,7 @@ if(contents().size() == 1)
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655918031397" Target="1682057901563" Trigger="timeout">
-						<Action><![CDATA[if(!hasJumped && distanceTo(nodePos, main.unit)<0.11)
+						<Action><![CDATA[if(!hasJumped && ((PointNode)nextNode).getRadius() != 5 && distanceTo(nodePos, main.unit)<0.11)
 {
 	stop();
 	setXYZ((Point)nodePos);
@@ -13900,8 +13899,7 @@ main.controller.agvHandleBlock(this, scannerFree());]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1655919201546" Target="1682583130188" Trigger="timeout">
-						<Action><![CDATA[requestPending = true;
-moving = false;]]></Action>
+						<Action><![CDATA[requestPending = true;]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[main.RL_routing_interval]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -13932,10 +13930,10 @@ moving = false;]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656057083242" Target="1656071070696" Trigger="message">
-						<Action><![CDATA[setXY(.0, .0);
+						<Action><![CDATA[//setXY(.0, .0);
 moving = false;
-if(contents().size() == 1)
-	contents().get(0).setXY(.0, .0);
+//if(contents().size() == 1)
+//	contents().get(0).setXY(.0, .0);
 main.controller.agvHandleBlock(this, null);]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
@@ -14028,7 +14026,7 @@ main.controller.agvHandleBlock(this, null);]]></Action>
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1656163405042" Target="1655919201546" Trigger="message">
-						<Action><![CDATA[//requestDispatch();]]></Action>
+						<Action><![CDATA[requestPending = true;]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -14107,6 +14105,37 @@ main.controller.agvHandleBlock(this, null);]]></Action>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
 					</Properties>	
 				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="inSystem" ParentStateId="1656057083242">
+					<Id>1683459798923</Id>
+					<Name><![CDATA[transition8]]></Name>
+					<X>215</X><Y>440</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>20</Y></Point>
+						<Point><X>-15</X><Y>30</Y></Point>
+					</Points>
+					<IconOffset>20.0</IconOffset>
+					<Properties Source="1655919201546" Target="1682583130188" Trigger="message">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[equalsTo]]></FilterType>
+						<EqualsExpression><![CDATA["drive"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
 			</StatechartElements>
 			<Events>
 				<Event>
@@ -14138,7 +14167,8 @@ main.controller.agvHandleBlock(this, null);]]></Action>
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[requestDispatch();]]></Action>
+					<Action><![CDATA[main.controller.getStatistic("notArrived", 1.0, false);
+requestDispatch();]]></Action>
 				</Event>
 			</Events>
 			<Functions>
@@ -14274,7 +14304,7 @@ for(int i = 0; i<n_nodes; i++)
 						<Type><![CDATA[INode]]></Type>
 					</Parameter>
 					<Body><![CDATA[nextNode = target;
-statechart.onChange();]]></Body>
+statechart.fireEvent("drive");]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
@@ -14716,16 +14746,19 @@ if(currentNode == path.getSource())
 {
 	rotation = path.getEndPosition().rotation;
 	if(((PointNode)nextNode).getRadius() != 5)
+	{
 		toMoveDec = path.getPointAtOffset(max(path.length(main.unit) - decisionOffset,0), main.unit, null);
-	toMoveNode = path.getPointAtOffset(0.01, main.unit, null);
-
+		toMoveNode = path.getPointAtOffset(0.01, main.unit, null);
+	}
 }
 else
 {
 	rotation = path.getStartPosition().rotation + PI;
 	if(((PointNode)nextNode).getRadius() != 5)
+	{
 		toMoveDec = path.getPointAtOffset(min(decisionOffset, path.length(main.unit)), main.unit, null);
-	toMoveNode = path.getPointAtOffset(path.length(main.unit) - 0.01, main.unit, null);
+		toMoveNode = path.getPointAtOffset(path.length(main.unit) - 0.01, main.unit, null);
+	}
 }
 
 decPos = new Position(toMoveDec, rotation, 0);
@@ -15652,7 +15685,7 @@ while(toInspect.size()>0){
 		{
 			if(a == next)
 			{
-				traceln(((PointNode)a.nextNode).getXYZ());
+				//traceln(((PointNode)a.nextNode).getXYZ());
 				for(Agv b: blockCircle)
 				{
 					b.sendBlock();
@@ -17391,6 +17424,18 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 						</InitialValue>
 					</Properties>
 				</Variable>
+				<Variable Class="PlainVariable">
+					<Id>1683907486492</Id>
+					<Name><![CDATA[workFinishTime]]></Name>
+					<X>520</X><Y>50</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" Constant="false" AccessType="public" StaticVariable="false">
+						<Type><![CDATA[double]]></Type>        
+					</Properties>
+				</Variable>
 				<Variable Class="Parameter">
 					<Id>1656177936043</Id>
 					<Name><![CDATA[node]]></Name>
@@ -17745,8 +17790,12 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Properties Width="100" Height="30">
-						<EntryAction><![CDATA[if(!isGeo() && !isRework())
-	initRespots();]]></EntryAction>
+						<EntryAction><![CDATA[if(workFinishTime < time())
+{
+	if(!isGeo() && !isRework())
+		initRespots();
+	workFinishTime = time()+workDuration();
+}]]></EntryAction>
 						<FillColor/>
 					</Properties>
 				</StatechartElement>
@@ -17843,7 +17892,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656177750063</Id>
 					<Name><![CDATA[doWork]]></Name>
-					<X>360</X><Y>540</Y>
+					<X>412</X><Y>540</Y>
 					<Label><X>-5</X><Y>20</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -17853,7 +17902,7 @@ main.controller.getStatistic("jobDone", 0.0, false);]]></StartupCode>
 						<Point><X>28</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>10.0</IconOffset>
-					<Properties Source="1656177740154" Target="1682583412526" Trigger="timeout">
+					<Properties Source="1682583412526" Target="1656180059996" Trigger="timeout">
 						<Action><![CDATA[if(isGeo())
 {
 	send(this.getName().substring(1),myPart);
@@ -17880,13 +17929,13 @@ main.controller.getStatistic("_jobnum_" + getName(), 1.0, false);
 							<Code><![CDATA[workDuration()]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</Timeout>
-						<Condition><![CDATA[true]]></Condition>
+						<Condition><![CDATA[time() > workFinishTime]]></Condition>
 						<Rate Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
 						</Rate>
 						<MessageType><![CDATA[Object]]></MessageType>
-						<DefaultTransition>true</DefaultTransition>
+						<DefaultTransition>false</DefaultTransition>
 						<FilterType><![CDATA[equalsTo]]></FilterType>
 						<EqualsExpression><![CDATA["end"]]></EqualsExpression>
 						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
@@ -18083,19 +18132,19 @@ myAgv = null;]]></Action>
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1656246602444</Id>
 					<Name><![CDATA[destroyPart]]></Name>
-					<X>400</X><Y>530</Y>
+					<X>460</X><Y>520</Y>
 					<Label><X>-65</X><Y>-50</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>0</X><Y>-50</Y></Point>
-						<Point><X>-50</X><Y>-50</Y></Point>
-						<Point><X>-50</X><Y>-140</Y></Point>
+						<Point><X>0</X><Y>-40</Y></Point>
+						<Point><X>-110</X><Y>-40</Y></Point>
+						<Point><X>-110</X><Y>-130</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1682583412526" Target="1656177729805" Trigger="condition">
+					<Properties Source="1656180059996" Target="1656177729805" Trigger="condition">
 						<Action><![CDATA[send("destroy", myPart);
 
 main.controller.getStatistic("jobDone", 1.0, false);
@@ -18457,17 +18506,31 @@ if(separateAgvPart || isLast)
 				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
 					<Id>1682583428573</Id>
 					<Name><![CDATA[transition10]]></Name>
-					<X>412</X><Y>540</Y>
+					<X>400</X><Y>550</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
 					<Points>
 						<Point><X>0</X><Y>0</Y></Point>
-						<Point><X>28</X><Y>0</Y></Point>
+						<Point><X>0</X><Y>10</Y></Point>
+						<Point><X>-50</X><Y>10</Y></Point>
+						<Point><X>-50</X><Y>0</Y></Point>
 					</Points>
 					<IconOffset>20.0</IconOffset>
-					<Properties Source="1682583412526" Target="1656180059996" Trigger="timeout">
+					<Properties Source="1682583412526" Target="1656177740154" Trigger="timeout">
+						<Action><![CDATA[if(!isLast && myAgv == null)
+{
+	Agv a = findEmptyAgv();
+	//deliver("fixed", a);
+	if(a != null && a.fix())
+	{
+		myAgv = a;
+		main.controller.addReward(main.RL_reward_accepted_in_station, myAgv, true);
+		if(isFirst)
+			main.controller.addBalanceReward(myAgv);
+	}
+}]]></Action>
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
@@ -18528,6 +18591,36 @@ if(separateAgvPart || isLast)
 					</Points>
 					<IconOffset>20.0</IconOffset>
 					<Properties Source="1682583488170" Target="1656246758345" Trigger="timeout">
+						<Timeout Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
+						</Timeout>
+						<Condition><![CDATA[true]]></Condition>
+						<Rate Class="CodeUnitValue">
+							<Code><![CDATA[1]]></Code>
+							<Unit Class="RateUnits"><![CDATA[PER_SECOND]]></Unit>
+						</Rate>
+						<MessageType><![CDATA[Object]]></MessageType>
+						<DefaultTransition>true</DefaultTransition>
+						<FilterType><![CDATA[unconditionally]]></FilterType>
+						<EqualsExpression><![CDATA["text"]]></EqualsExpression>
+						<SatisfiesExpression><![CDATA[true]]></SatisfiesExpression>
+					</Properties>	
+				</StatechartElement>
+				<StatechartElement Class="Transition" ParentState="operating" ParentStateId="1657311980602">
+					<Id>1683907696891</Id>
+					<Name><![CDATA[transition13]]></Name>
+					<X>360</X><Y>540</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<Points>
+						<Point><X>0</X><Y>0</Y></Point>
+						<Point><X>28</X><Y>0</Y></Point>
+					</Points>
+					<IconOffset>10.0</IconOffset>
+					<Properties Source="1656177740154" Target="1682583412526" Trigger="timeout">
 						<Timeout Class="CodeUnitValue">
 							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
