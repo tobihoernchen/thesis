@@ -5,25 +5,35 @@ from ..utils.double_trainer import DoubleTrainer, TripleTrainer
 from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
+### SETUP ###
 setup_ray(port=51160, unidirectional=False)
 pseudo = False
-model_path = "../../models/matrix_routing/08_reward_pass_1_8_20_2023-04-25_22-24-52"#trained_for_pypeline/new_all_pseudo"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
-checkpoint = 400
+model_path = "../../models/matrix_together/LAST_8_20_2023-06-04_09-41-09"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
+checkpoint = 700
+trainer_cls = TripleTrainer
+fleetsize = 12
+### END SETUP ###
+
+
 checkpoint_path = model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}"
 path = "D:/Master/Masterarbeit/thesis"
 with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)
 hparams["n_envs"] = 1
 hparams["run_class"] = "pypeline"
-#hparams["env_args"]["fleetsize"] = 8
+if fleetsize is not None:
+    hparams["env_args"]["fleetsize"] = fleetsize
+    hparams["env_args"]["fleetsize_upper"] = None
+
 if pseudo:
+    hparams["env_args"]["max_seconds"] = 10
     hparams["env_args"]["pseudo_dispatcher"] = True
     hparams["env_args"]["pseudo_dispatcher_clever"] = True
     hparams["env_args"]["pseudo_routing"] = True
-    hparams["env_args"]["max_seconds"] = 10
+    
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 1
-trainer = dqn.DQN(config, logger_creator=logger_creator)
+trainer = trainer_cls(config, logger_creator=logger_creator)
 if not pseudo:
     trainer.restore(checkpoint_path)
 

@@ -182,7 +182,7 @@ class TripleTrainer(Algorithm):
         # TODO: Use `max_env_steps=200` option of synchronous_parallel_sample instead.
         #if self._by_agent_steps:
         ma_batch = synchronous_parallel_sample(
-            worker_set=self.workers, max_agent_steps=self.get_policy("dispatcher1").config["train_batch_size"] * 4
+            worker_set=self.workers, max_agent_steps=self.get_policy("dispatcher1").config["train_batch_size"] * 16
         )
         # else:
         #     ma_batch = synchronous_parallel_sample(

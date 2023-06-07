@@ -8,6 +8,11 @@ from typing import Union, Tuple, Dict, Optional, NoReturn
 
 
 class AgvSlipCourse(BaseAlpyneEnv):
+    """
+    Gym-Adapter for the AGV Slipcourse-Environment (../../envs/AGV_SlipCourse)
+    model_path: path to the AnyLogic-model to connect to
+    max_steps: number of timesteps to run until an episode is finished
+    """
     def __init__(self, model_path, max_steps):
         self.client = AlpyneClient(model_path, port=51153)
         config = Configuration(inSlipChance=0.3)
@@ -28,7 +33,6 @@ class AgvSlipCourse(BaseAlpyneEnv):
 
     def _get_observation_space(self) -> spaces.Space:
         """Describe the dimensions and bounds of the observation"""
-
         return spaces.Box(
             low=0, high=1, shape=(len(self.sim.get_observation().values()[0]),)
         )

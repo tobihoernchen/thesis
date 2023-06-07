@@ -43,6 +43,7 @@ class Matrix(BaseAlpyneZoo):
         dispatching_policy:str = None,
         direction_reward = 0,
         client = None,
+        warmup_time = None,
     ):
         self.fleetsize =self.fleetsize_under =fleetsize
         self.fleetsize_upper = fleetsize_upper
@@ -53,6 +54,8 @@ class Matrix(BaseAlpyneZoo):
         self.routing_policy = routing_policy
         self.dispatching_policy = dispatching_policy
         self.direction_reward = direction_reward
+        self.warmup_time = warmup_time if warmup_time is not None else 0
+        self.warmup_statistics = None
 
         self.metadata = dict(is_parallelizable=True)
         self.statistics = None
@@ -239,7 +242,7 @@ class Matrix(BaseAlpyneZoo):
                                 ZooAgent(
                                     str(i),
                                     ApplyPolicyAgent(
-                                        self.agent_hive, self.dispatching_policy,
+                                        self.agent_hive, self.dispatching_policy if not isinstance(self.dispatching_policy, list) else self.dispatching_policy[i%2],
                                         self.ma_disp_cls(
                                             self.agent_hive,
                                             self.max_fleetsize,
@@ -420,7 +423,7 @@ class Matrix(BaseAlpyneZoo):
                     ZooAgent(
                         name,
                         ApplyPolicyAgent(
-                            self.agent_hive, self.dispatching_policy,
+                            self.agent_hive, self.dispatching_policy if not isinstance(self.dispatching_policy, list) else self.dispatching_policy[int(original_name)%2],
                             self.ma_disp_cls(
                                 self.agent_hive,
                                 self.max_fleetsize,
@@ -445,6 +448,8 @@ class Matrix(BaseAlpyneZoo):
         terminal_max_seconds = (
             time >= self.max_seconds if self.max_seconds is not None else False
         )
+        if time < self.warmup_time:
+            self.warmup_statistics = self.statistics.copy()
         return terminal_max_steps or terminal_max_seconds
 
     def close(self):

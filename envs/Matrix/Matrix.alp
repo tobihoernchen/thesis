@@ -1269,8 +1269,8 @@ else
 		getFeedback(Integer.class);
 	RL_dispatch = py.runResults("get_config('dispatch')").
 		getFeedback(Boolean.class);
-	//RL_fixed_fleets = py.runResults("get_config('fixed_fleets')").
-	//	getFeedback(Boolean.class);
+	RL_fixed_fleets = py.runResults("get_config('fixed_fleets')").
+		getFeedback(Boolean.class);
 	RL_routing_ma = py.runResults("get_config('routing_ma')").
 		getFeedback(Boolean.class);
 	RL_dispatching_ma = py.runResults("get_config('dispatching_ma')").
@@ -13540,6 +13540,7 @@ requestPending = false;
 driveStartTime = time();
 lastNode = currentNode;
 nextPathEndPoint();
+requestPending = false;
 
 if(targetNode == nextNode)
 	sendArrival(true);
@@ -14610,7 +14611,7 @@ main.controller.getStatistic("block", 1.0, false);
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
 					<Body><![CDATA[
-int factor = min(max(n_invalid-10, 0),20);
+int factor = min(max(n_invalid-10, 1),20);
 n_invalid +=1;
 main.controller.addReward(main.RL_reward_invalid * factor, this, false);
 main.controller.getStatistic("taken_invalid", 1.0, false);]]></Body>
@@ -14688,8 +14689,8 @@ if(direction > 0)
 //check for pass
 sendPassReward();
 
-if(currentNode != targetNode)
-	sendInvalid();]]></Body>
+//if(currentNode != targetNode)
+sendInvalid();]]></Body>
 				</Function>
 				<Function AccessType="default" StaticFunction="false">
 					<ReturnModificator>VOID</ReturnModificator>

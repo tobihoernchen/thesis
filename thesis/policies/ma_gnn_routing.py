@@ -26,6 +26,7 @@ class GNNFeatureExtractor(nn.Module):
         ff_embedd_dim = 0,
         activation=nn.LeakyReLU,
         n_convolutions=4,
+        with_node_info=False
     ) -> None:
         super().__init__()
         self.n_convolutions = n_convolutions
@@ -33,7 +34,7 @@ class GNNFeatureExtractor(nn.Module):
             self.basegraph = MatrixGraph()
         elif type == "minimatrix":
             self.basegraph = MiniMatrixGraph()
-
+        self.with_node_info = with_node_info
         self.with_pos_embedding =  position_embedd_dim > 0
         self.with_ff_embedding =  ff_embedd_dim > 0
         if self.with_pos_embedding:
@@ -42,7 +43,7 @@ class GNNFeatureExtractor(nn.Module):
             self.ff_encoder = FourierFeatureEmbedder(ff_embedd_dim)
 
         self.embedd_goal = self.get_embedder(4 + position_embedd_dim * 2 + ff_embedd_dim * 4+1, embed_dim, 1, activation, False)
-        self.embedd_node = self.get_embedder(22, embed_dim, len(self.basegraph.nodes), activation, False)
+        self.embedd_node = self.get_embedder(22 if not self.with_node_info else 24, embed_dim, len(self.basegraph.nodes), activation, False)
 
         node_convs = []
         for i in range(n_convolutions):
@@ -108,6 +109,8 @@ class GNNFeatureExtractor(nn.Module):
 
         distances = torch.norm(self.basegraph.nodes[None, :].repeat(obs_main.shape[0], 1, 1) - obs_main[:, :, 6:8], dim=2)
         node_info = torch.concat([node_info_main, node_info_agvs, node_info_stat, distances.unsqueeze(-1)], dim = 2).detach()
+        if self.with_node_info:
+            node_info = torch.concat([node_info, self.basegraph.nodes[None, :].repeat(obs_main.shape[0], 1, 1)], dim = 2).detach()
         node_info = self.embedd_node(node_info)
         in_reach_indices = self.basegraph.get_node_indices(
             obs_main[:, :, 8:16].reshape(-1, 4, 2)
@@ -166,6 +169,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             activation=nn.LeakyReLU,
             n_convolutions=4,
             env_type="matrix",
+            with_node_info=False
         ).items():
             setattr(
                 self,
@@ -185,6 +189,7 @@ class GNNRoutingNet(TorchModelV2, nn.Module):
             ff_embedd_dim = self.ff_embedd_dim,
             with_stations=self.with_stations,
             n_convolutions=self.n_convolutions,
+            with_node_info = self.with_node_info,
         )
 
 

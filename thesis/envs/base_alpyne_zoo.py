@@ -12,36 +12,63 @@ from pettingzoo import AECEnv
 
 
 class ZooAgentBehavior:
+    """
+    Baseclass to describe the behavior of an agent. Any custom behavior should inherit from this. 
+    A BaseAlpyneZoo-environment has one of these behaviors for every agent. It can be used for learning agents, agents that just use some static behavior or anything in between. 
+    """
     def __init__(self) -> None:
         pass
 
     def is_for_learning(self, alpyne_obs) -> bool:
+        """
+        Will be called when the corresponding agent has to act. 
+        If True: Delegate to gym-inteface for learning
+        If False: Choose the action by get_action and go on with the simulation. 
+        """
         return True
 
     @abstractmethod
     def get_action(self, alpyne_obs, time):
+        """
+        Calculate the action absed on the alpyne observation object and the current time.
+        """
         raise NotImplementedError()
 
     @abstractmethod
     def get_observation_space(self) -> spaces.Space:
+        """
+        Describe the agent's observation space
+        """
         raise NotImplementedError()
 
     @abstractmethod
     def get_action_space(self) -> spaces.Space:
+        """
+        Describe the agent's action space
+        """
         raise NotImplementedError()
 
     @abstractmethod
     def convert_to_action(
         self, action: "BaseAlpyneZoo.PyActionType", agent: str
     ) -> Action:
+        """
+        Convert the action from the learning algorithm / get_action to an alypne action object
+        """
         raise NotImplementedError()
 
     @abstractmethod
-    def convert_from_observation(self, alpyne_obs) -> Action:
+    def convert_from_observation(self, alpyne_obs):
+        """
+        Convert the alpyne observation object to an observation compatible with get_observation_space
+        """
         raise NotImplementedError()
 
 
 class ZooAgent:
+    """
+    
+    """
     def __init__(
         self, name: str, behavior: ZooAgentBehavior, does_training: bool = True
     ) -> None:

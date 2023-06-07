@@ -132,7 +132,7 @@ class ApplyPolicyAgent(ContextualAgent):
     def get_action(self, alpyne_obs, time):
         obs, rew, done, info = self.dummy_learning_agent.convert_from_observation(alpyne_obs)
         action = self.policy.compute_single_action(obs, explore=False)
-        return self._make_action([action[0]], alpyne_obs.caller)
+        return self.dummy_learning_agent.convert_to_action(action[0], alpyne_obs.caller)
 
 
 class RandomStationDispatcher(ContextualAgent):
@@ -444,6 +444,7 @@ class CollisionFreeRouting(ContextualAgent):
             self.current_route is None
             or len(self.current_route) == 0
             or target_node != self.current_route[-1][0]
+            or not self.current_route[0][0] in possible_nodes
         ):
             if self.current_route is not None and len(self.current_route) > 0:
                 self.hive.clear_blocks(caller)
@@ -663,9 +664,9 @@ class MultiAgent(TrainingBehavior):
                     reward += self.direction_reward
 
         in_obs_agvs = in_obs[other]
-        for i in range(len(in_obs_agvs)):
-            if in_obs_agvs[i,0] == 0:
-                in_obs_agvs[i] = 0
+        # for i in range(len(in_obs_agvs)):
+        #     if in_obs_agvs[i,0] == 0:
+        #         in_obs_agvs[i] = 0
         obs_agvs[0, : in_obs_agvs.shape[1]] = in_obs_caller
         obs_agvs[srule, : in_obs_agvs.shape[1]] = in_obs_agvs
 
@@ -698,7 +699,7 @@ class MultiAgent(TrainingBehavior):
             obs,
             reward,
             False,
-            {"in_system": in_obs_caller[0] == 1, "at_target": at_target},
+            {"in_system": in_obs_caller[0] == 1 or self.dispatching, "at_target": at_target },
         )
 
     def convert_to_action(self, actions, agent):
@@ -728,7 +729,7 @@ class MultiDispAgent(MultiAgent):
         self.env_type = None
 
     def convert_from_observation(self, alpyne_obs):
-        seperate = True
+        seperate = False
         if self.part is None:
             self.env_type = "matrix" if len(self.hive.stations) > 7 else "minimatrix"
             self.part = MatrixPart() if self.env_type == "matrix" else None

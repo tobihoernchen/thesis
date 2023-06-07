@@ -209,6 +209,7 @@ def config_ppo_training(batch_size=5000, algo_params:dict={}):
     # config["lr_schedule"] = [[0, 3e-3], [5000000, 3e-5]]
     # config["vf_loss_coeff"] = 1
     # config["clip_param"] = 0.2
+    ############# NO EXPLORATION IN PPO --> VERY BAD IDEA!
     return config
 
 
@@ -303,6 +304,8 @@ def get_config(
         config = AlgorithmConfig().to_dict()
         add_to_config(agv_model, config_dqn_training(batch_size, algo_params))
         add_to_config(dispatcher_model, config_ppo_training(batch_size, algo_params))
+    #    add_to_config(config, algo_params)
+
 
 
     config["framework"] = "torch"
