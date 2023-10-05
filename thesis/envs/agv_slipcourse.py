@@ -1,4 +1,3 @@
-from cgitb import reset
 from alpyne.client.alpyne_client import AlpyneClient
 from alpyne.client.abstract import BaseAlpyneEnv
 from alpyne.data.spaces import Configuration, Observation, Action

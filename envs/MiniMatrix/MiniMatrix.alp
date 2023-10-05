@@ -2135,7 +2135,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[pythonExecPath]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis3_9\\python.exe"]]></Code>
+								<Code><![CDATA["C:\\Users\\Wegma\\python venvs\\master\\Scripts\\python.exe"]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>
@@ -2315,14 +2315,17 @@ return str;]]></Body>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
-					<Lock>true</Lock>
 					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
 					<EmbeddedIcon>false</EmbeddedIcon>
 					<Z>0</Z>
-					<Width>449</Width>
+					<Width>505</Width>
 					<Height>275</Height>
 					<Rotation>0.0</Rotation>
 					<ImageFiles>
+						<ImageResourceReference>
+							<PackageName><![CDATA[minimatrix]]></PackageName>
+							<ClassName><![CDATA[Layout MiniMatrix.png]]></ClassName>
+						</ImageResourceReference>
 						<ImageResourceReference>
 							<PackageName><![CDATA[minimatrix]]></PackageName>
 							<ClassName><![CDATA[Layout.png]]></ClassName>
@@ -10427,6 +10430,10 @@ root.station_io_quote = station_io_quote;
 		</Resource>
 		<Resource>
 			<Path><![CDATA[3d/bicycle.dae]]></Path>
+			<ReferencedFromUserCode>false</ReferencedFromUserCode>
+		</Resource>
+		<Resource>
+			<Path><![CDATA[Layout MiniMatrix.png]]></Path>
 			<ReferencedFromUserCode>false</ReferencedFromUserCode>
 		</Resource>
 	</ModelResources>

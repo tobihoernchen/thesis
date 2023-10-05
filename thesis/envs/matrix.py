@@ -33,6 +33,7 @@ class Matrix(BaseAlpyneZoo):
         max_seconds: int = None,
         pseudo_dispatcher=True,
         pseudo_dispatcher_clever=False,
+        pseudo_dispatcher_rule=None,
         pseudo_dispatcher_distance=None,
         pseudo_routing=False,
         routing_agent_death=False,
@@ -63,6 +64,7 @@ class Matrix(BaseAlpyneZoo):
         self.pseudo_dispatcher = pseudo_dispatcher
         self.pseudo_routing = pseudo_routing
         self.pseudo_disp_cls = CleverMatrixDispatcher if pseudo_dispatcher_clever else RandomStationDispatcher
+        self.pseudo_dispatcher_rule = pseudo_dispatcher_rule
         self.pseudo_dispatcher_distance = pseudo_dispatcher_distance
         self.routing_ma = sim_config["routing_ma"]
         self.dispatching_ma = sim_config["dispatching_ma"]
@@ -199,7 +201,7 @@ class Matrix(BaseAlpyneZoo):
                             ZooAgent(
                                 str(i),
                                 self.pseudo_disp_cls(
-                                    self.agent_hive, 1, self.pseudo_dispatcher_distance
+                                    self.agent_hive, 1, self.pseudo_dispatcher_distance, rule = self.pseudo_dispatcher_rule
                                 ),
                                 False,
                             )
@@ -214,6 +216,7 @@ class Matrix(BaseAlpyneZoo):
                                 self.agent_hive,
                                 self.fleetsize,
                                 self.pseudo_dispatcher_distance,
+                                rule = self.pseudo_dispatcher_rule
                             ),
                             False,
                         )
@@ -487,7 +490,7 @@ class Matrix(BaseAlpyneZoo):
                     draw.ellipse(
                         (xt - r / 2, yt - r / 2, xt + r / 2, yt + r / 2), fill=color
                     )
-                draw.rectangle((xl + r, yl + r, xl - r, yl - r), fill=color)
+                draw.rectangle((xl - r, yl - r, xl + r, yl + r), fill=color)
                 draw.ellipse((xn - r, yn - r, xn + r, yn + r), fill=color)
                 draw.text((xl - r, yl - r), name)
                 draw.line((xl, yl, xn, yn), fill=color)

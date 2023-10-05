@@ -2133,7 +2133,7 @@ return str;]]></Body>
 						<Parameter>
 							<Name><![CDATA[pythonExecPath]]></Name>
 							<Value Class="CodeValue">
-								<Code><![CDATA["C:\\Users\\Wegma\\.conda\\envs\\thesis3_9\\python.exe"]]></Code>
+								<Code><![CDATA["C:\\Users\\Wegma\\python venvs\\master\\Scripts\\python.exe"]]></Code>
 							</Value>
 						</Parameter>
 						<Parameter>

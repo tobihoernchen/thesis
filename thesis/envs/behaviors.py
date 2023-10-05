@@ -136,7 +136,7 @@ class ApplyPolicyAgent(ContextualAgent):
 
 
 class RandomStationDispatcher(ContextualAgent):
-    def __init__(self, hive: HiveContext, n_actions=1, distance=None) -> None:
+    def __init__(self, hive: HiveContext, *args, n_actions=1, distance=None, **kwargs) -> None:
         super().__init__(hive)
         self.n_actions = n_actions
         self.distance = distance
@@ -182,11 +182,15 @@ class RandomStationDispatcher(ContextualAgent):
 
 
 class CleverMatrixDispatcher(ContextualAgent):
-    def __init__(self, hive: HiveContext, *args, **kwargs) -> None:
+    def __init__(self, hive: HiveContext, *args, rule:str = "random",**kwargs) -> None:
         super().__init__(hive)
+
         self.part=MatrixPart()
         self.env_type="matrix"
         self.assigned = None
+        self.rule = rule
+        if self.rule not in ["random",  "shortest_quene"]: #"shortest_path",
+            raise NotImplementedError
 
 
 
@@ -212,8 +216,37 @@ class CleverMatrixDispatcher(ContextualAgent):
 
                 for proc in processes:
                     stations.extend(self.part.proc_stat[proc])
+        if self.rule == "shortest_quene":
+            other_agvs_target_coords:list = [obs[6:8] for obs in alpyne_obs.obs]
+            other_agvs_target_coords.pop(alpyne_obs.caller - 1000)
+            other_agvs_target_ids = []
+            for coord in other_agvs_target_coords:
+                if coord[0]!=0 and coord[1] != 0:
+                    for code, stat_coord in self.hive.stations.items():
+                        if stat_coord == tuple(coord):
+                            other_agvs_target_ids.append(code)
+            other_agvs_targets = []
+            for id in other_agvs_target_ids:
+                for target_name, target_id in self.part.stat_node.items():
+                    if isinstance(target_id, int):
+                        if target_id == id:
+                            other_agvs_targets.append(target_name)
+                    elif isinstance(target_id, list):
+                        if id in target_id:
+                            other_agvs_targets.append(target_name)
+            assert len(other_agvs_targets) == len(other_agvs_target_ids)
+            print(other_agvs_targets)
+            weights = [other_agvs_targets.count(station) for station in stations]
+            print(weights)
+            print(stations)
+            choice = np.argmin(weights)
+            stations = [stations[choice]]
+            if len(stations)>1:
+                stations = [random.choice(stations)]
+            print(stations)
+                        
         if self.assigned is None or not self.assigned in stations:
-            self.assigned = random.choice(stations)
+                self.assigned = random.choice(stations)
         return self._make_action([self.part.stat_node[self.assigned]], alpyne_obs.caller)
 
 

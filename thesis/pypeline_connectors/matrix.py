@@ -8,15 +8,15 @@ from ..utils.utils import get_config, setup_ray
 ### SETUP ###
 setup_ray(port=51160, unidirectional=False)
 pseudo = False
-model_path = "../../models/matrix_together/LAST_8_20_2023-06-04_09-41-09"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
-checkpoint = 700
-trainer_cls = TripleTrainer
-fleetsize = 12
+model_path = "../../models/matrix_routing/10_conv_4_8_20_2023-05-02_17-33-00"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
+checkpoint = 400
+trainer_cls = dqn.DQN
+fleetsize = None
 ### END SETUP ###
 
 
 checkpoint_path = model_path + f"/checkpoint_{str(checkpoint).rjust(6, '0')}"
-path = "D:/Master/Masterarbeit/thesis"
+path = "C:/Users/Wegma/Documents/Masterarbeit/thesis/"
 with open(model_path + "/config.json") as json_file:
     hparams = json.load(json_file)
 hparams["n_envs"] = 1
@@ -30,6 +30,8 @@ if pseudo:
     hparams["env_args"]["pseudo_dispatcher"] = True
     hparams["env_args"]["pseudo_dispatcher_clever"] = True
     hparams["env_args"]["pseudo_routing"] = True
+hparams["env_args"]["pseudo_dispatcher_clever"] = True
+hparams["env_args"]["pseudo_dispatcher_rule"] = "shortest_quene"
     
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 1

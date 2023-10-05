@@ -1,7 +1,6 @@
 anylogic_alpyne==0.2.0
 gym==0.21.0
 ipython==8.11.0
-ipython==8.6.0
 ipywidgets==8.0.2
 keyboard==0.13.5
 matplotlib==3.6.2
@@ -9,7 +8,6 @@ numpy==1.23.5
 pandas==1.5.1
 PettingZoo==1.22.2
 Pillow==9.3.0
-Pillow==9.5.0
 plotly==5.11.0
 ray[rllib]==2.1.0
 stable_baselines3==1.8.0
