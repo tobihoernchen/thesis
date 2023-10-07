@@ -33,7 +33,7 @@ class Matrix(BaseAlpyneZoo):
         max_seconds: int = None,
         pseudo_dispatcher=True,
         pseudo_dispatcher_clever=False,
-        pseudo_dispatcher_rule=None,
+        pseudo_dispatcher_rule="random",
         pseudo_dispatcher_distance=None,
         pseudo_routing=False,
         routing_agent_death=False,

@@ -219,8 +219,10 @@ class CleverMatrixDispatcher(ContextualAgent):
         if self.rule == "shortest_quene":
             other_agvs_target_coords:list = [obs[6:8] for obs in alpyne_obs.obs]
             other_agvs_target_coords.pop(alpyne_obs.caller - 1000)
+            other_agvs_current_coords:list = [obs[4:6] for obs in alpyne_obs.obs]
+            other_agvs_current_coords.pop(alpyne_obs.caller - 1000)
             other_agvs_target_ids = []
-            for coord in other_agvs_target_coords:
+            for coord in other_agvs_target_coords + other_agvs_current_coords:
                 if coord[0]!=0 and coord[1] != 0:
                     for code, stat_coord in self.hive.stations.items():
                         if stat_coord == tuple(coord):
@@ -235,15 +237,11 @@ class CleverMatrixDispatcher(ContextualAgent):
                         if id in target_id:
                             other_agvs_targets.append(target_name)
             assert len(other_agvs_targets) == len(other_agvs_target_ids)
-            print(other_agvs_targets)
             weights = [other_agvs_targets.count(station) for station in stations]
-            print(weights)
-            print(stations)
             choice = np.argmin(weights)
             stations = [stations[choice]]
             if len(stations)>1:
                 stations = [random.choice(stations)]
-            print(stations)
                         
         if self.assigned is None or not self.assigned in stations:
                 self.assigned = random.choice(stations)

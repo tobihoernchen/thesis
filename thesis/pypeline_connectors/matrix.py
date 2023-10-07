@@ -6,12 +6,12 @@ from alpyne.data.spaces import Observation
 from ..utils.utils import get_config, setup_ray
 
 ### SETUP ###
-setup_ray(port=51160, unidirectional=False)
-pseudo = False
-model_path = "../../models/matrix_routing/10_conv_4_8_20_2023-05-02_17-33-00"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
+setup_ray(port=51160, unidirectional=True)
+pseudo = True
+model_path = "../../models/matrix_routing/09_rew_block_-20_8_20_2023-05-01_22-56-02"#minimatrix_dispatching/06_mat_rout__4_30_2023-01-13_18-43-09"
 checkpoint = 400
 trainer_cls = dqn.DQN
-fleetsize = None
+fleetsize = 16#None
 ### END SETUP ###
 
 
@@ -24,14 +24,12 @@ hparams["run_class"] = "pypeline"
 if fleetsize is not None:
     hparams["env_args"]["fleetsize"] = fleetsize
     hparams["env_args"]["fleetsize_upper"] = None
-
 if pseudo:
     hparams["env_args"]["max_seconds"] = 10
     hparams["env_args"]["pseudo_dispatcher"] = True
     hparams["env_args"]["pseudo_dispatcher_clever"] = True
+    #hparams["env_args"]["pseudo_dispatcher_rule"] = "shortest_quene"
     hparams["env_args"]["pseudo_routing"] = True
-hparams["env_args"]["pseudo_dispatcher_clever"] = True
-hparams["env_args"]["pseudo_dispatcher_rule"] = "shortest_quene"
     
 config, logger_creator, checkpoint_dir = get_config(path, **hparams)
 config["num_gpus"] = 1
